@@ -1,0 +1,6 @@
+*/bin
+*/obj
+*.cache
+*.suo
+*.user
+_ReSharper.ArloVsMocks
