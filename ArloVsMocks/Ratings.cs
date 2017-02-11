@@ -13,7 +13,7 @@ namespace ArloVsMocks
 		public Ratings(DbSet<Rating> ratings)
 		{
 			_ratings = ratings;
-			_saveImpl = rating => _ratings.Add(rating);
+			_saveImpl = rating => ratings.Add(rating);
 		}
 
 		public IQueryable<Rating> ExistingData
