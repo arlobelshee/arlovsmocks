@@ -3,4 +3,7 @@
 *.cache
 *.suo
 *.user
-_ReSharper.ArloVsMocks
+_ReSharper.*
+packages/
+!packages/repositories.config
+_NCrunch_*
