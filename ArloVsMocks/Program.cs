@@ -5,21 +5,6 @@ using ArloVsMocks.Data;
 
 namespace ArloVsMocks
 {
-	internal class Ratings
-	{
-		private DbSet<Rating> _ratings;
-
-		public Ratings(DbSet<Rating> ratings)
-		{
-			_ratings = ratings;
-		}
-
-		public DbSet<Rating> Ratings1
-		{
-			get { return _ratings; }
-		}
-	}
-
 	internal class Program
 	{
 		private static void Main(string[] args)
