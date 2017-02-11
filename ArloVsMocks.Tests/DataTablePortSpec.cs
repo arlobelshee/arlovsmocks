@@ -10,7 +10,7 @@ namespace ArloVsMocks.Tests
 		protected abstract DataTablePort CreateTestSubject();
 
 		[Test]
-		public void SavingItemShouldAddItToExistingDataImmediately()
+		public void SavingItemShouldAddItToExistingDataAfterPersistAll()
 		{
 			var testSubject = CreateTestSubject();
 			testSubject.ExistingData.Should().BeEmpty();
@@ -21,6 +21,7 @@ namespace ArloVsMocks.Tests
 				Stars = 3
 			};
 			testSubject.Save(newItem);
+			testSubject.PersistAll();
 			testSubject.ExistingData.Should().BeEquivalentTo(newItem);
 		}
 
@@ -35,6 +36,7 @@ namespace ArloVsMocks.Tests
 				Stars = 3
 			};
 			testSubject.Save(newItem);
+			testSubject.PersistAll();
 			var selectedRating = testSubject.ExistingData.First();
 			selectedRating.Stars = 5;
 			testSubject.ExistingData.Should().BeEquivalentTo(selectedRating);

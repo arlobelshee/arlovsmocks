@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 
@@ -51,7 +52,12 @@ namespace ArloVsMocks.Data
 		{
 			if (ReferenceEquals(null, other)) return false;
 			if (ReferenceEquals(this, other)) return true;
-			return MovieId == other.MovieId && CriticId == other.CriticId && Stars == other.Stars;
+			return (MovieId == other.MovieId) && (CriticId == other.CriticId) && (Stars == other.Stars);
+		}
+
+		public override string ToString()
+		{
+			return $"Rating{{{nameof(MovieId)}: {MovieId}, {nameof(CriticId)}: {CriticId}, {nameof(Stars)}: {Stars}}}";
 		}
 
 		public override bool Equals(object obj)
@@ -84,7 +90,12 @@ namespace ArloVsMocks.Data
 	public class MovieReviewEntities : DbContext
 	{
 		public MovieReviewEntities()
-			: base(new SqlCeConnectionFactory("System.Data.SqlServerCe.3.5").CreateConnection("Data/MovieReviews"), true)
+			: this("Data/MovieReviews")
+		{
+		}
+
+		public MovieReviewEntities(string fileName)
+			: base(new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0").CreateConnection(fileName), true)
 		{
 		}
 
