@@ -5,7 +5,7 @@ using ArloVsMocks.Data;
 
 namespace ArloVsMocks
 {
-	internal class Program
+	public class Program
 	{
 		private static void Main(string[] args)
 		{
@@ -64,7 +64,7 @@ namespace ArloVsMocks
 			Console.ReadKey();
 		}
 
-		private static void UpsertRating(DataTablePort dataTablePort, Critique critique)
+		public static void UpsertRating(DataTablePort dataTablePort, Critique critique)
 		{
 			var existingRating =
 				dataTablePort.ExistingData.SingleOrDefault(r => (r.MovieId == critique.MovieId) && (r.CriticId == critique.CriticId));
