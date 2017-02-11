@@ -4,7 +4,7 @@ namespace ArloVsMocks
 {
 	internal class Critique
 	{
-		public Critique(int movieId, int criticId, int stars, bool isValid)
+		public Critique(int movieId, int criticId, int stars)
 		{
 			MovieId = movieId;
 			CriticId = criticId;
@@ -13,7 +13,7 @@ namespace ArloVsMocks
 			ErrorMessage = string.Empty;
 		}
 
-		private Critique(int movieId, int criticId, int stars, bool isValid, string errorMessage)
+		private Critique(string errorMessage)
 		{
 			MovieId = 0;
 			CriticId = 0;
@@ -39,12 +39,12 @@ namespace ArloVsMocks
 				movieId = int.Parse(args[0]);
 				criticId = int.Parse(args[1]);
 				stars = int.Parse(args[2]);
-				critique = new Critique(movieId, criticId, stars, true);
+				critique = new Critique(movieId, criticId, stars);
 			}
 			catch (Exception ex)
 			{
 				Console.WriteLine(ex.Message);
-				critique = new Critique(0, 0, 0, false, ex.Message);
+				critique = new Critique(ex.Message);
 			}
 			return critique;
 		}
