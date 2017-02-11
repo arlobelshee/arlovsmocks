@@ -13,7 +13,7 @@ namespace ArloVsMocks
 			_ratings = ratings;
 		}
 
-		public IQueryable<Rating> Ratings1
+		public IQueryable<Rating> ExistingData
 		{
 			get { return _ratings; }
 		}

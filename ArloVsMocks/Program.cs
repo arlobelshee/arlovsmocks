@@ -72,7 +72,7 @@ namespace ArloVsMocks
 		private static void UpsertRating(Ratings ratings, Critique critique)
 		{
 			var existingRating =
-				ratings.Ratings1.SingleOrDefault(r => (r.MovieId == critique.MovieId) && (r.CriticId == critique.CriticId));
+				ratings.ExistingData.SingleOrDefault(r => (r.MovieId == critique.MovieId) && (r.CriticId == critique.CriticId));
 			if (existingRating == null)
 			{
 				existingRating = new Rating {MovieId = critique.MovieId, CriticId = critique.CriticId};
