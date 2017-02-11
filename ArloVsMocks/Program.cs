@@ -4,6 +4,22 @@ using ArloVsMocks.Data;
 
 namespace ArloVsMocks
 {
+	internal class Critique
+	{
+		public Critique(int movieId, int criticId, int stars, bool isValid)
+		{
+			MovieId = movieId;
+			CriticId = criticId;
+			Stars = stars;
+			IsValid = isValid;
+		}
+
+		public int MovieId { get; }
+		public int CriticId { get; }
+		public int Stars { get; }
+		public bool IsValid { get; }
+	}
+
 	internal class Program
 	{
 		private static void Main(string[] args)
@@ -23,7 +39,7 @@ namespace ArloVsMocks
 				Console.WriteLine(ex.Message);
 				return;
 			}
-			DumFn(movieId, criticId, stars, false);
+			DumFn(new Critique(movieId, criticId, stars, false));
 
 			//process rating
 			MovieReviewEntities db = null;
@@ -80,7 +96,7 @@ namespace ArloVsMocks
 			Console.ReadKey();
 		}
 
-		private static void DumFn(int movieId, int criticId, int stars, bool isValid)
+		private static void DumFn(Critique critique)
 		{
 		}
 	}
