@@ -22,7 +22,6 @@ namespace ArloVsMocks
 			{
 				db = new MovieReviewEntities();
 
-				//insert or update new rating
 				DbSet<Rating> ratings = db.Ratings;
 				UpsertRating(ratings, critique);
 
