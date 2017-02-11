@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using ArloVsMocks.Data;
 
@@ -22,12 +23,13 @@ namespace ArloVsMocks
 				db = new MovieReviewEntities();
 
 				//insert or update new rating
+				DbSet<Rating> ratings = db.Ratings;
 				var existingRating =
-					db.Ratings.SingleOrDefault(r => (r.MovieId == critique.MovieId) && (r.CriticId == critique.CriticId));
+					ratings.SingleOrDefault(r => (r.MovieId == critique.MovieId) && (r.CriticId == critique.CriticId));
 				if (existingRating == null)
 				{
 					existingRating = new Rating {MovieId = critique.MovieId, CriticId = critique.CriticId};
-					db.Ratings.Add(existingRating);
+					ratings.Add(existingRating);
 				}
 				existingRating.Stars = critique.Stars;
 
