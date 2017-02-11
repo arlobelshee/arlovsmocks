@@ -9,7 +9,11 @@ namespace ArloVsMocks
 		private static void Main(string[] args)
 		{
 			var critique = Critique.FromArgs(args);
-			if (!critique.IsValid) return;
+			if (!critique.IsValid)
+			{
+				Console.WriteLine(critique.ErrorMessage);
+				return;
+			}
 
 			//process rating
 			MovieReviewEntities db = null;
@@ -18,7 +22,8 @@ namespace ArloVsMocks
 				db = new MovieReviewEntities();
 
 				//insert or update new rating
-				var existingRating = db.Ratings.SingleOrDefault(r => (r.MovieId == critique.MovieId) && (r.CriticId == critique.CriticId));
+				var existingRating =
+					db.Ratings.SingleOrDefault(r => (r.MovieId == critique.MovieId) && (r.CriticId == critique.CriticId));
 				if (existingRating == null)
 				{
 					existingRating = new Rating {MovieId = critique.MovieId, CriticId = critique.CriticId};

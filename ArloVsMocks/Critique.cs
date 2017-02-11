@@ -43,7 +43,6 @@ namespace ArloVsMocks
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine(ex.Message);
 				critique = new Critique(ex.Message);
 			}
 			return critique;
