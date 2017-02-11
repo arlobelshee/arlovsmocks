@@ -66,7 +66,7 @@ namespace ArloVsMocks
 
 		private static Ratings ToRatings(DbSet<Rating> table)
 		{
-			return new Ratings(table);
+			return new Ratings(table, rating => table.Add(rating));
 		}
 
 		private static void UpsertRating(Ratings ratings, Critique critique)
