@@ -4,13 +4,13 @@ using ArloVsMocks.Data;
 
 namespace ArloVsMocks
 {
-	internal class Ratings
+	internal class DataTablePort
 	{
 		private readonly Action<Rating> _saveImpl;
 
-		public Ratings(IQueryable<Rating> ratings, Action<Rating> saveImpl)
+		public DataTablePort(IQueryable<Rating> existingData, Action<Rating> saveImpl)
 		{
-			ExistingData = ratings;
+			ExistingData = existingData;
 			_saveImpl = saveImpl;
 		}
 

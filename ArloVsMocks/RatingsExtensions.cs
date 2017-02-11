@@ -5,9 +5,9 @@ namespace ArloVsMocks
 {
 	internal static class RatingsExtensions
 	{
-		public static Ratings ToRatings(this DbSet<Rating> table)
+		public static DataTablePort ToDataTablePort(this DbSet<Rating> table)
 		{
-			return new Ratings(table, rating => table.Add(rating));
+			return new DataTablePort(table, rating => table.Add(rating));
 		}
 	}
 }

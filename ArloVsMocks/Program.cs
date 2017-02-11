@@ -22,7 +22,7 @@ namespace ArloVsMocks
 			{
 				db = new MovieReviewEntities();
 
-				UpsertRating(db.Ratings.ToRatings(), critique);
+				UpsertRating(db.Ratings.ToDataTablePort(), critique);
 
 				//update critic rating weight according to how closely their ratings match the average rating
 				var criticsHavingRated = db.Critics.Where(c => c.Ratings.Count > 0);
@@ -64,14 +64,14 @@ namespace ArloVsMocks
 			Console.ReadKey();
 		}
 
-		private static void UpsertRating(Ratings ratings, Critique critique)
+		private static void UpsertRating(DataTablePort dataTablePort, Critique critique)
 		{
 			var existingRating =
-				ratings.ExistingData.SingleOrDefault(r => (r.MovieId == critique.MovieId) && (r.CriticId == critique.CriticId));
+				dataTablePort.ExistingData.SingleOrDefault(r => (r.MovieId == critique.MovieId) && (r.CriticId == critique.CriticId));
 			if (existingRating == null)
 			{
 				existingRating = new Rating {MovieId = critique.MovieId, CriticId = critique.CriticId};
-				ratings.Save(existingRating);
+				dataTablePort.Save(existingRating);
 			}
 			existingRating.Stars = critique.Stars;
 		}
