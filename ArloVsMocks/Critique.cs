@@ -30,14 +30,11 @@ namespace ArloVsMocks
 
 		public static Critique FromArgs(string[] args)
 		{
-			int movieId;
-			int criticId;
-			int stars;
 			try
 			{
-				movieId = int.Parse(args[0]);
-				criticId = int.Parse(args[1]);
-				stars = int.Parse(args[2]);
+				var movieId = int.Parse(args[0]);
+				var criticId = int.Parse(args[1]);
+				var stars = int.Parse(args[2]);
 				return new Critique(movieId, criticId, stars);
 			}
 			catch (Exception ex)
