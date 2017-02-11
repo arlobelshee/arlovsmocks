@@ -13,7 +13,7 @@ namespace ArloVsMocks.Tests
 		public void NewRatingShouldBeCreated()
 		{
 			var data = new HashSet<Rating>();
-			var port = new DataTablePort(data.AsQueryable(), d => data.Add(d));
+			var port = data.AsDataTablePort();
 			var critique = new Critique(1, 2, 3);
 			var createdRating = new Rating
 			{
