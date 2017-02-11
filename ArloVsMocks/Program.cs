@@ -23,6 +23,7 @@ namespace ArloVsMocks
 				Console.WriteLine(ex.Message);
 				return;
 			}
+			DumFn(movieId, criticId, stars, false);
 
 			//process rating
 			MovieReviewEntities db = null;
@@ -77,6 +78,10 @@ namespace ArloVsMocks
 			}
 
 			Console.ReadKey();
+		}
+
+		private static void DumFn(int movieId, int criticId, int stars, bool isValid)
+		{
 		}
 	}
 }
