@@ -21,11 +21,9 @@ namespace ArloVsMocks.Tests
 				Stars = 1
 			});
 
-			var createdRating = critique.ToRating();
-
 			Program.UpsertRating(port, critique);
 			data.Should()
-				.BeEquivalentTo(createdRating);
+				.BeEquivalentTo(critique.ToRating());
 		}
 
 		[Test]
@@ -34,16 +32,10 @@ namespace ArloVsMocks.Tests
 			var data = new HashSet<Rating>();
 			var port = data.AsDataTablePort();
 			var critique = new Critique(1, 2, 3);
-			var createdRating = new Rating
-			{
-				CriticId = critique.CriticId,
-				MovieId = critique.MovieId,
-				Stars = critique.Stars
-			};
 
 			Program.UpsertRating(port, critique);
 			data.Should()
-				.BeEquivalentTo(createdRating);
+				.BeEquivalentTo(critique.ToRating());
 		}
 	}
 }
