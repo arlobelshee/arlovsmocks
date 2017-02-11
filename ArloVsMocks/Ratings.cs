@@ -19,7 +19,7 @@ namespace ArloVsMocks
 
 		public void Save(Rating existingRating)
 		{
-			Ratings1.Add(existingRating);
+			_ratings.Add(existingRating);
 		}
 	}
 }
