@@ -12,18 +12,19 @@ namespace ArloVsMocks
 			int movieId;
 			int criticId;
 			int stars;
+			Critique critique;
 			try
 			{
 				movieId = int.Parse(args[0]);
 				criticId = int.Parse(args[1]);
 				stars = int.Parse(args[2]);
+				critique = new Critique(movieId, criticId, stars, true);
 			}
 			catch (Exception ex)
 			{
 				Console.WriteLine(ex.Message);
-				return;
+				critique = new Critique(0, 0, 0, false);
 			}
-			var critique = new Critique(movieId, criticId, stars, true);
 			if (!critique.IsValid) return;
 
 			//process rating
