@@ -16,5 +16,16 @@ namespace ArloVsMocks
 		{
 			return new DataTablePort(data.AsQueryable(), d => data.Add(d));
 		}
+
+		public static Rating ToRating(this Critique critique)
+		{
+			var createdRating = new Rating
+			{
+				CriticId = critique.CriticId,
+				MovieId = critique.MovieId,
+				Stars = critique.Stars
+			};
+			return createdRating;
+		}
 	}
 }

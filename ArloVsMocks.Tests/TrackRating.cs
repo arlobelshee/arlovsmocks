@@ -21,12 +21,7 @@ namespace ArloVsMocks.Tests
 				Stars = 1
 			});
 
-			var createdRating = new Rating
-			{
-				CriticId = critique.CriticId,
-				MovieId = critique.MovieId,
-				Stars = critique.Stars
-			};
+			var createdRating = critique.ToRating();
 
 			Program.UpsertRating(port, critique);
 			data.Should()
