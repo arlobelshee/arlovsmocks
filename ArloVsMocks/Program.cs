@@ -22,7 +22,7 @@ namespace ArloVsMocks
 			{
 				db = new MovieReviewEntities();
 
-				UpsertRating(RatingsExtensions.ToRatings(db.Ratings), critique);
+				UpsertRating(db.Ratings.ToRatings(), critique);
 
 				//update critic rating weight according to how closely their ratings match the average rating
 				var criticsHavingRated = db.Critics.Where(c => c.Ratings.Count > 0);
