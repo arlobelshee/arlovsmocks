@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace ArloVsMocks.Tests
 {
 	[TestFixture]
-	public class AllTheThings
+	public class InteractWithCritic
 	{
 		[Test]
 		public void ValidInputsShouldMakeAValidCritique()
