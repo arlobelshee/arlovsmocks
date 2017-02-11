@@ -24,14 +24,7 @@ namespace ArloVsMocks
 
 				//insert or update new rating
 				DbSet<Rating> ratings = db.Ratings;
-				var existingRating =
-					ratings.SingleOrDefault(r => (r.MovieId == critique.MovieId) && (r.CriticId == critique.CriticId));
-				if (existingRating == null)
-				{
-					existingRating = new Rating {MovieId = critique.MovieId, CriticId = critique.CriticId};
-					ratings.Add(existingRating);
-				}
-				existingRating.Stars = critique.Stars;
+				UpsertRating(ratings, critique);
 
 				//update critic rating weight according to how closely their ratings match the average rating
 				var criticsHavingRated = db.Critics.Where(c => c.Ratings.Count > 0);
@@ -71,6 +64,18 @@ namespace ArloVsMocks
 			}
 
 			Console.ReadKey();
+		}
+
+		private static void UpsertRating(DbSet<Rating> ratings, Critique critique)
+		{
+			var existingRating =
+				ratings.SingleOrDefault(r => (r.MovieId == critique.MovieId) && (r.CriticId == critique.CriticId));
+			if (existingRating == null)
+			{
+				existingRating = new Rating {MovieId = critique.MovieId, CriticId = critique.CriticId};
+				ratings.Add(existingRating);
+			}
+			existingRating.Stars = critique.Stars;
 		}
 	}
 }
