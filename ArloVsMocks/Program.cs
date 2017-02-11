@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using ArloVsMocks.Data;
 
 namespace ArloVsMocks
 {
-	internal class Program
+	public class Program
 	{
 		private static void Main(string[] args)
 		{
@@ -21,15 +22,7 @@ namespace ArloVsMocks
 			{
 				db = new MovieReviewEntities();
 
-				//insert or update new rating
-				var existingRating =
-					db.Ratings.SingleOrDefault(r => (r.MovieId == critique.MovieId) && (r.CriticId == critique.CriticId));
-				if (existingRating == null)
-				{
-					existingRating = new Rating {MovieId = critique.MovieId, CriticId = critique.CriticId};
-					db.Ratings.Add(existingRating);
-				}
-				existingRating.Stars = critique.Stars;
+				UpsertRating(db.Ratings.ToDataTablePort(), critique);
 
 				//update critic rating weight according to how closely their ratings match the average rating
 				var criticsHavingRated = db.Critics.Where(c => c.Ratings.Count > 0);
@@ -69,6 +62,18 @@ namespace ArloVsMocks
 			}
 
 			Console.ReadKey();
+		}
+
+		public static void UpsertRating(DataTablePort dataTablePort, Critique critique)
+		{
+			var existingRating =
+				dataTablePort.ExistingData.SingleOrDefault(r => (r.MovieId == critique.MovieId) && (r.CriticId == critique.CriticId));
+			if (existingRating == null)
+			{
+				existingRating = new Rating {MovieId = critique.MovieId, CriticId = critique.CriticId};
+				dataTablePort.Save(existingRating);
+			}
+			existingRating.Stars = critique.Stars;
 		}
 	}
 }

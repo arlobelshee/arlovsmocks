@@ -75,6 +75,8 @@
     <Compile Include="Data\MovieReviewEntities.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DataTablePort.cs" />
+    <Compile Include="RatingsExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
