@@ -8,10 +8,12 @@ namespace ArloVsMocks
 	internal class Ratings
 	{
 		private DbSet<Rating> _ratings;
+		private readonly Action<Rating> _saveImpl;
 
 		public Ratings(DbSet<Rating> ratings)
 		{
 			_ratings = ratings;
+			_saveImpl = rating => _ratings.Add(rating);
 		}
 
 		public IQueryable<Rating> ExistingData
@@ -21,8 +23,7 @@ namespace ArloVsMocks
 
 		public void Save(Rating existingRating)
 		{
-			Action<Rating> save = rating => _ratings.Add(rating);
-			save(existingRating);
+			_saveImpl(existingRating);
 		}
 	}
 }
