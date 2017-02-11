@@ -11,5 +11,11 @@ namespace ArloVsMocks.Tests
 		{
 			Critique.FromArgs(new[] {"2", "3", "4"}).ShouldBeEquivalentTo(new Critique(2, 3, 4));
 		}
+
+		[Test]
+		public void InvalidInputsShouldMakeAnInvalidCritique()
+		{
+			Critique.FromArgs(new[] {"2", "3", "awesome"}).ShouldBeEquivalentTo(new Critique("Input string was not in a correct format."));
+		}
 	}
 }
