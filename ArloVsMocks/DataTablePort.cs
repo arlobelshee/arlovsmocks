@@ -4,7 +4,7 @@ using ArloVsMocks.Data;
 
 namespace ArloVsMocks
 {
-	internal class DataTablePort
+	public class DataTablePort
 	{
 		private readonly Action<Rating> _saveImpl;
 
