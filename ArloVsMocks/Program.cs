@@ -24,6 +24,9 @@ namespace ArloVsMocks
 				return;
 			}
 			var critique = new Critique(movieId, criticId, stars, false);
+			stars = critique.Stars;
+			movieId = critique.MovieId;
+			criticId = critique.CriticId;
 
 			//process rating
 			MovieReviewEntities db = null;
