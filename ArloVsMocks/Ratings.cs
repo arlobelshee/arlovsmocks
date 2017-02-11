@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using ArloVsMocks.Data;
 
@@ -20,7 +21,8 @@ namespace ArloVsMocks
 
 		public void Save(Rating existingRating)
 		{
-			_ratings.Add(existingRating);
+			Action<Rating> save = rating => _ratings.Add(rating);
+			save(existingRating);
 		}
 	}
 }
