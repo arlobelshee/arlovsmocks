@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using FluentAssertions;
+using NUnit.Framework;
 
 namespace ArloVsMocks.Tests
 {
@@ -6,8 +7,9 @@ namespace ArloVsMocks.Tests
 	public class AllTheThings
 	{
 		[Test]
-		public void NothingSpecial()
+		public void ValidInputsShouldMakeAValidCritique()
 		{
+			Critique.FromArgs(new[] {"2", "3", "4"}).ShouldBeEquivalentTo(new Critique(2, 3, 4));
 		}
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace ArloVsMocks
 {
-	internal class Critique
+	public class Critique
 	{
 		public Critique(int movieId, int criticId, int stars)
 		{
@@ -13,7 +13,7 @@ namespace ArloVsMocks
 			ErrorMessage = string.Empty;
 		}
 
-		private Critique(string errorMessage)
+		public Critique(string errorMessage)
 		{
 			MovieId = 0;
 			CriticId = 0;
