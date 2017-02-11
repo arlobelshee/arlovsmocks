@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HashSetAdapterMeetsDataTablePortSpec.cs" />
     <Compile Include="InteractWithCritic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TrackRating.cs" />
