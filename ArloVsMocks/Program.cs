@@ -9,22 +9,7 @@ namespace ArloVsMocks
 		private static void Main(string[] args)
 		{
 			//parse input
-			int movieId;
-			int criticId;
-			int stars;
-			Critique critique;
-			try
-			{
-				movieId = int.Parse(args[0]);
-				criticId = int.Parse(args[1]);
-				stars = int.Parse(args[2]);
-				critique = new Critique(movieId, criticId, stars, true);
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine(ex.Message);
-				critique = new Critique(0, 0, 0, false);
-			}
+			var critique = ParseInput(args);
 			if (!critique.IsValid) return;
 
 			//process rating
@@ -80,6 +65,27 @@ namespace ArloVsMocks
 			}
 
 			Console.ReadKey();
+		}
+
+		private static Critique ParseInput(string[] args)
+		{
+			int movieId;
+			int criticId;
+			int stars;
+			Critique critique;
+			try
+			{
+				movieId = int.Parse(args[0]);
+				criticId = int.Parse(args[1]);
+				stars = int.Parse(args[2]);
+				critique = new Critique(movieId, criticId, stars, true);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				critique = new Critique(0, 0, 0, false);
+			}
+			return critique;
 		}
 	}
 }
