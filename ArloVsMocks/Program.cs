@@ -23,7 +23,8 @@ namespace ArloVsMocks
 				Console.WriteLine(ex.Message);
 				return;
 			}
-			var critique = new Critique(movieId, criticId, stars, false);
+			var critique = new Critique(movieId, criticId, stars, true);
+			if (!critique.IsValid) return;
 
 			//process rating
 			MovieReviewEntities db = null;
