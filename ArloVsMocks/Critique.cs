@@ -9,16 +9,16 @@ namespace ArloVsMocks
 			MovieId = movieId;
 			CriticId = criticId;
 			Stars = stars;
-			IsValid = isValid;
+			IsValid = true;
 			ErrorMessage = string.Empty;
 		}
 
 		private Critique(int movieId, int criticId, int stars, bool isValid, string errorMessage)
 		{
-			MovieId = movieId;
-			CriticId = criticId;
-			Stars = stars;
-			IsValid = isValid;
+			MovieId = 0;
+			CriticId = 0;
+			Stars = 0;
+			IsValid = false;
 			ErrorMessage = errorMessage;
 		}
 
