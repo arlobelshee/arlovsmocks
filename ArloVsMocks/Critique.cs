@@ -10,11 +10,15 @@ namespace ArloVsMocks
 			CriticId = criticId;
 			Stars = stars;
 			IsValid = isValid;
+			ErrorMessage = string.Empty;
 		}
 
 		private Critique(int movieId, int criticId, int stars, bool isValid, string errorMessage)
-			: this(movieId, criticId, stars, isValid)
 		{
+			MovieId = movieId;
+			CriticId = criticId;
+			Stars = stars;
+			IsValid = isValid;
 			ErrorMessage = errorMessage;
 		}
 
