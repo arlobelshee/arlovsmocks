@@ -33,19 +33,16 @@ namespace ArloVsMocks
 			int movieId;
 			int criticId;
 			int stars;
-			Critique critique;
 			try
 			{
 				movieId = int.Parse(args[0]);
 				criticId = int.Parse(args[1]);
 				stars = int.Parse(args[2]);
-				critique = new Critique(movieId, criticId, stars);
-				return critique;
+				return new Critique(movieId, criticId, stars);
 			}
 			catch (Exception ex)
 			{
-				critique = new Critique(ex.Message);
-				return critique;
+				return new Critique(ex.Message);
 			}
 		}
 	}
