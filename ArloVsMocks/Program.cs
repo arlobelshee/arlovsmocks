@@ -34,7 +34,7 @@ namespace ArloVsMocks
 				db = new MovieReviewEntities();
 
 				//insert or update new rating
-				var existingRating = db.Ratings.SingleOrDefault(r => (r.MovieId == movieId) && (r.CriticId == criticId));
+				var existingRating = db.Ratings.SingleOrDefault(r => (r.MovieId == critique.MovieId) && (r.CriticId == critique.CriticId));
 				if (existingRating == null)
 				{
 					existingRating = new Rating {MovieId = critique.MovieId, CriticId = critique.CriticId};
@@ -65,8 +65,8 @@ namespace ArloVsMocks
 				db.SaveChanges();
 
 				//output summary
-				var newCriticRatingWeight = db.Critics.Single(c => c.Id == criticId).RatingWeight;
-				var newMovieRating = db.Movies.Single(m => m.Id == movieId).AverageRating.Value;
+				var newCriticRatingWeight = db.Critics.Single(c => c.Id == critique.CriticId).RatingWeight;
+				var newMovieRating = db.Movies.Single(m => m.Id == critique.MovieId).AverageRating.Value;
 				Console.WriteLine("New critic rating weight: {0:N1}", newCriticRatingWeight);
 				Console.WriteLine("New movie rating: {0:N1}", newMovieRating);
 			}
