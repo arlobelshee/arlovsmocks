@@ -76,14 +76,9 @@ namespace ArloVsMocks
 			if (existingRating == null)
 			{
 				existingRating = new Rating {MovieId = critique.MovieId, CriticId = critique.CriticId};
-				Save(ratings, existingRating);
+				ratings.Save(existingRating);
 			}
 			existingRating.Stars = critique.Stars;
-		}
-
-		private static void Save(Ratings ratings, Rating existingRating)
-		{
-			ratings.Ratings1.Add(existingRating);
 		}
 	}
 }

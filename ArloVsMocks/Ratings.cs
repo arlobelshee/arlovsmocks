@@ -16,5 +16,10 @@ namespace ArloVsMocks
 		{
 			get { return _ratings; }
 		}
+
+		public void Save(Rating existingRating)
+		{
+			Ratings1.Add(existingRating);
+		}
 	}
 }
