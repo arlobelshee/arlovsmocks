@@ -8,7 +8,6 @@ namespace ArloVsMocks
 	{
 		private static void Main(string[] args)
 		{
-			//parse input
 			var critique = ParseInput(args);
 			if (!critique.IsValid) return;
 
