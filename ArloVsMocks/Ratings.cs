@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Linq;
 using ArloVsMocks.Data;
 
 namespace ArloVsMocks
@@ -12,7 +13,7 @@ namespace ArloVsMocks
 			_ratings = ratings;
 		}
 
-		public DbSet<Rating> Ratings1
+		public IQueryable<Rating> Ratings1
 		{
 			get { return _ratings; }
 		}
