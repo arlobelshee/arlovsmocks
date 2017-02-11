@@ -22,8 +22,7 @@ namespace ArloVsMocks
 			{
 				db = new MovieReviewEntities();
 
-				DbSet<Rating> ratings = db.Ratings;
-				UpsertRating(ratings, critique);
+				UpsertRating(db.Ratings, critique);
 
 				//update critic rating weight according to how closely their ratings match the average rating
 				var criticsHavingRated = db.Critics.Where(c => c.Ratings.Count > 0);
