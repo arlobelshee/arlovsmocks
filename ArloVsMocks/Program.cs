@@ -5,6 +5,21 @@ using ArloVsMocks.Data;
 
 namespace ArloVsMocks
 {
+	internal class Ratings
+	{
+		private DbSet<Rating> _ratings;
+
+		public Ratings(DbSet<Rating> ratings)
+		{
+			_ratings = ratings;
+		}
+
+		public DbSet<Rating> Ratings1
+		{
+			get { return _ratings; }
+		}
+	}
+
 	internal class Program
 	{
 		private static void Main(string[] args)
@@ -22,7 +37,7 @@ namespace ArloVsMocks
 			{
 				db = new MovieReviewEntities();
 
-				UpsertRating(db.Ratings, critique);
+				UpsertRating(new Ratings(db.Ratings), critique);
 
 				//update critic rating weight according to how closely their ratings match the average rating
 				var criticsHavingRated = db.Critics.Where(c => c.Ratings.Count > 0);
@@ -64,14 +79,14 @@ namespace ArloVsMocks
 			Console.ReadKey();
 		}
 
-		private static void UpsertRating(DbSet<Rating> ratings, Critique critique)
+		private static void UpsertRating(Ratings ratings, Critique critique)
 		{
 			var existingRating =
-				ratings.SingleOrDefault(r => (r.MovieId == critique.MovieId) && (r.CriticId == critique.CriticId));
+				ratings.Ratings1.SingleOrDefault(r => (r.MovieId == critique.MovieId) && (r.CriticId == critique.CriticId));
 			if (existingRating == null)
 			{
 				existingRating = new Rating {MovieId = critique.MovieId, CriticId = critique.CriticId};
-				ratings.Add(existingRating);
+				ratings.Ratings1.Add(existingRating);
 			}
 			existingRating.Stars = critique.Stars;
 		}
