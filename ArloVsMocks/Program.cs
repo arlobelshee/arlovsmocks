@@ -24,9 +24,6 @@ namespace ArloVsMocks
 				return;
 			}
 			var critique = new Critique(movieId, criticId, stars, false);
-			stars = critique.Stars;
-			movieId = critique.MovieId;
-			criticId = critique.CriticId;
 
 			//process rating
 			MovieReviewEntities db = null;
@@ -38,10 +35,10 @@ namespace ArloVsMocks
 				var existingRating = db.Ratings.SingleOrDefault(r => (r.MovieId == movieId) && (r.CriticId == criticId));
 				if (existingRating == null)
 				{
-					existingRating = new Rating {MovieId = movieId, CriticId = criticId};
+					existingRating = new Rating {MovieId = critique.MovieId, CriticId = critique.CriticId};
 					db.Ratings.Add(existingRating);
 				}
-				existingRating.Stars = stars;
+				existingRating.Stars = critique.Stars;
 
 				//update critic rating weight according to how closely their ratings match the average rating
 				var criticsHavingRated = db.Critics.Where(c => c.Ratings.Count > 0);
