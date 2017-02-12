@@ -1,30 +1,28 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using ArloVsMocks.Data;
 
 namespace ArloVsMocks
 {
 	public class DataTablePort<T> where T : class
 	{
-		private readonly Action _saveChanges;
-		private readonly Action<T> _saveImpl;
+		private readonly DataTablePortAdapter<T> _adapter;
 
-		public DataTablePort(IQueryable<T> existingData, Action<T> saveImpl, Action saveChanges)
+		public DataTablePort(IQueryable<T> existingData, DataTablePortAdapter<T> adapter)
 		{
 			ExistingData = existingData;
-			_saveImpl = saveImpl;
-			_saveChanges = saveChanges;
+			_adapter = adapter;
 		}
 
 		public IQueryable<T> ExistingData { get; }
 
-		public void Save(T existingT)
+		public void Save(T item)
 		{
-			_saveImpl(existingT);
+			_adapter.SaveItem(item);
 		}
 
 		public void PersistAll()
 		{
-			_saveChanges();
+			_adapter.PersistAll();
 		}
 	}
 }
