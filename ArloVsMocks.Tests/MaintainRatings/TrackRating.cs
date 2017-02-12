@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using ArloVsMocks.Data;
 using ArloVsMocks.Tests.zzTestHelpers;
 using FluentAssertions;
@@ -14,7 +14,7 @@ namespace ArloVsMocks.Tests.MaintainRatings
 		{
 			var port = TableWithOneRating(RatingMatchingNewCritiqueButWithDifferentStars());
 
-			Program.UpsertRating(port, NewCritique);
+			MovieRatings.UpsertRating(port, NewCritique);
 			port.PersistAll();
 			port.ExistingData.Should().BeEquivalentTo(NewCritique.ToRating());
 		}
@@ -24,7 +24,7 @@ namespace ArloVsMocks.Tests.MaintainRatings
 		{
 			var port = Empty.Table<Rating>();
 
-			Program.UpsertRating(port, NewCritique);
+			MovieRatings.UpsertRating(port, NewCritique);
 			port.PersistAll();
 			port.ExistingData.Should().BeEquivalentTo(NewCritique.ToRating());
 		}
@@ -35,7 +35,7 @@ namespace ArloVsMocks.Tests.MaintainRatings
 			var existingRating = RatingForDifferentMovieThanNewCritique();
 			var port = TableWithOneRating(existingRating);
 
-			Program.UpsertRating(port, NewCritique);
+			MovieRatings.UpsertRating(port, NewCritique);
 			port.PersistAll();
 			port.ExistingData.Should().BeEquivalentTo(NewCritique.ToRating(), existingRating);
 		}
@@ -46,7 +46,7 @@ namespace ArloVsMocks.Tests.MaintainRatings
 			var port = Empty.TableThatMonitorsForeignKeys();
 			var critique = new Critique(-1, -2, 3);
 
-			Program.UpsertRating(port, critique);
+			MovieRatings.UpsertRating(port, critique);
 			Action persist = port.PersistAll;
 			persist.ShouldThrow<Exception>();
 		}

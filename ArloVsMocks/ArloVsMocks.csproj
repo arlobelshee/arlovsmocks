@@ -103,6 +103,7 @@
     <Compile Include="Data\ValidateRatingByRequiringPositiveIDs.cs" />
     <Compile Include="Data\Validator.cs" />
     <Compile Include="InfoForUser.cs" />
+    <Compile Include="MovieRatings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataTablePort.cs" />
