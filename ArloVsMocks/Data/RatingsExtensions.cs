@@ -74,8 +74,8 @@ namespace ArloVsMocks.Data
 		{
 			return d =>
 			{
-				validator.Validate(d);
-				nextState.Add(d);
+				adapter.Validator.Validate(d);
+				adapter.NextState.Add(d);
 			};
 		}
 
