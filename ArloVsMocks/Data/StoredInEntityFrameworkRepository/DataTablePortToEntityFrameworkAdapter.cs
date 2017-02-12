@@ -1,6 +1,6 @@
 using System.Data.Entity;
 
-namespace ArloVsMocks.Data
+namespace ArloVsMocks.Data.StoredInEntityFrameworkRepository
 {
 	public class DataTablePortToEntityFrameworkAdapter<T> : DataTablePortAdapter<T> where T : class
 	{

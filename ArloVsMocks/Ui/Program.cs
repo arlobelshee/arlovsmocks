@@ -1,4 +1,5 @@
 ﻿using System;
+using ArloVsMocks.CritiqueMovies;
 
 namespace ArloVsMocks.Ui
 {

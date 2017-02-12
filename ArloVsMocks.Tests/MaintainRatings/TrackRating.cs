@@ -1,4 +1,5 @@
 using System;
+using ArloVsMocks.CritiqueMovies;
 using ArloVsMocks.Data;
 using ArloVsMocks.Tests.zzTestHelpers;
 using FluentAssertions;

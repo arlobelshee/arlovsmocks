@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using ArloVsMocks.Data;
+using ArloVsMocks.Data.StoredInEntityFrameworkRepository;
 using ArloVsMocks.Ui;
 
-namespace ArloVsMocks
+namespace ArloVsMocks.CritiqueMovies
 {
 	public class CritiqueProcessor
 	{

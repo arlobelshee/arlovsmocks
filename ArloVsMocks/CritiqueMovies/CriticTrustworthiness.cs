@@ -2,7 +2,7 @@
 using System.Linq;
 using ArloVsMocks.Data;
 
-namespace ArloVsMocks
+namespace ArloVsMocks.CritiqueMovies
 {
 	public class CriticTrustworthiness
 	{

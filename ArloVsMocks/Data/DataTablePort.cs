@@ -1,7 +1,6 @@
 ﻿using System.Linq;
-using ArloVsMocks.Data;
 
-namespace ArloVsMocks
+namespace ArloVsMocks.Data
 {
 	public class DataTablePort<T> where T : class
 	{

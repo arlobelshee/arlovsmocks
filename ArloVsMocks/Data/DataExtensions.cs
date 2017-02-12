@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using ArloVsMocks.CritiqueMovies;
+using ArloVsMocks.Data.StoredInEntityFrameworkRepository;
+using ArloVsMocks.Data.StoredInMemory;
 
 namespace ArloVsMocks.Data
 {
-	public static class RatingsExtensions
+	public static class DataExtensions
 	{
 		public static DataTablePort<T> ToDataTablePort<T>(this DbSet<T> table, MovieReviewEntities db) where T : class
 		{

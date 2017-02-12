@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ArloVsMocks.Data
+namespace ArloVsMocks.Data.StoredInMemory
 {
 	public class DataTablePortToHashSetAdapter<T> : DataTablePortAdapter<T> where T : class
 	{

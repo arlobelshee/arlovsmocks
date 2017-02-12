@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ArloVsMocks
+namespace ArloVsMocks.CritiqueMovies
 {
 	public class Critique
 	{

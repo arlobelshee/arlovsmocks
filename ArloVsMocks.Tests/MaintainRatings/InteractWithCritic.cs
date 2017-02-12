@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using ArloVsMocks.CritiqueMovies;
 using ArloVsMocks.Data;
 using FluentAssertions;
 using NUnit.Framework;
