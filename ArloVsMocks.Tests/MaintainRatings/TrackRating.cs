@@ -40,7 +40,8 @@ namespace ArloVsMocks.Tests.MaintainRatings
 			port.ExistingData.Should().BeEquivalentTo(NewCritique.ToRating(), existingRating);
 		}
 
-		[Test, Category("probably a bug")]
+		[Test]
+		[Category("probably a bug")]
 		public void RatingThatDoesntMatchKnownMovieOrCriticShouldSetUpBombThatWillEventuallyExplodeAtUserWithPoorUx()
 		{
 			var port = Empty.TableThatMonitorsForeignKeys();

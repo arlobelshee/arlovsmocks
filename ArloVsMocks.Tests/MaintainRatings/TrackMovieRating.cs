@@ -21,7 +21,8 @@ namespace ArloVsMocks.Tests.MaintainRatings
 			movie.AverageRating.Should().BeApproximately(4.0429447852, 0.0000001);
 		}
 
-		[Test, Category("probably a bug")]
+		[Test]
+		[Category("probably a bug")]
 		public void MovieWithNoRatingsShouldHaveRatingSetToNaNInsteadOfNullEvenThoughOtherCodeExpectsNullToMeanUnrated()
 		{
 			var movie = Movie.Create(4);
