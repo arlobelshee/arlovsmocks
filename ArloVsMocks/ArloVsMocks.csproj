@@ -95,6 +95,7 @@
   <ItemGroup>
     <Compile Include="CriticTrustworthiness.cs" />
     <Compile Include="Critique.cs" />
+    <Compile Include="CritiqueProcessor.cs" />
     <Compile Include="Data\DataTablePortAdapter.cs" />
     <Compile Include="Data\DataTablePortToEntityFrameworkAdapter.cs" />
     <Compile Include="Data\DataTablePortToHashSetAdapter.cs" />
