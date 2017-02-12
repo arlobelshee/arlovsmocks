@@ -31,11 +31,11 @@ namespace ArloVsMocks
 			var nextState = new HashSet<T>(data);
 			return new DataTablePort<T>(data.AsQueryable(), d =>
 			{
-				validate(d);
+				validator.Validate(d);
 				nextState.Add(d);
 			}, () =>
 			{
-				reportErrors();
+				validator.ReportErrors();
 				data.Clear();
 				data.UnionWith(nextState);
 			});
