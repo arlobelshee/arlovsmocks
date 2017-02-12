@@ -59,7 +59,7 @@ namespace ArloVsMocks.CritiqueMovies
 			return createdRating;
 		}
 
-		public InfoForUser ProcessNewCritiqueAndGenerateSummary(DataTablePort<Rating> ratings, DataTablePort<Critic> critics, DataTablePort<Movie> movies)
+		public ReviewImpact Process(DataTablePort<Rating> ratings, DataTablePort<Critic> critics, DataTablePort<Movie> movies)
 		{
 			UpsertRating(ratings);
 			CriticTrustworthiness.DecideHowmuchToTrustEachCritic(critics);
@@ -68,7 +68,7 @@ namespace ArloVsMocks.CritiqueMovies
 			ratings.PersistAll();
 
 			CalculateImpactOfThisReview(critics, movies);
-			return _impact.Summarize();
+			return _impact;
 		}
 
 		private void CalculateImpactOfThisReview(DataTablePort<Critic> critics, DataTablePort<Movie> movies)

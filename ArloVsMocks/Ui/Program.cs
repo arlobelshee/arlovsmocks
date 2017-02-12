@@ -17,8 +17,8 @@ namespace ArloVsMocks.Ui
 
 			try
 			{
-				var summary = CritiqueRepository.Process(critique);
-				summary.Output(Console.WriteLine);
+				var impact = CritiqueRepository.Process(critique);
+				impact.Summarize().Output(Console.WriteLine);
 			}
 			catch (Exception ex)
 			{

@@ -6,7 +6,7 @@ namespace ArloVsMocks.Data
 {
 	public class CritiqueRepository
 	{
-		public static InfoForUser Process(Critique critique)
+		public static ReviewImpact Process(Critique critique)
 		{
 			using (var db = new MovieReviewEntities())
 			{
@@ -14,7 +14,7 @@ namespace ArloVsMocks.Data
 				var movies = db.Movies.ToDataTablePort(db);
 				var critics = db.Critics.ToDataTablePort(db);
 
-				return critique.ProcessNewCritiqueAndGenerateSummary(ratings, critics, movies);
+				return critique.Process(ratings, critics, movies);
 			}
 		}
 	}
