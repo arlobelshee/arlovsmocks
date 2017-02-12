@@ -21,15 +21,17 @@ namespace ArloVsMocks
 
 		public static DataTablePort<T> AsDataTablePort<T>(this HashSet<T> data) where T : class
 		{
-			return MakeDataPort(data, Validate, ReportErrors);
+			return MakeDataPort(data, Validate<T>(), ReportErrors());
 		}
 
-		private static void Validate<T>(T data)
+		private static Action<T> Validate<T>()
 		{
+			return data => { };
 		}
 
-		private static void ReportErrors()
+		private static Action ReportErrors()
 		{
+			return () => { };
 		}
 
 		private static DataTablePort<T> MakeDataPort<T>(HashSet<T> data, Action<T> validate, Action reportErrors)
