@@ -6,7 +6,7 @@ namespace ArloVsMocks.Data
 {
 	public class CritiqueRepository
 	{
-		public static InfoForUser ProcessNewCritiqueAndGenerateSummary(Critique critique)
+		public static InfoForUser Process(Critique critique)
 		{
 			using (var db = new MovieReviewEntities())
 			{
