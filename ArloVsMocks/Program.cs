@@ -35,11 +35,7 @@ namespace ArloVsMocks
 
 				ratings.PersistAll();
 
-				//output summary
-				var newCriticRatingWeight = db.Critics.Single(c => c.Id == critique.CriticId).RatingWeight;
-				var newMovieRating = db.Movies.Single(m => m.Id == critique.MovieId).AverageRating.Value;
-				Console.WriteLine("New critic rating weight: {0:N1}", newCriticRatingWeight);
-				Console.WriteLine("New movie rating: {0:N1}", newMovieRating);
+				OutputSummary(critics, critique, movies);
 			}
 			catch (Exception ex)
 			{
@@ -51,6 +47,14 @@ namespace ArloVsMocks
 			}
 
 			Console.ReadKey();
+		}
+
+		private static void OutputSummary(DataTablePort<Critic> critics, Critique critique, DataTablePort<Movie> movies)
+		{
+			var newCriticRatingWeight = critics.ExistingData.Single(c => c.Id == critique.CriticId).RatingWeight;
+			var newMovieRating = movies.ExistingData.Single(m => m.Id == critique.MovieId).AverageRating.Value;
+			Console.WriteLine("New critic rating weight: {0:N1}", newCriticRatingWeight);
+			Console.WriteLine("New movie rating: {0:N1}", newMovieRating);
 		}
 
 		private static void RecalcWeightedAveragesOfAllMovieRatings(DataTablePort<Movie> movies)
