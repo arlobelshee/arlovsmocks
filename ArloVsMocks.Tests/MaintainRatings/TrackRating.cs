@@ -3,6 +3,7 @@ using ArloVsMocks.CritiqueMovies;
 using ArloVsMocks.Data;
 using ArloVsMocks.Tests.zzTestHelpers;
 using FluentAssertions;
+using JetBrains.Annotations;
 using NUnit.Framework;
 
 namespace ArloVsMocks.Tests.MaintainRatings
@@ -81,6 +82,7 @@ namespace ArloVsMocks.Tests.MaintainRatings
 			return port;
 		}
 
+		[NotNull]
 		private static readonly Critique NewCritique = new Critique(1, 2, 3);
 	}
 }
