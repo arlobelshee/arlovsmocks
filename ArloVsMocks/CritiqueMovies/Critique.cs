@@ -7,6 +7,8 @@ namespace ArloVsMocks.CritiqueMovies
 {
 	public class Critique
 	{
+		private ReviewImpact _impact;
+
 		public Critique(int movieId, int criticId, int stars)
 		{
 			MovieId = movieId;
@@ -75,6 +77,7 @@ namespace ArloVsMocks.CritiqueMovies
 		{
 			var reviewingCritic = critics.ExistingData.Single(c => c.Id == CriticId);
 			reviewedMovie = movies.ExistingData.Single(m => m.Id == MovieId);
+			_impact = new ReviewImpact(reviewingCritic, reviewedMovie);
 			return reviewingCritic;
 		}
 
@@ -90,6 +93,18 @@ namespace ArloVsMocks.CritiqueMovies
 		public void UpsertRating(DataTablePort<Rating> dataTablePort)
 		{
 			MovieRatings.UpsertRating(dataTablePort, MovieId, CriticId, Stars);
+		}
+	}
+
+	internal class ReviewImpact
+	{
+		public Critic ReviewingCritic { get; }
+		public Movie ReviewedMovie { get; }
+
+		public ReviewImpact(Critic reviewingCritic, Movie reviewedMovie)
+		{
+			ReviewingCritic = reviewingCritic;
+			ReviewedMovie = reviewedMovie;
 		}
 	}
 }
