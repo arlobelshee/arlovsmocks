@@ -1,20 +1,20 @@
-﻿using System.Collections.Generic;
-using ArloVsMocks.Data;
+﻿using ArloVsMocks.Data;
+using ArloVsMocks.Tests.zzTestHelpers;
 using NUnit.Framework;
 
-namespace ArloVsMocks.Tests
+namespace ArloVsMocks.Tests.ConnectToInfrastructure
 {
 	[TestFixture]
 	public class HashSetAdapterMeetsDataTablePortSpec : DataTablePortSpec
 	{
 		protected override DataTablePort<Critic> CreateTestSubject()
 		{
-			return new HashSet<Critic>().AsDataTablePort();
+			return Empty.Table<Critic>();
 		}
 
 		protected override DataTablePort<Rating> CreateTestSubjectWithFk()
 		{
-			return new HashSet<Rating>().AsDataTablePort();
+			return Empty.TableThatMonitorsForeignKeys();
 		}
 	}
 }

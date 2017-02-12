@@ -4,7 +4,7 @@ using ArloVsMocks.Data;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace ArloVsMocks.Tests
+namespace ArloVsMocks.Tests.ConnectToInfrastructure
 {
 	public abstract class DataTablePortSpec
 	{
@@ -52,7 +52,8 @@ namespace ArloVsMocks.Tests
 			};
 			testSubject.Save(newItem);
 			Action persist = testSubject.PersistAll;
-			persist.ShouldThrow<Exception>().WithMessage("An error occurred while updating the entries. See the inner exception for details.");
+			persist.ShouldThrow<Exception>()
+				.WithMessage("An error occurred while updating the entries. See the inner exception for details.");
 		}
 
 		[Test]

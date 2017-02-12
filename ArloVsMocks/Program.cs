@@ -6,6 +6,10 @@ namespace ArloVsMocks
 {
 	public class Program
 	{
+		public const double UntrustworthyCriticWeight = 0.15;
+		public const double TrustworthyCriticWeight = 1.0;
+		public const double TypicalCriticWeight = 0.33;
+
 		private static void Main(string[] args)
 		{
 			var critique = Critique.FromArgs(args);
@@ -23,17 +27,7 @@ namespace ArloVsMocks
 				var ratings = db.Ratings.ToDataTablePort(db);
 
 				UpsertRating(ratings, critique);
-
-				//update critic rating weight according to how closely their ratings match the average rating
-				var criticsHavingRated = db.Critics.Where(c => c.Ratings.Count > 0);
-				foreach (var critic in criticsHavingRated)
-				{
-					var ratingsWithAverages = critic.Ratings.Where(r => r.Movie.AverageRating.HasValue).ToList();
-					var totalDisparity = ratingsWithAverages.Sum(r => Math.Abs(r.Stars - r.Movie.AverageRating.Value));
-					var relativeDisparity = totalDisparity/ratingsWithAverages.Count;
-
-					critic.RatingWeight = relativeDisparity > 2 ? 0.15 : relativeDisparity > 1 ? 0.33 : 1.0;
-				}
+				UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(db.Critics.ToDataTablePort(db));
 
 				//re-calculate weighted average of all movie ratings
 				foreach (var movie in db.Movies)
@@ -62,6 +56,19 @@ namespace ArloVsMocks
 			}
 
 			Console.ReadKey();
+		}
+
+		public static void UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(DataTablePort<Critic> critics)
+		{
+			var criticsHavingRated = critics.ExistingData.Where(c => c.Ratings.Count > 0);
+			foreach (var critic in criticsHavingRated)
+			{
+				var ratingsWithAverages = critic.Ratings.Where(r => r.Movie.AverageRating.HasValue).ToList();
+				var totalDisparity = ratingsWithAverages.Sum(r => Math.Abs(r.Stars - r.Movie.AverageRating.Value));
+				var relativeDisparity = totalDisparity/ratingsWithAverages.Count;
+
+				critic.RatingWeight = relativeDisparity > 2 ? UntrustworthyCriticWeight : relativeDisparity > 1 ? TypicalCriticWeight : TrustworthyCriticWeight;
+			}
 		}
 
 		public static void UpsertRating(DataTablePort<Rating> dataTablePort, Critique critique)
