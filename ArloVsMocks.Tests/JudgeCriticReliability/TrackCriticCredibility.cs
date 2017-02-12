@@ -3,7 +3,7 @@ using ArloVsMocks.Tests.zzTestHelpers;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace ArloVsMocks.Tests
+namespace ArloVsMocks.Tests.JudgeCriticReliability
 {
 	[TestFixture]
 	public class TrackCriticCredibility

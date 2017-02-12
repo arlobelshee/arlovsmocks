@@ -2,7 +2,7 @@
 using ArloVsMocks.Tests.zzTestHelpers;
 using NUnit.Framework;
 
-namespace ArloVsMocks.Tests
+namespace ArloVsMocks.Tests.ConnectToInfrastructure
 {
 	[TestFixture]
 	public class HashSetAdapterMeetsDataTablePortSpec : DataTablePortSpec

@@ -4,7 +4,7 @@ using ArloVsMocks.Data;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace ArloVsMocks.Tests
+namespace ArloVsMocks.Tests.ConnectToInfrastructure
 {
 	public abstract class DataTablePortSpec
 	{

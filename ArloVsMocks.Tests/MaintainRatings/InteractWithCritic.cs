@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 
-namespace ArloVsMocks.Tests
+namespace ArloVsMocks.Tests.MaintainRatings
 {
 	[TestFixture]
 	public class InteractWithCritic

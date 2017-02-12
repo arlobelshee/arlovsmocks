@@ -4,7 +4,7 @@ using System.IO;
 using ArloVsMocks.Data;
 using NUnit.Framework;
 
-namespace ArloVsMocks.Tests
+namespace ArloVsMocks.Tests.ConnectToInfrastructure
 {
 	[TestFixture]
 	[Category("PlatformMonitoring")]
