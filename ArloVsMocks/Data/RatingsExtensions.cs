@@ -19,6 +19,25 @@ namespace ArloVsMocks.Data
 		public Validator<TT> Validator { get; }
 
 		public HashSet<TT> NextState { get; }
+
+		public static Action PersistAll<T>(DataTablePortToHashSetAdapter<T> dataTablePortToHashSetAdapter) where T : class
+		{
+			return () =>
+			{
+				dataTablePortToHashSetAdapter.Validator.ReportErrors();
+				dataTablePortToHashSetAdapter.Data.Clear();
+				dataTablePortToHashSetAdapter.Data.UnionWith(dataTablePortToHashSetAdapter.NextState);
+			};
+		}
+
+		public static Action<T> SaveItem<T>(DataTablePortToHashSetAdapter<T> adapter) where T : class
+		{
+			return d =>
+			{
+				adapter.Validator.Validate(d);
+				adapter.NextState.Add(d);
+			};
+		}
 	}
 
 	public static class RatingsExtensions
@@ -42,26 +61,8 @@ namespace ArloVsMocks.Data
 		private static DataTablePort<T> MakeDataPort<T>(HashSet<T> data, Validator<T> validator) where T : class
 		{
 			var adapter = new DataTablePortToHashSetAdapter<T>(data, validator);
-			return new DataTablePort<T>(data.AsQueryable(), SaveItem(adapter), PersistAll(adapter));
-		}
-
-		private static Action PersistAll<T>(DataTablePortToHashSetAdapter<T> dataTablePortToHashSetAdapter) where T : class
-		{
-			return () =>
-			{
-				dataTablePortToHashSetAdapter.Validator.ReportErrors();
-				dataTablePortToHashSetAdapter.Data.Clear();
-				dataTablePortToHashSetAdapter.Data.UnionWith(dataTablePortToHashSetAdapter.NextState);
-			};
-		}
-
-		private static Action<T> SaveItem<T>(DataTablePortToHashSetAdapter<T> adapter) where T : class
-		{
-			return d =>
-			{
-				adapter.Validator.Validate(d);
-				adapter.NextState.Add(d);
-			};
+			return new DataTablePort<T>(data.AsQueryable(), DataTablePortToHashSetAdapter<T>.SaveItem(adapter),
+				DataTablePortToHashSetAdapter<T>.PersistAll(adapter));
 		}
 
 		public static Rating ToRating(this Critique critique)
