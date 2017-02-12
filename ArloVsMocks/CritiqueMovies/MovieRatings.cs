@@ -21,6 +21,11 @@ namespace ArloVsMocks.CritiqueMovies
 
 		public static void UpsertRating(DataTablePort<Rating> dataTablePort, Critique critique)
 		{
+			DoUpsert(dataTablePort, critique);
+		}
+
+		private static void DoUpsert(DataTablePort<Rating> dataTablePort, Critique critique)
+		{
 			var existingRating =
 				dataTablePort.ExistingData.SingleOrDefault(r => (r.MovieId == critique.MovieId) && (r.CriticId == critique.CriticId));
 			if (existingRating == null)
