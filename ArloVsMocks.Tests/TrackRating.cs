@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ArloVsMocks.Data;
+using ArloVsMocks.Tests.zzTestHelpers;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -9,17 +10,10 @@ namespace ArloVsMocks.Tests
 	[TestFixture]
 	public class TrackRating
 	{
-		private static DataTablePort<T> EmptyTable<T>() where T : class
-		{
-			var data = new HashSet<T>();
-			return data.AsDataTablePort();
-		}
-
 		[Test]
 		public void ExistingMatchingRatingShouldBeUpdated()
 		{
-			var data = new HashSet<Rating>();
-			var port = data.AsDataTablePort();
+			var port = Empty.Table<Rating>();
 			var critique = new Critique(1, 2, 3);
 			port.Save(new Rating
 			{
@@ -31,25 +25,24 @@ namespace ArloVsMocks.Tests
 
 			Program.UpsertRating(port, critique);
 			port.PersistAll();
-			data.Should().BeEquivalentTo(critique.ToRating());
+			port.ExistingData.Should().BeEquivalentTo(critique.ToRating());
 		}
 
 		[Test]
 		public void NewRatingShouldBeCreated()
 		{
-			var data = new HashSet<Rating>();
-			var port = data.AsDataTablePort();
+			var port = Empty.Table<Rating>();
 			var critique = new Critique(1, 2, 3);
 
 			Program.UpsertRating(port, critique);
 			port.PersistAll();
-			data.Should().BeEquivalentTo(critique.ToRating());
+			port.ExistingData.Should().BeEquivalentTo(critique.ToRating());
 		}
 
 		[Test]
 		public void NonmatchingRatingShouldBeCreatedNextToExistingOne()
 		{
-			var port = EmptyTable<Rating>();
+			var port = Empty.Table<Rating>();
 			var critique = new Critique(1, 2, 3);
 			var existingRating = new Rating
 			{
@@ -68,8 +61,7 @@ namespace ArloVsMocks.Tests
 		[Test]
 		public void RatingThatDoesntMatchKnownMovieOrCriticShouldSetUpBombWithWillEventuallyExplodeAtUserWithPoorUx()
 		{
-			var data = new HashSet<Rating>();
-			var port = data.AsDataTablePort();
+			var port = Empty.TableThatMonitorsForeignKeys();
 			var critique = new Critique(-1, -2, 3);
 
 			Program.UpsertRating(port, critique);
