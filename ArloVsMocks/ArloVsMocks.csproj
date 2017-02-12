@@ -99,6 +99,7 @@
   <ItemGroup>
     <Compile Include="CritiqueMovies\CriticTrustworthiness.cs" />
     <Compile Include="CritiqueMovies\Critique.cs" />
+    <Compile Include="CritiqueMovies\ReviewImpact.cs" />
     <Compile Include="Data\CritiqueRepository.cs" />
     <Compile Include="Data\DataTablePortAdapter.cs" />
     <Compile Include="Data\Critic.cs" />

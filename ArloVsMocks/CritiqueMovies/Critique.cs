@@ -5,37 +5,6 @@ using ArloVsMocks.Ui;
 
 namespace ArloVsMocks.CritiqueMovies
 {
-	public class ReviewImpact
-	{
-		private Critic _reviewingCritic;
-		private Movie _reviewedMovie;
-
-		public ReviewImpact(Critic reviewingCritic, Movie reviewedMovie)
-		{
-			_reviewingCritic = reviewingCritic;
-			_reviewedMovie = reviewedMovie;
-		}
-
-		public Critic ReviewingCritic
-		{
-			get { return _reviewingCritic; }
-		}
-
-		public Movie ReviewedMovie
-		{
-			get { return _reviewedMovie; }
-		}
-
-		public InfoForUser Summarize()
-		{
-			var newCriticRatingWeight = ReviewingCritic.RatingWeight;
-			var newMovieRating = ReviewedMovie.AverageRating.Value;
-			return
-				new InfoForUser(new[]
-					{$"New critic rating weight: {newCriticRatingWeight:N1}", $"New movie rating: {newMovieRating:N1}"});
-		}
-	}
-
 	public class Critique
 	{
 		private ReviewImpact _impact;
