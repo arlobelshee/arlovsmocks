@@ -16,7 +16,7 @@ namespace ArloVsMocks.Tests.MaintainRatings
 		{
 			var port = TableWithOneRating(RatingMatchingNewCritiqueButWithDifferentStars());
 
-			MovieRatings.UpsertRating(port, NewCritique);
+			NewCritique.UpsertRating(port);
 			port.PersistAll();
 			port.ExistingData.Should().BeEquivalentTo(NewCritique.ToRating());
 		}
@@ -26,7 +26,7 @@ namespace ArloVsMocks.Tests.MaintainRatings
 		{
 			var port = Empty.Table<Rating>();
 
-			MovieRatings.UpsertRating(port, NewCritique);
+			NewCritique.UpsertRating(port);
 			port.PersistAll();
 			port.ExistingData.Should().BeEquivalentTo(NewCritique.ToRating());
 		}
@@ -37,7 +37,7 @@ namespace ArloVsMocks.Tests.MaintainRatings
 			var existingRating = RatingForDifferentMovieThanNewCritique();
 			var port = TableWithOneRating(existingRating);
 
-			MovieRatings.UpsertRating(port, NewCritique);
+			NewCritique.UpsertRating(port);
 			port.PersistAll();
 			port.ExistingData.Should().BeEquivalentTo(NewCritique.ToRating(), existingRating);
 		}
@@ -49,7 +49,7 @@ namespace ArloVsMocks.Tests.MaintainRatings
 			var port = Empty.TableThatMonitorsForeignKeys();
 			var critique = new Critique(-1, -2, 3);
 
-			MovieRatings.UpsertRating(port, critique);
+			critique.UpsertRating(port);
 			Action persist = port.PersistAll;
 			persist.ShouldThrow<Exception>();
 		}

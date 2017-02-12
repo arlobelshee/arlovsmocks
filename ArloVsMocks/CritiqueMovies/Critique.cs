@@ -59,7 +59,7 @@ namespace ArloVsMocks.CritiqueMovies
 
 		public InfoForUser ProcessNewCritiqueAndGenerateSummary(DataTablePort<Rating> ratings, DataTablePort<Critic> critics, DataTablePort<Movie> movies)
 		{
-			MovieRatings.UpsertRating(ratings, this);
+			UpsertRating(ratings);
 			CriticTrustworthiness.DecideHowmuchToTrustEachCritic(critics);
 			MovieRatings.RecalcWeightedAveragesOfAllMovieRatings(movies);
 
@@ -85,6 +85,11 @@ namespace ArloVsMocks.CritiqueMovies
 			return
 				new InfoForUser(new[]
 					{$"New critic rating weight: {newCriticRatingWeight:N1}", $"New movie rating: {newMovieRating:N1}"});
+		}
+
+		public void UpsertRating(DataTablePort<Rating> dataTablePort)
+		{
+			MovieRatings.UpsertRating(dataTablePort, MovieId, CriticId, Stars);
 		}
 	}
 }

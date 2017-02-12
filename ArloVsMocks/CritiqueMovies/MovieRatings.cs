@@ -19,12 +19,7 @@ namespace ArloVsMocks.CritiqueMovies
 			movie.AverageRating = ratingTotal/weightTotal;
 		}
 
-		public static void UpsertRating(DataTablePort<Rating> dataTablePort, Critique critique)
-		{
-			DoUpsert(dataTablePort, critique.MovieId, critique.CriticId, critique.Stars);
-		}
-
-		private static void DoUpsert(DataTablePort<Rating> dataTablePort, int movie, int critic, int stars)
+		public static void UpsertRating(DataTablePort<Rating> dataTablePort, int movie, int critic, int stars)
 		{
 			var existingRating =
 				dataTablePort.ExistingData.SingleOrDefault(r => (r.MovieId == movie) && (r.CriticId == critic));
