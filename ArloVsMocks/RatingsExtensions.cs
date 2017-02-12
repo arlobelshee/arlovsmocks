@@ -52,7 +52,7 @@ namespace ArloVsMocks
 			return createdRating;
 		}
 
-		private class ValidateByAllowingAnything<T>
+		private class ValidateByAllowingAnything<T> : Validator<T>
 		{
 			public void Validate(T data)
 			{
@@ -94,5 +94,11 @@ namespace ArloVsMocks
 				HasErrors = HasErrors || (rating.CriticId < 1) || (rating.MovieId < 1);
 			}
 		}
+	}
+
+	internal interface Validator<T>
+	{
+		void Validate(T data);
+		void ReportErrors();
 	}
 }
