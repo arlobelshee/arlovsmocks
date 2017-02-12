@@ -9,9 +9,17 @@ namespace ArloVsMocks.Data
 	{
 		public static DataTablePort<T> ToDataTablePort<T>(this DbSet<T> table, MovieReviewEntities db) where T : class
 		{
-			Action persistAll = () => db.SaveChanges();
-			Action<T> saveItem = rating => table.Add(rating);
-			return new DataTablePort<T>(table, saveItem, persistAll);
+			return new DataTablePort<T>(table, SaveItem<T>(table), PersistAll<T>(db));
+		}
+
+		private static Action<T> SaveItem<T>(DbSet<T> table) where T : class
+		{
+			return rating => table.Add(rating);
+		}
+
+		private static Action PersistAll<T>(MovieReviewEntities db) where T : class
+		{
+			return () => db.SaveChanges();
 		}
 
 		public static DataTablePort<Rating> AsDataTablePort(this HashSet<Rating> data)
