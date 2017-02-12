@@ -7,7 +7,7 @@ namespace ArloVsMocks.Data
 {
 	public class DataTablePortToHashSetAdapter<TT> where TT : class
 	{
-		public DataTablePortToHashSetAdapter(HashSet<TT> data, Validator<TT> validator, HashSet<TT> nextState)
+		public DataTablePortToHashSetAdapter(HashSet<TT> data, Validator<TT> validator)
 		{
 			Data = data;
 			Validator = validator;
@@ -41,8 +41,7 @@ namespace ArloVsMocks.Data
 
 		private static DataTablePort<T> MakeDataPort<T>(HashSet<T> data, Validator<T> validator) where T : class
 		{
-			var nextState = new HashSet<T>(data);
-			var adapter = new DataTablePortToHashSetAdapter<T>(data, validator, nextState);
+			var adapter = new DataTablePortToHashSetAdapter<T>(data, validator);
 			return new DataTablePort<T>(data.AsQueryable(), SaveItem(adapter), PersistAll(adapter));
 		}
 
