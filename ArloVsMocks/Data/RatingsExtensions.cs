@@ -5,16 +5,38 @@ using System.Linq;
 
 namespace ArloVsMocks.Data
 {
+	public class DataTablePortToEntityFrameworkAdapter<TT> where TT : class
+	{
+		private MovieReviewEntities _db;
+		private DbSet<TT> _table;
+
+		public DataTablePortToEntityFrameworkAdapter(MovieReviewEntities db, DbSet<TT> table)
+		{
+			_db = db;
+			_table = table;
+		}
+
+		public MovieReviewEntities Db
+		{
+			get { return _db; }
+		}
+
+		public DbSet<TT> Table
+		{
+			get { return _table; }
+		}
+	}
+
 	public static class RatingsExtensions
 	{
 		public static DataTablePort<T> ToDataTablePort<T>(this DbSet<T> table, MovieReviewEntities db) where T : class
 		{
-			return new DataTablePort<T>(table, SaveItem(db, table), PersistAll(db, table));
+			return new DataTablePort<T>(table, SaveItem(new DataTablePortToEntityFrameworkAdapter<T>(db, table)), PersistAll(db, table));
 		}
 
-		private static Action<T> SaveItem<T>(MovieReviewEntities db, DbSet<T> table) where T : class
+		private static Action<T> SaveItem<T>(DataTablePortToEntityFrameworkAdapter<T> dataTablePortToEntityFrameworkAdapter) where T : class
 		{
-			return rating => table.Add(rating);
+			return rating => dataTablePortToEntityFrameworkAdapter.Table.Add(rating);
 		}
 
 		private static Action PersistAll<T>(MovieReviewEntities db, DbSet<T> table) where T : class
