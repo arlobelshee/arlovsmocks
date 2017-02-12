@@ -11,52 +11,43 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 		[Test]
 		public void CriticGenerallyCloseButNotOnShouldBeTypical()
 		{
-			var ratingHistory = History(Opinion(TwoStarMovie, 3), Opinion(ThreeStarMovie, 4), Opinion(FourStarMovie, 2));
-			var criticTrustworthiness = Program.TypicalCriticWeight;
-			CriticShouldBeTrustedToCorrectDegree(ratingHistory, criticTrustworthiness);
-		}
-
-		[Test]
-		public void CriticWithAbnormalReviewsShouldBeMostlyIgnored()
-		{
-			var ratingHistory = History(Opinion(ThreeStarMovie, 1), Opinion(TwoStarMovie, 5));
-			var criticTrustworthiness = Program.UntrustworthyCriticWeight;
-			CriticShouldBeTrustedToCorrectDegree(ratingHistory, criticTrustworthiness);
-		}
-
-		[Test]
-		public void CriticWithNoRatingsShouldBeTotallyIgnored()
-		{
-			var ratingHistory = History();
-			var criticTrustworthiness = 0.0;
-			CriticShouldBeTrustedToCorrectDegree(ratingHistory, criticTrustworthiness);
-		}
-
-		[Test]
-		public void CriticWithOneCrazyReviewAndSeveralSpotOnReviewsShouldBeTrusted()
-		{
-			var ratingHistory = History(Opinion(TwoStarMovie, 5), Opinion(ThreeStarMovie, 3), Opinion(FourStarMovie, 4));
-			var criticTrustworthiness = Program.TrustworthyCriticWeight;
-			CriticShouldBeTrustedToCorrectDegree(ratingHistory, criticTrustworthiness);
-		}
-
-		[Test]
-		public void CriticWithOneCrazyReviewShouldBeUntrusted()
-		{
-			var ratingHistory = History(Opinion(TwoStarMovie, 5));
-			var criticTrustworthiness = Program.UntrustworthyCriticWeight;
-			CriticShouldBeTrustedToCorrectDegree(ratingHistory, criticTrustworthiness);
+			CriticShouldBeTrustedToCorrectDegree(Program.TypicalCriticWeight,
+				History(Opinion(TwoStarMovie, 3), Opinion(ThreeStarMovie, 4), Opinion(FourStarMovie, 2)));
 		}
 
 		[Test]
 		public void CriticWhoOnlyReviewedUnknownMoviesShouldBeFullyTrusted()
 		{
-			var ratingHistory = History(Opinion(UnknownStarMovie, 5));
-			var criticTrustworthiness = Program.TrustworthyCriticWeight;
-			CriticShouldBeTrustedToCorrectDegree(ratingHistory, criticTrustworthiness);
+			CriticShouldBeTrustedToCorrectDegree(Program.TrustworthyCriticWeight, History(Opinion(UnknownStarMovie, 5)));
 		}
 
-		private static void CriticShouldBeTrustedToCorrectDegree(Opinion[] ratingHistory, double criticTrustworthiness)
+		[Test]
+		public void CriticWithAbnormalReviewsShouldBeMostlyIgnored()
+		{
+			CriticShouldBeTrustedToCorrectDegree(Program.UntrustworthyCriticWeight,
+				History(Opinion(ThreeStarMovie, 1), Opinion(TwoStarMovie, 5)));
+		}
+
+		[Test]
+		public void CriticWithNoRatingsShouldBeTotallyIgnored()
+		{
+			CriticShouldBeTrustedToCorrectDegree(0.0, History());
+		}
+
+		[Test]
+		public void CriticWithOneCrazyReviewAndSeveralSpotOnReviewsShouldBeTrusted()
+		{
+			CriticShouldBeTrustedToCorrectDegree(Program.TrustworthyCriticWeight,
+				History(Opinion(TwoStarMovie, 5), Opinion(ThreeStarMovie, 3), Opinion(FourStarMovie, 4)));
+		}
+
+		[Test]
+		public void CriticWithOneCrazyReviewShouldBeUntrusted()
+		{
+			CriticShouldBeTrustedToCorrectDegree(Program.UntrustworthyCriticWeight, History(Opinion(TwoStarMovie, 5)));
+		}
+
+		private static void CriticShouldBeTrustedToCorrectDegree(double criticTrustworthiness, params Opinion[] ratingHistory)
 		{
 			Critic target;
 			var critics = DbWithOneCritic(out target);

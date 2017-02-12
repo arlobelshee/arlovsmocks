@@ -2,10 +2,15 @@ using ArloVsMocks.Data;
 
 namespace ArloVsMocks.Tests.zzTestHelpers
 {
-	internal class Opinion
+	public class Opinion
 	{
 		private Movie _movie;
 		private int _stars;
+
+		public override string ToString()
+		{
+			return $"Opinion: {_movie.Id} => {_stars} stars";
+		}
 
 		public Opinion(Movie movie, int stars)
 		{
