@@ -11,17 +11,38 @@ namespace ArloVsMocks.Tests
 	{
 		private static readonly Critique NewCritique = new Critique(1, 2, 3);
 
+		private static Rating RatingMatchingNewCritiqueButWithDifferentStars()
+		{
+			return _MakeRating(1, NewCritique.MovieId);
+		}
+
+		private static Rating RatingForDifferentMovieThanNewCritique()
+		{
+			return _MakeRating(NewCritique.Stars, NewCritique.MovieId + 5);
+		}
+
+		private static Rating _MakeRating(int stars, int movieId)
+		{
+			return new Rating
+			{
+				CriticId = NewCritique.CriticId,
+				MovieId = movieId,
+				Stars = stars
+			};
+		}
+
+		private static DataTablePort<Rating> TableWithOneRating(Rating existingRating)
+		{
+			var port = Empty.Table<Rating>();
+			port.Save(existingRating);
+			port.PersistAll();
+			return port;
+		}
+
 		[Test]
 		public void ExistingMatchingRatingShouldBeUpdated()
 		{
-			var port = Empty.Table<Rating>();
-			port.Save(new Rating
-			{
-				CriticId = NewCritique.CriticId,
-				MovieId = NewCritique.MovieId,
-				Stars = 1
-			});
-			port.PersistAll();
+			var port = TableWithOneRating(RatingMatchingNewCritiqueButWithDifferentStars());
 
 			Program.UpsertRating(port, NewCritique);
 			port.PersistAll();
@@ -41,15 +62,8 @@ namespace ArloVsMocks.Tests
 		[Test]
 		public void NonmatchingRatingShouldBeCreatedNextToExistingOne()
 		{
-			var port = Empty.Table<Rating>();
-			var existingRating = new Rating
-			{
-				CriticId = NewCritique.CriticId,
-				MovieId = NewCritique.MovieId + 5,
-				Stars = 1
-			};
-			port.Save(existingRating);
-			port.PersistAll();
+			var existingRating = RatingForDifferentMovieThanNewCritique();
+			var port = TableWithOneRating(existingRating);
 
 			Program.UpsertRating(port, NewCritique);
 			port.PersistAll();
@@ -57,7 +71,7 @@ namespace ArloVsMocks.Tests
 		}
 
 		[Test]
-		public void RatingThatDoesntMatchKnownMovieOrCriticShouldSetUpBombWithWillEventuallyExplodeAtUserWithPoorUx()
+		public void RatingThatDoesntMatchKnownMovieOrCriticShouldSetUpBombThatWillEventuallyExplodeAtUserWithPoorUx()
 		{
 			var port = Empty.TableThatMonitorsForeignKeys();
 			var critique = new Critique(-1, -2, 3);
