@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using ArloVsMocks.Data;
 
-namespace ArloVsMocks
+namespace ArloVsMocks.Data
 {
 	public static class RatingsExtensions
 	{
