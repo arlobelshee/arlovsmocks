@@ -24,7 +24,12 @@ namespace ArloVsMocks
 		private static void MakeValidator(out Action<Rating> validate, out Action reportErrors)
 		{
 			var hasErrors = new ValidateRatingByRequiringPositiveIDs(false);
-			validate = rating => { hasErrors.HasErrors = hasErrors.HasErrors || (rating.CriticId < 1) || (rating.MovieId < 1); };
+			MakeValidateFn(out validate, hasErrors);
+			MakeReportFn(out reportErrors, hasErrors);
+		}
+
+		private static void MakeReportFn(out Action reportErrors, ValidateRatingByRequiringPositiveIDs hasErrors)
+		{
 			reportErrors = () =>
 			{
 				if (hasErrors.HasErrors)
@@ -41,6 +46,11 @@ namespace ArloVsMocks
 					}
 				}
 			};
+		}
+
+		private static void MakeValidateFn(out Action<Rating> validate, ValidateRatingByRequiringPositiveIDs hasErrors)
+		{
+			validate = rating => { hasErrors.HasErrors = hasErrors.HasErrors || (rating.CriticId < 1) || (rating.MovieId < 1); };
 		}
 
 		private class ValidateRatingByRequiringPositiveIDs
