@@ -132,7 +132,10 @@ namespace ArloVsMocks
 		public void Output()
 		{
 			foreach (var message in _messages)
-				Console.WriteLine(message);
+			{
+				Action<string> writeLine = Console.WriteLine;
+				writeLine(message);
+			}
 		}
 	}
 }
