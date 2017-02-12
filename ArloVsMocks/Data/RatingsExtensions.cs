@@ -7,15 +7,24 @@ namespace ArloVsMocks.Data
 {
 	public class DataTablePortToEntityFrameworkAdapter<T> where T : class
 	{
+		private readonly MovieReviewEntities _db;
+		private readonly DbSet<T> _table;
+
 		public DataTablePortToEntityFrameworkAdapter(MovieReviewEntities db, DbSet<T> table)
 		{
-			Db = db;
-			Table = table;
+			_db = db;
+			_table = table;
 		}
 
-		public MovieReviewEntities Db { get; }
+		private MovieReviewEntities Db
+		{
+			get { return _db; }
+		}
 
-		public DbSet<T> Table { get; }
+		private DbSet<T> Table
+		{
+			get { return _table; }
+		}
 
 		public void PersistAll()
 		{
