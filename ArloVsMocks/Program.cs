@@ -21,7 +21,8 @@ namespace ArloVsMocks
 
 			try
 			{
-				ProcessNewCritique(critique);
+				var summary = ProcessNewCritiqueAndGenerateSummary(critique);
+				summary.Output(Console.WriteLine);
 			}
 			catch (Exception ex)
 			{
@@ -29,12 +30,6 @@ namespace ArloVsMocks
 			}
 
 			Console.ReadKey();
-		}
-
-		private static void ProcessNewCritique(Critique critique)
-		{
-			var summary = ProcessNewCritiqueAndGenerateSummary(critique);
-			summary.Output(Console.WriteLine);
 		}
 
 		private static InfoForUser ProcessNewCritiqueAndGenerateSummary(Critique critique)
