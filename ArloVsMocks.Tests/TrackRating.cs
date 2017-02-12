@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using ArloVsMocks.Data;
 using ArloVsMocks.Tests.zzTestHelpers;
 using FluentAssertions;
@@ -10,52 +9,51 @@ namespace ArloVsMocks.Tests
 	[TestFixture]
 	public class TrackRating
 	{
+		private static readonly Critique NewCritique = new Critique(1, 2, 3);
+
 		[Test]
 		public void ExistingMatchingRatingShouldBeUpdated()
 		{
 			var port = Empty.Table<Rating>();
-			var critique = new Critique(1, 2, 3);
 			port.Save(new Rating
 			{
-				CriticId = critique.CriticId,
-				MovieId = critique.MovieId,
+				CriticId = NewCritique.CriticId,
+				MovieId = NewCritique.MovieId,
 				Stars = 1
 			});
 			port.PersistAll();
 
-			Program.UpsertRating(port, critique);
+			Program.UpsertRating(port, NewCritique);
 			port.PersistAll();
-			port.ExistingData.Should().BeEquivalentTo(critique.ToRating());
+			port.ExistingData.Should().BeEquivalentTo(NewCritique.ToRating());
 		}
 
 		[Test]
 		public void NewRatingShouldBeCreated()
 		{
 			var port = Empty.Table<Rating>();
-			var critique = new Critique(1, 2, 3);
 
-			Program.UpsertRating(port, critique);
+			Program.UpsertRating(port, NewCritique);
 			port.PersistAll();
-			port.ExistingData.Should().BeEquivalentTo(critique.ToRating());
+			port.ExistingData.Should().BeEquivalentTo(NewCritique.ToRating());
 		}
 
 		[Test]
 		public void NonmatchingRatingShouldBeCreatedNextToExistingOne()
 		{
 			var port = Empty.Table<Rating>();
-			var critique = new Critique(1, 2, 3);
 			var existingRating = new Rating
 			{
-				CriticId = critique.CriticId,
-				MovieId = critique.MovieId + 5,
+				CriticId = NewCritique.CriticId,
+				MovieId = NewCritique.MovieId + 5,
 				Stars = 1
 			};
 			port.Save(existingRating);
 			port.PersistAll();
 
-			Program.UpsertRating(port, critique);
+			Program.UpsertRating(port, NewCritique);
 			port.PersistAll();
-			port.ExistingData.Should().BeEquivalentTo(critique.ToRating(), existingRating);
+			port.ExistingData.Should().BeEquivalentTo(NewCritique.ToRating(), existingRating);
 		}
 
 		[Test]
