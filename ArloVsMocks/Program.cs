@@ -6,6 +6,10 @@ namespace ArloVsMocks
 {
 	public class Program
 	{
+		public const double UntrustworthyCriticWeight = 0.15;
+		public const double TrustworthyCriticWeight = 1.0;
+		public const double TypicalCriticWeight = 0.33;
+
 		private static void Main(string[] args)
 		{
 			var critique = Critique.FromArgs(args);
@@ -63,7 +67,7 @@ namespace ArloVsMocks
 				var totalDisparity = ratingsWithAverages.Sum(r => Math.Abs(r.Stars - r.Movie.AverageRating.Value));
 				var relativeDisparity = totalDisparity/ratingsWithAverages.Count;
 
-				critic.RatingWeight = relativeDisparity > 2 ? 0.15 : relativeDisparity > 1 ? 0.33 : 1.0;
+				critic.RatingWeight = relativeDisparity > 2 ? UntrustworthyCriticWeight : relativeDisparity > 1 ? TypicalCriticWeight : TrustworthyCriticWeight;
 			}
 		}
 
