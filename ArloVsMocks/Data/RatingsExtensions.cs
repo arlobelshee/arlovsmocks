@@ -31,7 +31,8 @@ namespace ArloVsMocks.Data
 	{
 		public static DataTablePort<T> ToDataTablePort<T>(this DbSet<T> table, MovieReviewEntities db) where T : class
 		{
-			return new DataTablePort<T>(table, SaveItem(new DataTablePortToEntityFrameworkAdapter<T>(db, table)), PersistAll(db, table));
+			var adapter = new DataTablePortToEntityFrameworkAdapter<T>(db, table);
+			return new DataTablePort<T>(table, SaveItem(adapter), PersistAll(db, table));
 		}
 
 		private static Action<T> SaveItem<T>(DataTablePortToEntityFrameworkAdapter<T> dataTablePortToEntityFrameworkAdapter) where T : class
