@@ -20,13 +20,20 @@ namespace ArloVsMocks.Tests
 			AverageRating = 2
 		};
 
+		private static DataTablePort<Critic> DbWithOneCritic(out Critic target)
+		{
+			var critics = Empty.Table<Critic>();
+			target = Critic.Create(5);
+			critics.Save(target);
+			critics.PersistAll();
+			return critics;
+		}
+
 		[Test]
 		public void CriticWithAbnormalReviewsShouldBeMostlyIgnored()
 		{
-			var critics = Empty.Table<Critic>();
-			var target = Critic.Create(5);
-			critics.Save(target);
-			critics.PersistAll();
+			Critic target;
+			var critics = DbWithOneCritic(out target);
 			target.RateMovie(ThreeStarMovie, 1);
 			target.RateMovie(TwoStarMovie, 5);
 
@@ -37,10 +44,8 @@ namespace ArloVsMocks.Tests
 		[Test]
 		public void CriticWithNoRatingsShouldBeTotallyIgnored()
 		{
-			var critics = Empty.Table<Critic>();
-			var target = Critic.Create(5);
-			critics.Save(target);
-			critics.PersistAll();
+			Critic target;
+			var critics = DbWithOneCritic(out target);
 
 			Program.UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
 			target.RatingWeight.Should().BeApproximately(0.0, 0.0001);
