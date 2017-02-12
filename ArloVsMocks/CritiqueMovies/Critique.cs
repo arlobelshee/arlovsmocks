@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using ArloVsMocks.Data;
+using ArloVsMocks.Ui;
 
 namespace ArloVsMocks.CritiqueMovies
 {
@@ -16,10 +17,10 @@ namespace ArloVsMocks.CritiqueMovies
 			_criticId = criticId;
 			_stars = stars;
 			IsValid = true;
-			ErrorMessage = string.Empty;
+			ErrorMessage = new InfoForUser();
 		}
 
-		public Critique(string errorMessage)
+		public Critique(InfoForUser errorMessage)
 		{
 			_movieId = 0;
 			_criticId = 0;
@@ -29,7 +30,7 @@ namespace ArloVsMocks.CritiqueMovies
 		}
 
 		public bool IsValid { get; }
-		public string ErrorMessage { get; }
+		public InfoForUser ErrorMessage { get; }
 
 		public static Critique FromArgs(string[] args)
 		{
@@ -42,7 +43,7 @@ namespace ArloVsMocks.CritiqueMovies
 			}
 			catch (Exception ex)
 			{
-				return new Critique(ex.Message);
+				return new Critique(new InfoForUser(ex.Message));
 			}
 		}
 

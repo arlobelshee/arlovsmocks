@@ -6,7 +6,7 @@ namespace ArloVsMocks.Ui
 	{
 		private readonly string[] _messages;
 
-		public InfoForUser(string[] messages)
+		public InfoForUser(params string[] messages)
 		{
 			_messages = messages;
 		}

@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using ArloVsMocks.CritiqueMovies;
 using ArloVsMocks.Data;
+using ArloVsMocks.Ui;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -13,7 +14,7 @@ namespace ArloVsMocks.Tests.MaintainRatings
 		[Category("probably a bug")]
 		public void InsufficientInputsShouldMakeAnInvalidCritiqueWithAnUninformativeUserMessage()
 		{
-			Critique.FromArgs(new[] {"2", "3"}).ShouldBeEquivalentTo(new Critique("Index was outside the bounds of the array."));
+			Critique.FromArgs(new[] {"2", "3"}).ShouldBeEquivalentTo(new Critique(new InfoForUser("Index was outside the bounds of the array.")));
 		}
 
 		[Test]
@@ -21,7 +22,7 @@ namespace ArloVsMocks.Tests.MaintainRatings
 		public void InvalidInputsShouldMakeAnInvalidCritiqueWithAnUninformativeUserMessage()
 		{
 			Critique.FromArgs(new[] {"2", "3", "awesome"})
-				.ShouldBeEquivalentTo(new Critique("Input string was not in a correct format."));
+				.ShouldBeEquivalentTo(new Critique(new InfoForUser("Input string was not in a correct format.")));
 		}
 
 		[Test]

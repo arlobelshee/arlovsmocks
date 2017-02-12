@@ -11,7 +11,7 @@ namespace ArloVsMocks.Ui
 			var critique = Critique.FromArgs(args);
 			if (!critique.IsValid)
 			{
-				Console.WriteLine(critique.ErrorMessage);
+				critique.ErrorMessage.Output(Console.WriteLine);
 				return;
 			}
 
