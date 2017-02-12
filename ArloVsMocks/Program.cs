@@ -33,6 +33,7 @@ namespace ArloVsMocks
 
 		private static void ProcessNewCritique(Critique critique)
 		{
+			string[] messages;
 			using (var db = new MovieReviewEntities())
 			{
 				var ratings = db.Ratings.ToDataTablePort(db);
@@ -47,10 +48,10 @@ namespace ArloVsMocks
 
 				Movie reviewedMovie;
 				var reviewingCritic = GetEntitiesRelatedToThisReview(critique, critics, movies, out reviewedMovie);
-				var messages = Summarize(reviewingCritic, reviewedMovie);
-				foreach (var message in messages)
-					Console.WriteLine(message);
+				messages = Summarize(reviewingCritic, reviewedMovie);
 			}
+			foreach (var message in messages)
+				Console.WriteLine(message);
 		}
 
 		private static Critic GetEntitiesRelatedToThisReview(Critique critique, DataTablePort<Critic> critics, DataTablePort<Movie> movies,
