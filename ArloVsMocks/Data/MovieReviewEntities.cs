@@ -37,6 +37,16 @@ namespace ArloVsMocks.Data
 		public double? AverageRating { get; set; }
 
 		public virtual ICollection<Rating> Ratings { get; set; }
+
+		public static Movie Create(int id)
+		{
+			return new Movie
+			{
+				Id = id,
+				Ratings = new List<Rating>(),
+				AverageRating = null
+			};
+		}
 	}
 
 	[Table("Rating")]

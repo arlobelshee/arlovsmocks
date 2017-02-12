@@ -60,11 +60,16 @@ namespace ArloVsMocks
 		{
 			foreach (var movie in movies.ExistingData)
 			{
-				var weightTotal = movie.Ratings.Select(r => r.Critic.RatingWeight).Sum();
-				var ratingTotal = movie.Ratings.Select(r => r.Stars*r.Critic.RatingWeight).Sum();
-
-				movie.AverageRating = ratingTotal/weightTotal;
+				UpdateAverageRatingForMovie(movie);
 			}
+		}
+
+		public static void UpdateAverageRatingForMovie(Movie movie)
+		{
+			var weightTotal = movie.Ratings.Select(r => r.Critic.RatingWeight).Sum();
+			var ratingTotal = movie.Ratings.Select(r => r.Stars*r.Critic.RatingWeight).Sum();
+
+			movie.AverageRating = ratingTotal/weightTotal;
 		}
 
 		public static void UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(DataTablePort<Critic> critics)

@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="ConnectToInfrastructure\DataTablePortSpec.cs" />
     <Compile Include="ConnectToInfrastructure\DbAdapterMeetsDataTablePortSpec.cs" />
+    <Compile Include="MaintainRatings\TrackMovieRating.cs" />
     <Compile Include="zzTestHelpers\TestExtensions.cs" />
     <Compile Include="zzTestHelpers\Empty.cs" />
     <Compile Include="ConnectToInfrastructure\HashSetAdapterMeetsDataTablePortSpec.cs" />
