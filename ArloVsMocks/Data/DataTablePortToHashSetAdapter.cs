@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace ArloVsMocks.Data
 {
-	public class DataTablePortToHashSetAdapter<T> where T : class
+	public class DataTablePortToHashSetAdapter<T> : DataTablePortAdapter<T> where T : class
 	{
 		private readonly HashSet<T> _data;
 		private readonly HashSet<T> _nextState;
