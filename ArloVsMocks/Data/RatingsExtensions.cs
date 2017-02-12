@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using ArloVsMocks.Data;
 
-namespace ArloVsMocks
+namespace ArloVsMocks.Data
 {
 	public static class RatingsExtensions
 	{
@@ -15,42 +13,24 @@ namespace ArloVsMocks
 
 		public static DataTablePort<Rating> AsDataTablePort(this HashSet<Rating> data)
 		{
-			var hasErrors = false;
-			return MakeDataPort(data, rating => { hasErrors = hasErrors || (rating.CriticId < 1) || (rating.MovieId < 1); },
-				() =>
-				{
-					if (hasErrors)
-					{
-						hasErrors = false;
-						try
-						{
-							throw new Exception("Foreign key violation.");
-						}
-						catch (Exception innerException)
-						{
-							throw new Exception("An error occurred while updating the entries. See the inner exception for details.",
-								innerException);
-						}
-					}
-				});
+			return MakeDataPort(data, new ValidateRatingByRequiringPositiveIDs(false));
 		}
 
 		public static DataTablePort<T> AsDataTablePort<T>(this HashSet<T> data) where T : class
 		{
-			return MakeDataPort(data, d => { }, () => { });
+			return MakeDataPort(data, new ValidateByAllowingAnything<T>());
 		}
 
-		private static DataTablePort<T> MakeDataPort<T>(HashSet<T> data, Action<T> validate, Action reportErrors)
-			where T : class
+		private static DataTablePort<T> MakeDataPort<T>(HashSet<T> data, Validator<T> validator) where T : class
 		{
 			var nextState = new HashSet<T>(data);
 			return new DataTablePort<T>(data.AsQueryable(), d =>
 			{
-				validate(d);
+				validator.Validate(d);
 				nextState.Add(d);
 			}, () =>
 			{
-				reportErrors();
+				validator.ReportErrors();
 				data.Clear();
 				data.UnionWith(nextState);
 			});
