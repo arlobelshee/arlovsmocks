@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace ArloVsMocks.Data
 {
-	public class DataTablePortToEntityFrameworkAdapter<TT> where TT : class
+	public class DataTablePortToEntityFrameworkAdapter<T> where T : class
 	{
-		public DataTablePortToEntityFrameworkAdapter(MovieReviewEntities db, DbSet<TT> table)
+		public DataTablePortToEntityFrameworkAdapter(MovieReviewEntities db, DbSet<T> table)
 		{
 			Db = db;
 			Table = table;
@@ -15,15 +15,14 @@ namespace ArloVsMocks.Data
 
 		public MovieReviewEntities Db { get; }
 
-		public DbSet<TT> Table { get; }
+		public DbSet<T> Table { get; }
 
-		public static Action PersistAll<T>(DataTablePortToEntityFrameworkAdapter<T> adapter) where T : class
+		public static Action PersistAll(DataTablePortToEntityFrameworkAdapter<T> adapter)
 		{
 			return () => adapter.Db.SaveChanges();
 		}
 
-		public static Action<T> SaveItem<T>(DataTablePortToEntityFrameworkAdapter<T> dataTablePortToEntityFrameworkAdapter)
-			where T : class
+		public static Action<T> SaveItem(DataTablePortToEntityFrameworkAdapter<T> dataTablePortToEntityFrameworkAdapter)
 		{
 			return rating => dataTablePortToEntityFrameworkAdapter.Table.Add(rating);
 		}
