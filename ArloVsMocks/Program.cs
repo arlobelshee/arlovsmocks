@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Linq;
 using ArloVsMocks.Data;
 
@@ -20,29 +19,26 @@ namespace ArloVsMocks
 				return;
 			}
 
-			MovieReviewEntities db = null;
 			try
 			{
-				db = new MovieReviewEntities();
-				var ratings = db.Ratings.ToDataTablePort(db);
-				var movies = db.Movies.ToDataTablePort(db);
-				var critics = db.Critics.ToDataTablePort(db);
+				using (var db = new MovieReviewEntities())
+				{
+					var ratings = db.Ratings.ToDataTablePort(db);
+					var movies = db.Movies.ToDataTablePort(db);
+					var critics = db.Critics.ToDataTablePort(db);
 
-				UpsertRating(ratings, critique);
-				UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
-				RecalcWeightedAveragesOfAllMovieRatings(movies);
+					UpsertRating(ratings, critique);
+					UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
+					RecalcWeightedAveragesOfAllMovieRatings(movies);
 
-				ratings.PersistAll();
+					ratings.PersistAll();
 
-				OutputSummary(critics, critique, movies);
+					OutputSummary(critics, critique, movies);
+				}
 			}
 			catch (Exception ex)
 			{
 				Console.WriteLine(ex.Message);
-			}
-			finally
-			{
-				db?.Dispose();
 			}
 
 			Console.ReadKey();
@@ -59,9 +55,7 @@ namespace ArloVsMocks
 		public static void RecalcWeightedAveragesOfAllMovieRatings(DataTablePort<Movie> movies)
 		{
 			foreach (var movie in movies.ExistingData)
-			{
 				UpdateAverageRatingForMovie(movie);
-			}
 		}
 
 		public static void UpdateAverageRatingForMovie(Movie movie)
@@ -81,7 +75,9 @@ namespace ArloVsMocks
 				var totalDisparity = ratingsWithAverages.Sum(r => Math.Abs(r.Stars - r.Movie.AverageRating.Value));
 				var relativeDisparity = totalDisparity/ratingsWithAverages.Count;
 
-				critic.RatingWeight = relativeDisparity > 2 ? UntrustworthyCriticWeight : relativeDisparity > 1 ? TypicalCriticWeight : TrustworthyCriticWeight;
+				critic.RatingWeight = relativeDisparity > 2
+					? UntrustworthyCriticWeight
+					: relativeDisparity > 1 ? TypicalCriticWeight : TrustworthyCriticWeight;
 			}
 		}
 
