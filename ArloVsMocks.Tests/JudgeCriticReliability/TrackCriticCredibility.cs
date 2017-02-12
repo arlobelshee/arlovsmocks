@@ -45,6 +45,19 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 		}
 
 		[Test]
+		public void CriticGenerallyCLoseButNotOnShouldBeTypical()
+		{
+			Critic target;
+			var critics = DbWithOneCritic(out target);
+			target.RateMovie(TwoStarMovie, 3);
+			target.RateMovie(ThreeStarMovie, 4);
+			target.RateMovie(FourStarMovie, 2);
+
+			Program.UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
+			target.RatingWeight.Should().BeApproximately(Program.TypicalCriticWeight, 0.0001);
+		}
+
+		[Test]
 		public void CriticWithNoRatingsShouldBeTotallyIgnored()
 		{
 			Critic target;
