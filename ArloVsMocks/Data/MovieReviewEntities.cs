@@ -17,6 +17,15 @@ namespace ArloVsMocks.Data
 		public double RatingWeight { get; set; }
 
 		public virtual ICollection<Rating> Ratings { get; set; }
+
+		public static Critic Create(int id)
+		{
+			return new Critic
+			{
+				Id = id,
+				Ratings = new List<Rating>()
+			};
+		}
 	}
 
 	[Table("Movie")]
@@ -89,8 +98,7 @@ namespace ArloVsMocks.Data
 
 	public class MovieReviewEntities : DbContext
 	{
-		public MovieReviewEntities()
-			: this("Data/MovieReviews")
+		public MovieReviewEntities() : this("Data/MovieReviews")
 		{
 		}
 
@@ -105,13 +113,9 @@ namespace ArloVsMocks.Data
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
-			modelBuilder.Entity<Movie>()
-				.HasMany(m => m.Ratings)
-				.WithRequired(r => r.Movie);
+			modelBuilder.Entity<Movie>().HasMany(m => m.Ratings).WithRequired(r => r.Movie);
 
-			modelBuilder.Entity<Critic>()
-				.HasMany(c => c.Ratings)
-				.WithRequired(r => r.Critic);
+			modelBuilder.Entity<Critic>().HasMany(c => c.Ratings).WithRequired(r => r.Critic);
 
 
 			base.OnModelCreating(modelBuilder);
