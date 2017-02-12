@@ -67,11 +67,11 @@ namespace ArloVsMocks.CritiqueMovies
 
 			ratings.PersistAll();
 
-			GetEntitiesRelatedToThisReview(critics, movies);
+			CalculateImpactOfThisReview(critics, movies);
 			return _impact.Summarize();
 		}
 
-		private void GetEntitiesRelatedToThisReview(DataTablePort<Critic> critics, DataTablePort<Movie> movies)
+		private void CalculateImpactOfThisReview(DataTablePort<Critic> critics, DataTablePort<Movie> movies)
 		{
 			var reviewingCritic = critics.ExistingData.Single(c => c.Id == CriticId);
 			var reviewedMovie = movies.ExistingData.Single(m => m.Id == MovieId);
