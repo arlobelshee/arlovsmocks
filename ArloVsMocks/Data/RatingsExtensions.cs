@@ -7,23 +7,25 @@ namespace ArloVsMocks.Data
 {
 	public class DataTablePortToEntityFrameworkAdapter<TT> where TT : class
 	{
-		private MovieReviewEntities _db;
-		private DbSet<TT> _table;
-
 		public DataTablePortToEntityFrameworkAdapter(MovieReviewEntities db, DbSet<TT> table)
 		{
-			_db = db;
-			_table = table;
+			Db = db;
+			Table = table;
 		}
 
-		public MovieReviewEntities Db
+		public MovieReviewEntities Db { get; }
+
+		public DbSet<TT> Table { get; }
+
+		public static Action PersistAll<T>(DataTablePortToEntityFrameworkAdapter<T> adapter) where T : class
 		{
-			get { return _db; }
+			return () => adapter.Db.SaveChanges();
 		}
 
-		public DbSet<TT> Table
+		public static Action<T> SaveItem<T>(DataTablePortToEntityFrameworkAdapter<T> dataTablePortToEntityFrameworkAdapter)
+			where T : class
 		{
-			get { return _table; }
+			return rating => dataTablePortToEntityFrameworkAdapter.Table.Add(rating);
 		}
 	}
 
@@ -32,17 +34,8 @@ namespace ArloVsMocks.Data
 		public static DataTablePort<T> ToDataTablePort<T>(this DbSet<T> table, MovieReviewEntities db) where T : class
 		{
 			var adapter = new DataTablePortToEntityFrameworkAdapter<T>(db, table);
-			return new DataTablePort<T>(table, SaveItem(adapter), PersistAll(adapter));
-		}
-
-		private static Action<T> SaveItem<T>(DataTablePortToEntityFrameworkAdapter<T> dataTablePortToEntityFrameworkAdapter) where T : class
-		{
-			return rating => dataTablePortToEntityFrameworkAdapter.Table.Add(rating);
-		}
-
-		private static Action PersistAll<T>(DataTablePortToEntityFrameworkAdapter<T> adapter) where T : class
-		{
-			return () => adapter.Db.SaveChanges();
+			return new DataTablePort<T>(table, DataTablePortToEntityFrameworkAdapter<T>.SaveItem(adapter),
+				DataTablePortToEntityFrameworkAdapter<T>.PersistAll(adapter));
 		}
 
 		public static DataTablePort<Rating> AsDataTablePort(this HashSet<Rating> data)
