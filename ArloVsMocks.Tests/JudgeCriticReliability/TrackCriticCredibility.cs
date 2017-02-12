@@ -52,12 +52,18 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 			var opinion = Opinion(TwoStarMovie, 3);
 			var opinion1 = Opinion(ThreeStarMovie, 4);
 			var opinion2 = Opinion(FourStarMovie, 2);
-			target.RateMovie(opinion);
-			target.RateMovie(opinion1);
-			target.RateMovie(opinion2);
+			RateMovies(target, opinion, opinion1, opinion2);
 
 			Program.UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
 			target.RatingWeight.Should().BeApproximately(Program.TypicalCriticWeight, 0.0001);
+		}
+
+		private static void RateMovies(Critic target, params Opinion[] opinions)
+		{
+			foreach (var opinion in opinions)
+			{
+				target.RateMovie(opinion);
+			}
 		}
 
 		private static Opinion Opinion(Movie movie, int stars)
