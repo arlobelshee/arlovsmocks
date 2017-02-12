@@ -15,29 +15,55 @@ namespace ArloVsMocks
 
 		public static DataTablePort<Rating> AsDataTablePort(this HashSet<Rating> data)
 		{
-			var hasErrors = false;
-			return MakeDataPort(data, rating => { hasErrors = hasErrors || (rating.CriticId < 1) || (rating.MovieId < 1); },
-				() =>
+			Action<Rating> validate;
+			Action reportErrors;
+			MakeValidator(out validate, out reportErrors);
+			return MakeDataPort(data, validate, reportErrors);
+		}
+
+		private static void MakeValidator(out Action<Rating> validate, out Action reportErrors)
+		{
+			var hasErrors = new ValidateRatingByRequiringPositiveIDs(false);
+			validate = rating => { hasErrors.HasErrors = hasErrors.HasErrors || (rating.CriticId < 1) || (rating.MovieId < 1); };
+			reportErrors = () =>
+			{
+				if (hasErrors.HasErrors)
 				{
-					if (hasErrors)
+					hasErrors.HasErrors = false;
+					try
 					{
-						hasErrors = false;
-						try
-						{
-							throw new Exception("Foreign key violation.");
-						}
-						catch (Exception innerException)
-						{
-							throw new Exception("An error occurred while updating the entries. See the inner exception for details.",
-								innerException);
-						}
+						throw new Exception("Foreign key violation.");
 					}
-				});
+					catch (Exception innerException)
+					{
+						throw new Exception("An error occurred while updating the entries. See the inner exception for details.",
+							innerException);
+					}
+				}
+			};
+		}
+
+		private class ValidateRatingByRequiringPositiveIDs
+		{
+			public bool HasErrors { get; set; }
+
+			public ValidateRatingByRequiringPositiveIDs(bool hasErrors)
+			{
+				HasErrors = hasErrors;
+			}
 		}
 
 		public static DataTablePort<T> AsDataTablePort<T>(this HashSet<T> data) where T : class
 		{
-			return MakeDataPort(data, d => { }, () => { });
+			return MakeDataPort(data, Validate, ReportErrors);
+		}
+
+		private static void Validate<T>(T data)
+		{
+		}
+
+		private static void ReportErrors()
+		{
 		}
 
 		private static DataTablePort<T> MakeDataPort<T>(HashSet<T> data, Action<T> validate, Action reportErrors)
