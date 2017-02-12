@@ -55,10 +55,7 @@ namespace ArloVsMocks
 		{
 			var newCriticRatingWeight = critics.ExistingData.Single(c => c.Id == critique.CriticId).RatingWeight;
 			var newMovieRating = movies.ExistingData.Single(m => m.Id == critique.MovieId).AverageRating.Value;
-			var message1 = $"New critic rating weight: {newCriticRatingWeight:N1}";
-			var message2 = $"New movie rating: {newMovieRating:N1}";
-			var messages = new[] {message1, message2};
-			return messages;
+			return new[] {$"New critic rating weight: {newCriticRatingWeight:N1}", $"New movie rating: {newMovieRating:N1}"};
 		}
 
 		public static void RecalcWeightedAveragesOfAllMovieRatings(DataTablePort<Movie> movies)
