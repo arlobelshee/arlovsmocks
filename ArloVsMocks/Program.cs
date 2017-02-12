@@ -20,8 +20,9 @@ namespace ArloVsMocks
 			try
 			{
 				db = new MovieReviewEntities();
+				var ratings = db.Ratings.ToDataTablePort(db);
 
-				UpsertRating(db.Ratings.ToDataTablePort(db), critique);
+				UpsertRating(ratings, critique);
 
 				//update critic rating weight according to how closely their ratings match the average rating
 				var criticsHavingRated = db.Critics.Where(c => c.Ratings.Count > 0);
