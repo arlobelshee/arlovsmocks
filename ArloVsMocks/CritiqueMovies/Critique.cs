@@ -25,6 +25,15 @@ namespace ArloVsMocks.CritiqueMovies
 		{
 			get { return _reviewedMovie; }
 		}
+
+		public InfoForUser Summarize()
+		{
+			var newCriticRatingWeight = ReviewingCritic.RatingWeight;
+			var newMovieRating = ReviewedMovie.AverageRating.Value;
+			return
+				new InfoForUser(new[]
+					{$"New critic rating weight: {newCriticRatingWeight:N1}", $"New movie rating: {newMovieRating:N1}"});
+		}
 	}
 
 	public class Critique
@@ -91,7 +100,7 @@ namespace ArloVsMocks.CritiqueMovies
 
 			Movie reviewedMovie;
 			var reviewingCritic = GetEntitiesRelatedToThisReview(critics, movies, out reviewedMovie);
-			return Summarize(new ReviewImpact(reviewingCritic, reviewedMovie));
+			return new ReviewImpact(reviewingCritic, reviewedMovie).Summarize();
 		}
 
 		private Critic GetEntitiesRelatedToThisReview(DataTablePort<Critic> critics,
@@ -101,15 +110,6 @@ namespace ArloVsMocks.CritiqueMovies
 			reviewedMovie = movies.ExistingData.Single(m => m.Id == MovieId);
 			_impact = new ReviewImpact(reviewingCritic, reviewedMovie);
 			return reviewingCritic;
-		}
-
-		public static InfoForUser Summarize(ReviewImpact reviewImpact)
-		{
-			var newCriticRatingWeight = reviewImpact.ReviewingCritic.RatingWeight;
-			var newMovieRating = reviewImpact.ReviewedMovie.AverageRating.Value;
-			return
-				new InfoForUser(new[]
-					{$"New critic rating weight: {newCriticRatingWeight:N1}", $"New movie rating: {newMovieRating:N1}"});
 		}
 
 		public void UpsertRating(DataTablePort<Rating> dataTablePort)

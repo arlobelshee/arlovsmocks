@@ -27,13 +27,13 @@ namespace ArloVsMocks.Tests.MaintainRatings
 		[Test]
 		public void SummaryShouldIndicateChangesThatHappenedBasedOnReview()
 		{
-			var infoForUser = Critique.Summarize(new ReviewImpact(new Critic
+			var infoForUser = new ReviewImpact(new Critic
 			{
 				RatingWeight = 3.14159
 			}, new Movie
 			{
 				AverageRating = 2.71829
-			}));
+			}).Summarize();
 			var console = new StringBuilder();
 			infoForUser.Output(s => console.AppendLine(s));
 			console.ToString().Should().Be(@"New critic rating weight: 3.1
