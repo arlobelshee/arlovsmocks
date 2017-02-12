@@ -15,27 +15,8 @@ namespace ArloVsMocks
 
 		public static DataTablePort<Rating> AsDataTablePort(this HashSet<Rating> data)
 		{
-			Action<Rating> validate;
-			Action reportErrors;
-			MakeValidator(out validate, out reportErrors);
-			return MakeDataPort(data, validate, reportErrors);
-		}
-
-		private static void MakeValidator(out Action<Rating> validate, out Action reportErrors)
-		{
 			var hasErrors = new ValidateRatingByRequiringPositiveIDs(false);
-			MakeValidateFn(out validate, hasErrors);
-			MakeReportFn(out reportErrors, hasErrors);
-		}
-
-		private static void MakeReportFn(out Action reportErrors, ValidateRatingByRequiringPositiveIDs hasErrors)
-		{
-			reportErrors = hasErrors.ReporterImpl;
-		}
-
-		private static void MakeValidateFn(out Action<Rating> validate, ValidateRatingByRequiringPositiveIDs hasErrors)
-		{
-			validate = hasErrors.ValidationImpl;
+			return MakeDataPort(data, hasErrors.ValidationImpl, hasErrors.ReporterImpl);
 		}
 
 		public static DataTablePort<T> AsDataTablePort<T>(this HashSet<T> data) where T : class
