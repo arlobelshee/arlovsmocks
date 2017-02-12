@@ -20,7 +20,6 @@ namespace ArloVsMocks
 				return;
 			}
 
-			//process rating
 			MovieReviewEntities db = null;
 			try
 			{
