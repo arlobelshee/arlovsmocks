@@ -11,7 +11,7 @@ namespace ArloVsMocks.Data
 		{
 			Data = data;
 			Validator = validator;
-			NextState = nextState;
+			NextState = new HashSet<TT>();
 		}
 
 		public HashSet<TT> Data { get; }
