@@ -23,8 +23,6 @@ namespace ArloVsMocks
 				var ratings = db.Ratings.ToDataTablePort(db);
 
 				UpsertRating(ratings, critique);
-
-				//update critic rating weight according to how closely their ratings match the average rating
 				UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(db);
 
 				//re-calculate weighted average of all movie ratings
