@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Critique.cs" />
+    <Compile Include="Data\DataTablePortToEntityFrameworkAdapter.cs" />
     <Compile Include="Data\MovieReviewEntities.cs" />
     <Compile Include="Data\ValidateByAllowingAnything.cs" />
     <Compile Include="Data\ValidateRatingByRequiringPositiveIDs.cs" />
