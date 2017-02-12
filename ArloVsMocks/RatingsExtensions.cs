@@ -15,14 +15,12 @@ namespace ArloVsMocks
 
 		public static DataTablePort<Rating> AsDataTablePort(this HashSet<Rating> data)
 		{
-			var hasErrors = new ValidateRatingByRequiringPositiveIDs(false);
-			return MakeDataPort(data, hasErrors);
+			return MakeDataPort(data, new ValidateRatingByRequiringPositiveIDs(false));
 		}
 
 		public static DataTablePort<T> AsDataTablePort<T>(this HashSet<T> data) where T : class
 		{
-			var validator = new ValidateByAllowingAnything<T>();
-			return MakeDataPort(data, validator);
+			return MakeDataPort(data, new ValidateByAllowingAnything<T>());
 		}
 
 		private static DataTablePort<T> MakeDataPort<T>(HashSet<T> data, Validator<T> validator)
