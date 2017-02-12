@@ -32,6 +32,19 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 		}
 
 		[Test]
+		public void CriticWithOneCrazyReviewAndSeveralSpotOnReviewsShouldBeTrusted()
+		{
+			Critic target;
+			var critics = DbWithOneCritic(out target);
+			target.RateMovie(TwoStarMovie, 5);
+			target.RateMovie(ThreeStarMovie, 3);
+			target.RateMovie(FourStarMovie, 4);
+
+			Program.UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
+			target.RatingWeight.Should().BeApproximately(Program.TrustworthyCriticWeight, 0.0001);
+		}
+
+		[Test]
 		public void CriticWithNoRatingsShouldBeTotallyIgnored()
 		{
 			Critic target;
@@ -54,6 +67,18 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 		{
 			Id = 9,
 			AverageRating = 3
+		};
+
+		private static readonly Movie FourStarMovie = new Movie
+		{
+			Id = 11,
+			AverageRating = 4
+		};
+
+		private static readonly Movie UnknownStarMovie = new Movie
+		{
+			Id = 12,
+			AverageRating = null
 		};
 
 		private static readonly Movie TwoStarMovie = new Movie
