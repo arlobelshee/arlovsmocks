@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -22,8 +21,7 @@ namespace ArloVsMocks.Data
 			return MakeDataPort(data, new ValidateByAllowingAnything<T>());
 		}
 
-		private static DataTablePort<T> MakeDataPort<T>(HashSet<T> data, Validator<T> validator)
-			where T : class
+		private static DataTablePort<T> MakeDataPort<T>(HashSet<T> data, Validator<T> validator) where T : class
 		{
 			var nextState = new HashSet<T>(data);
 			return new DataTablePort<T>(data.AsQueryable(), d =>
@@ -48,54 +46,5 @@ namespace ArloVsMocks.Data
 			};
 			return createdRating;
 		}
-
-		private class ValidateByAllowingAnything<T> : Validator<T>
-		{
-			public void Validate(T data)
-			{
-			}
-
-			public void ReportErrors()
-			{
-			}
-		}
-
-		private class ValidateRatingByRequiringPositiveIDs : Validator<Rating>
-		{
-			public ValidateRatingByRequiringPositiveIDs(bool hasErrors)
-			{
-				HasErrors = hasErrors;
-			}
-
-			public bool HasErrors { get; set; }
-
-			public void ReportErrors()
-			{
-				if (HasErrors)
-				{
-					HasErrors = false;
-					try
-					{
-						throw new Exception("Foreign key violation.");
-					}
-					catch (Exception innerException)
-					{
-						throw new Exception("An error occurred while updating the entries. See the inner exception for details.",
-							innerException);
-					}
-				}
-			}
-
-			public void Validate(Rating rating)
-			{
-				HasErrors = HasErrors || (rating.CriticId < 1) || (rating.MovieId < 1);
-			}
-		}
-	}
-
-	internal interface Validator<T>
-	{
-		void Validate(T data);
-		void ReportErrors();
 	}
 }

@@ -95,6 +95,9 @@
   <ItemGroup>
     <Compile Include="Critique.cs" />
     <Compile Include="Data\MovieReviewEntities.cs" />
+    <Compile Include="Data\ValidateByAllowingAnything.cs" />
+    <Compile Include="Data\ValidateRatingByRequiringPositiveIDs.cs" />
+    <Compile Include="Data\Validator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataTablePort.cs" />
