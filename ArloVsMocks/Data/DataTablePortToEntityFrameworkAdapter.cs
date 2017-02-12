@@ -2,7 +2,7 @@ using System.Data.Entity;
 
 namespace ArloVsMocks.Data
 {
-	public class DataTablePortToEntityFrameworkAdapter<T> where T : class
+	public class DataTablePortToEntityFrameworkAdapter<T> : DataTablePortAdapter<T> where T : class
 	{
 		private readonly MovieReviewEntities _db;
 		private readonly DbSet<T> _table;
