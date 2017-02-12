@@ -53,8 +53,8 @@ namespace ArloVsMocks
 		{
 			var newCriticRatingWeight = critics.ExistingData.Single(c => c.Id == critique.CriticId).RatingWeight;
 			var newMovieRating = movies.ExistingData.Single(m => m.Id == critique.MovieId).AverageRating.Value;
-			Console.WriteLine("New critic rating weight: {0:N1}", newCriticRatingWeight);
-			Console.WriteLine("New movie rating: {0:N1}", newMovieRating);
+			Console.WriteLine(String.Format("New critic rating weight: {0:N1}", newCriticRatingWeight));
+			Console.WriteLine(String.Format("New movie rating: {0:N1}", newMovieRating));
 		}
 
 		public static void RecalcWeightedAveragesOfAllMovieRatings(DataTablePort<Movie> movies)
