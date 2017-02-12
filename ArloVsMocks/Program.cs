@@ -54,7 +54,7 @@ namespace ArloVsMocks
 			Console.ReadKey();
 		}
 
-		private static void UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(DataTablePort<Critic> critics)
+		public static void UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(DataTablePort<Critic> critics)
 		{
 			var criticsHavingRated = critics.ExistingData.Where(c => c.Ratings.Count > 0);
 			foreach (var critic in criticsHavingRated)
