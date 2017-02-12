@@ -7,14 +7,14 @@ namespace ArloVsMocks
 {
 	public static class RatingsExtensions
 	{
-		public static DataTablePort ToDataTablePort(this DbSet<Rating> table, MovieReviewEntities db)
+		public static DataTablePort<T> ToDataTablePort<T>(this DbSet<T> table, MovieReviewEntities db) where T : class
 		{
-			return new DataTablePort(table, rating => table.Add(rating), ()=> db.SaveChanges());
+			return new DataTablePort<T>(table, rating => table.Add(rating), ()=> db.SaveChanges());
 		}
 
-		public static DataTablePort AsDataTablePort(this HashSet<Rating> data)
+		public static DataTablePort<T> AsDataTablePort<T>(this HashSet<T> data) where T : class
 		{
-			return new DataTablePort(data.AsQueryable(), d => data.Add(d), () => { });
+			return new DataTablePort<T>(data.AsQueryable(), d => data.Add(d), () => { });
 		}
 
 		public static Rating ToRating(this Critique critique)

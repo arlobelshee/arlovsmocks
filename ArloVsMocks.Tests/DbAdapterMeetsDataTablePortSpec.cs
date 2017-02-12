@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace ArloVsMocks.Tests
 {
-	[TestFixture]
+	[TestFixture, Category("PlatformMonitoring"), Explicit]
 	public class DbAdapterMeetsDataTablePortSpec : DataTablePortSpec
 	{
 		[SetUp]
@@ -31,9 +31,9 @@ namespace ArloVsMocks.Tests
 
 		private MovieReviewEntities _db;
 
-		protected override DataTablePort CreateTestSubject()
+		protected override DataTablePort<Critic> CreateTestSubject()
 		{
-			return _db.Ratings.ToDataTablePort(_db);
+			return _db.Critics.ToDataTablePort(_db);
 		}
 	}
 }

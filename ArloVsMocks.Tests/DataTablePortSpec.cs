@@ -7,18 +7,16 @@ namespace ArloVsMocks.Tests
 {
 	public abstract class DataTablePortSpec
 	{
-		protected abstract DataTablePort CreateTestSubject();
+		protected abstract DataTablePort<Critic> CreateTestSubject();
 
 		[Test]
 		public void SavingItemShouldAddItToExistingDataAfterPersistAll()
 		{
 			var testSubject = CreateTestSubject();
 			testSubject.ExistingData.Should().BeEmpty();
-			var newItem = new Rating
+			var newItem = new Critic()
 			{
-				CriticId = 1,
-				MovieId = 2,
-				Stars = 3
+				Id = 4, RatingWeight = 2.717
 			};
 			testSubject.Save(newItem);
 			testSubject.PersistAll();
@@ -29,16 +27,14 @@ namespace ArloVsMocks.Tests
 		public void LoadingAnItemAndModifyingItShouldUpdateStoredItem()
 		{
 			var testSubject = CreateTestSubject();
-			var newItem = new Rating
+			var newItem = new Critic
 			{
-				CriticId = 1,
-				MovieId = 2,
-				Stars = 3
+				Id = 4, RatingWeight = 2.171
 			};
 			testSubject.Save(newItem);
 			testSubject.PersistAll();
 			var selectedRating = testSubject.ExistingData.First();
-			selectedRating.Stars = 5;
+			selectedRating.RatingWeight = 3.14159;
 			testSubject.ExistingData.Should().BeEquivalentTo(selectedRating);
 		}
 	}

@@ -57,13 +57,13 @@ namespace ArloVsMocks
 			}
 			finally
 			{
-				if (db != null) db.Dispose();
+				db?.Dispose();
 			}
 
 			Console.ReadKey();
 		}
 
-		public static void UpsertRating(DataTablePort dataTablePort, Critique critique)
+		public static void UpsertRating(DataTablePort<Rating> dataTablePort, Critique critique)
 		{
 			var existingRating =
 				dataTablePort.ExistingData.SingleOrDefault(r => (r.MovieId == critique.MovieId) && (r.CriticId == critique.CriticId));

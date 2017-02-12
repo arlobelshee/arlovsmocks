@@ -7,9 +7,9 @@ namespace ArloVsMocks.Tests
 	[TestFixture]
 	public class HashSetAdapterMeetsDataTablePortSpec : DataTablePortSpec
 	{
-		protected override DataTablePort CreateTestSubject()
+		protected override DataTablePort<Critic> CreateTestSubject()
 		{
-			return new HashSet<Rating>().AsDataTablePort();
+			return new HashSet<Critic>().AsDataTablePort();
 		}
 	}
 }
