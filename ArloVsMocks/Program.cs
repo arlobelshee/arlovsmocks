@@ -45,16 +45,14 @@ namespace ArloVsMocks
 
 				ratings.PersistAll();
 
-				var messages = Summarize(critics, critique, movies);
+				var messages = Summarize(critics.ExistingData.Single(c => c.Id == critique.CriticId), movies.ExistingData.Single(m => m.Id == critique.MovieId));
 				foreach (var message in messages)
 					Console.WriteLine(message);
 			}
 		}
 
-		private static string[] Summarize(DataTablePort<Critic> critics, Critique critique, DataTablePort<Movie> movies)
+		private static string[] Summarize(Critic reviewingCritic, Movie reviewedMovie)
 		{
-			var reviewingCritic = critics.ExistingData.Single(c => c.Id == critique.CriticId);
-			var reviewedMovie = movies.ExistingData.Single(m => m.Id == critique.MovieId);
 			var newCriticRatingWeight = reviewingCritic.RatingWeight;
 			var newMovieRating = reviewedMovie.AverageRating.Value;
 			return new[] {$"New critic rating weight: {newCriticRatingWeight:N1}", $"New movie rating: {newMovieRating:N1}"};
