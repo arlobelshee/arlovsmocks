@@ -34,13 +34,7 @@ namespace ArloVsMocks
 		private static void ProcessNewCritique(Critique critique)
 		{
 			var summary = ProcessNewCritiqueAndGenerateSummary(critique);
-			Output(summary);
-		}
-
-		private static void Output(Summary summary)
-		{
-			foreach (var message in summary.Messages)
-				Console.WriteLine(message);
+			summary.Output();
 		}
 
 		private static Summary ProcessNewCritiqueAndGenerateSummary(Critique critique)
@@ -133,6 +127,12 @@ namespace ArloVsMocks
 		public Summary(string[] messages)
 		{
 			Messages = messages;
+		}
+
+		public void Output()
+		{
+			foreach (var message in Messages)
+				Console.WriteLine(message);
 		}
 	}
 }
