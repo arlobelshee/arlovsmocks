@@ -27,7 +27,7 @@ namespace ArloVsMocks.Tests.MaintainRatings
 		[Test]
 		public void SummaryShouldIndicateChangesThatHappenedBasedOnReview()
 		{
-			var infoForUser = CritiqueProcessor.Summarize(new Critic
+			var infoForUser = Critique.Summarize(new Critic
 			{
 				RatingWeight = 3.14159
 			}, new Movie

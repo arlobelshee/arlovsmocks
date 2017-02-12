@@ -14,7 +14,7 @@ namespace ArloVsMocks.Data
 				var movies = db.Movies.ToDataTablePort(db);
 				var critics = db.Critics.ToDataTablePort(db);
 
-				return CritiqueProcessor.ProcessNewCritiqueAndGenerateSummary(critique, ratings, critics, movies);
+				return critique.ProcessNewCritiqueAndGenerateSummary(ratings, critics, movies);
 			}
 		}
 	}
