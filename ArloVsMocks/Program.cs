@@ -37,7 +37,7 @@ namespace ArloVsMocks
 				var critics = db.Critics.ToDataTablePort(db);
 
 				UpsertRating(ratings, critique);
-				CriticTrustworthiness.UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
+				CriticTrustworthiness.DecideHowmuchToTrustEachCritic(critics);
 				RecalcWeightedAveragesOfAllMovieRatings(movies);
 
 				ratings.PersistAll();

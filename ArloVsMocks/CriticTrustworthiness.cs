@@ -6,11 +6,11 @@ namespace ArloVsMocks
 {
 	public class CriticTrustworthiness
 	{
-		public const double UntrustworthyCriticWeight = 0.15;
-		public const double TrustworthyCriticWeight = 1.0;
-		public const double TypicalCriticWeight = 0.33;
+		public const double Untrustworthy = 0.15;
+		public const double Trustworthy = 1.0;
+		public const double Typical = 0.33;
 
-		public static void UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(DataTablePort<Critic> critics)
+		public static void DecideHowmuchToTrustEachCritic(DataTablePort<Critic> critics)
 		{
 			var criticsHavingRated = critics.ExistingData.Where(c => c.Ratings.Count > 0);
 			foreach (var critic in criticsHavingRated)
@@ -20,8 +20,8 @@ namespace ArloVsMocks
 				var relativeDisparity = totalDisparity/ratingsWithAverages.Count;
 
 				critic.RatingWeight = relativeDisparity > 2
-					? UntrustworthyCriticWeight
-					: relativeDisparity > 1 ? TypicalCriticWeight : TrustworthyCriticWeight;
+					? Untrustworthy
+					: relativeDisparity > 1 ? Typical : Trustworthy;
 			}
 		}
 	}

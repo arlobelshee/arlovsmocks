@@ -11,20 +11,20 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 		[Test]
 		public void CriticGenerallyCloseButNotOnShouldBeTypical()
 		{
-			CriticShouldBeTrustedToCorrectDegree(CriticTrustworthiness.TypicalCriticWeight,
+			CriticShouldBeTrustedToCorrectDegree(CriticTrustworthiness.Typical,
 				History(Opinion(TwoStarMovie, 3), Opinion(ThreeStarMovie, 4), Opinion(FourStarMovie, 2)));
 		}
 
 		[Test]
 		public void CriticWhoOnlyReviewedUnknownMoviesShouldBeFullyTrusted()
 		{
-			CriticShouldBeTrustedToCorrectDegree(CriticTrustworthiness.TrustworthyCriticWeight, History(Opinion(UnknownStarMovie, 5)));
+			CriticShouldBeTrustedToCorrectDegree(CriticTrustworthiness.Trustworthy, History(Opinion(UnknownStarMovie, 5)));
 		}
 
 		[Test]
 		public void CriticWithAbnormalReviewsShouldBeMostlyIgnored()
 		{
-			CriticShouldBeTrustedToCorrectDegree(CriticTrustworthiness.UntrustworthyCriticWeight,
+			CriticShouldBeTrustedToCorrectDegree(CriticTrustworthiness.Untrustworthy,
 				History(Opinion(ThreeStarMovie, 1), Opinion(TwoStarMovie, 5)));
 		}
 
@@ -37,14 +37,14 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 		[Test]
 		public void CriticWithOneCrazyReviewAndSeveralSpotOnReviewsShouldBeTrusted()
 		{
-			CriticShouldBeTrustedToCorrectDegree(CriticTrustworthiness.TrustworthyCriticWeight,
+			CriticShouldBeTrustedToCorrectDegree(CriticTrustworthiness.Trustworthy,
 				History(Opinion(TwoStarMovie, 5), Opinion(ThreeStarMovie, 3), Opinion(FourStarMovie, 4)));
 		}
 
 		[Test]
 		public void CriticWithOneCrazyReviewShouldBeUntrusted()
 		{
-			CriticShouldBeTrustedToCorrectDegree(CriticTrustworthiness.UntrustworthyCriticWeight, History(Opinion(TwoStarMovie, 5)));
+			CriticShouldBeTrustedToCorrectDegree(CriticTrustworthiness.Untrustworthy, History(Opinion(TwoStarMovie, 5)));
 		}
 
 		private static void CriticShouldBeTrustedToCorrectDegree(double criticTrustworthiness, params Opinion[] ratingHistory)
@@ -53,7 +53,7 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 			var critics = DbWithOneCritic(out target);
 			target.RateAllMovies(ratingHistory);
 
-			CriticTrustworthiness.UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
+			CriticTrustworthiness.DecideHowmuchToTrustEachCritic(critics);
 			target.RatingWeight.Should().BeApproximately(criticTrustworthiness, 0.0001);
 		}
 
