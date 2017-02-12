@@ -21,6 +21,17 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 		}
 
 		[Test]
+		public void CriticWithOneCrazyReviewShouldBeUntrusted()
+		{
+			Critic target;
+			var critics = DbWithOneCritic(out target);
+			target.RateMovie(TwoStarMovie, 5);
+
+			Program.UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
+			target.RatingWeight.Should().BeApproximately(Program.UntrustworthyCriticWeight, 0.0001);
+		}
+
+		[Test]
 		public void CriticWithNoRatingsShouldBeTotallyIgnored()
 		{
 			Critic target;
