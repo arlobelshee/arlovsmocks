@@ -68,17 +68,15 @@ namespace ArloVsMocks.CritiqueMovies
 			ratings.PersistAll();
 
 			Movie reviewedMovie;
-			var reviewingCritic = GetEntitiesRelatedToThisReview(critics, movies, out reviewedMovie);
+			GetEntitiesRelatedToThisReview(critics, movies, out reviewedMovie);
 			return _impact.Summarize();
 		}
 
-		private Critic GetEntitiesRelatedToThisReview(DataTablePort<Critic> critics,
-			DataTablePort<Movie> movies, out Movie reviewedMovie)
+		private void GetEntitiesRelatedToThisReview(DataTablePort<Critic> critics, DataTablePort<Movie> movies, out Movie reviewedMovie)
 		{
 			var reviewingCritic = critics.ExistingData.Single(c => c.Id == CriticId);
 			reviewedMovie = movies.ExistingData.Single(m => m.Id == MovieId);
 			_impact = new ReviewImpact(reviewingCritic, reviewedMovie);
-			return reviewingCritic;
 		}
 
 		public void UpsertRating(DataTablePort<Rating> dataTablePort)
