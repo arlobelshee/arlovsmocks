@@ -16,7 +16,7 @@ namespace ArloVsMocks
 		public static DataTablePort<Rating> AsDataTablePort(this HashSet<Rating> data)
 		{
 			var hasErrors = new ValidateRatingByRequiringPositiveIDs(false);
-			return MakeDataPort(data, hasErrors.ValidationImpl, hasErrors.ReporterImpl);
+			return MakeDataPort(data, hasErrors.Validate, hasErrors.ReportErrors);
 		}
 
 		public static DataTablePort<T> AsDataTablePort<T>(this HashSet<T> data) where T : class
@@ -72,7 +72,7 @@ namespace ArloVsMocks
 
 			public bool HasErrors { get; set; }
 
-			public void ReporterImpl()
+			public void ReportErrors()
 			{
 				if (HasErrors)
 				{
@@ -89,7 +89,7 @@ namespace ArloVsMocks
 				}
 			}
 
-			public void ValidationImpl(Rating rating)
+			public void Validate(Rating rating)
 			{
 				HasErrors = HasErrors || (rating.CriticId < 1) || (rating.MovieId < 1);
 			}
