@@ -34,6 +34,11 @@ namespace ArloVsMocks
 		private static void ProcessNewCritique(Critique critique)
 		{
 			var summary = ProcessNewCritiqueAndGenerateSummary(critique);
+			Output(summary);
+		}
+
+		private static void Output(Summary summary)
+		{
 			foreach (var message in summary.Messages)
 				Console.WriteLine(message);
 		}
