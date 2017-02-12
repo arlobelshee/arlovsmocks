@@ -56,7 +56,7 @@ namespace ArloVsMocks
 			return reviewingCritic;
 		}
 
-		private static InfoForUser Summarize(Critic reviewingCritic, Movie reviewedMovie)
+		public static InfoForUser Summarize(Critic reviewingCritic, Movie reviewedMovie)
 		{
 			var newCriticRatingWeight = reviewingCritic.RatingWeight;
 			var newMovieRating = reviewedMovie.AverageRating.Value;

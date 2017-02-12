@@ -2,7 +2,7 @@
 
 namespace ArloVsMocks
 {
-	internal class InfoForUser
+	public class InfoForUser
 	{
 		private readonly string[] _messages;
 
