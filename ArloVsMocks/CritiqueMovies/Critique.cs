@@ -69,7 +69,7 @@ namespace ArloVsMocks.CritiqueMovies
 
 			Movie reviewedMovie;
 			var reviewingCritic = GetEntitiesRelatedToThisReview(critics, movies, out reviewedMovie);
-			return new ReviewImpact(reviewingCritic, reviewedMovie).Summarize();
+			return _impact.Summarize();
 		}
 
 		private Critic GetEntitiesRelatedToThisReview(DataTablePort<Critic> critics,
