@@ -56,8 +56,8 @@ namespace ArloVsMocks
 			var message1 = $"New critic rating weight: {newCriticRatingWeight:N1}";
 			var message2 = $"New movie rating: {newMovieRating:N1}";
 			var messages = new[] {message1, message2};
-			Console.WriteLine(message1);
-			Console.WriteLine(message2);
+			foreach (var message in messages)
+				Console.WriteLine(message);
 		}
 
 		public static void RecalcWeightedAveragesOfAllMovieRatings(DataTablePort<Movie> movies)
