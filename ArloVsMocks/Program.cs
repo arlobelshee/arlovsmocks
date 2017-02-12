@@ -56,7 +56,7 @@ namespace ArloVsMocks
 			Console.WriteLine("New movie rating: {0:N1}", newMovieRating);
 		}
 
-		private static void RecalcWeightedAveragesOfAllMovieRatings(DataTablePort<Movie> movies)
+		public static void RecalcWeightedAveragesOfAllMovieRatings(DataTablePort<Movie> movies)
 		{
 			foreach (var movie in movies.ExistingData)
 			{
