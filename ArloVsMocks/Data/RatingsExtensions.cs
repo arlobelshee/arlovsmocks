@@ -26,16 +26,26 @@ namespace ArloVsMocks.Data
 		private static DataTablePort<T> MakeDataPort<T>(HashSet<T> data, Validator<T> validator) where T : class
 		{
 			var nextState = new HashSet<T>(data);
-			return new DataTablePort<T>(data.AsQueryable(), d =>
-			{
-				validator.Validate(d);
-				nextState.Add(d);
-			}, () =>
+			return new DataTablePort<T>(data.AsQueryable(), SaveItem(validator, nextState), PersistAll(data, validator, nextState));
+		}
+
+		private static Action PersistAll<T>(HashSet<T> data, Validator<T> validator, HashSet<T> nextState) where T : class
+		{
+			return () =>
 			{
 				validator.ReportErrors();
 				data.Clear();
 				data.UnionWith(nextState);
-			});
+			};
+		}
+
+		private static Action<T> SaveItem<T>(Validator<T> validator, HashSet<T> nextState) where T : class
+		{
+			return d =>
+			{
+				validator.Validate(d);
+				nextState.Add(d);
+			};
 		}
 
 		public static Rating ToRating(this Critique critique)
