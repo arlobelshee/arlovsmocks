@@ -49,12 +49,14 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 		{
 			var ratingHistory = History(Opinion(TwoStarMovie, 3), Opinion(ThreeStarMovie, 4), Opinion(FourStarMovie, 2));
 			var criticTrustworthiness = Program.TypicalCriticWeight;
+			CriticShouldBeTrustedToCorrectDegree(ratingHistory, criticTrustworthiness);
+		}
+
+		private static void CriticShouldBeTrustedToCorrectDegree(Opinion[] ratingHistory, double criticTrustworthiness)
+		{
 			Critic target;
 			var critics = DbWithOneCritic(out target);
-			foreach (var opinion in ratingHistory)
-			{
-				target.RateMovie(opinion);
-			}
+			target.RateAllMovies(ratingHistory);
 
 			Program.UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
 			target.RatingWeight.Should().BeApproximately(criticTrustworthiness, 0.0001);

@@ -35,5 +35,13 @@ namespace ArloVsMocks.Tests.zzTestHelpers
 				Stars = opinion.Stars
 			});
 		}
+
+		public static void RateAllMovies(this Critic target, Opinion[] ratingHistory)
+		{
+			foreach (var opinion in ratingHistory)
+			{
+				target.RateMovie(opinion);
+			}
+		}
 	}
 }
