@@ -42,7 +42,7 @@ namespace ArloVsMocks.Data
 
 		private static Action PersistAll<T>(MovieReviewEntities db, DbSet<T> table, DataTablePortToEntityFrameworkAdapter<T> adapter) where T : class
 		{
-			return () => db.SaveChanges();
+			return () => adapter.Db.SaveChanges();
 		}
 
 		public static DataTablePort<Rating> AsDataTablePort(this HashSet<Rating> data)
