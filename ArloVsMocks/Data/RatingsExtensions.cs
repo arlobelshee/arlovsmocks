@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -8,7 +9,9 @@ namespace ArloVsMocks.Data
 	{
 		public static DataTablePort<T> ToDataTablePort<T>(this DbSet<T> table, MovieReviewEntities db) where T : class
 		{
-			return new DataTablePort<T>(table, rating => table.Add(rating), () => db.SaveChanges());
+			Action persistAll = () => db.SaveChanges();
+			Action<T> saveItem = rating => table.Add(rating);
+			return new DataTablePort<T>(table, saveItem, persistAll);
 		}
 
 		public static DataTablePort<Rating> AsDataTablePort(this HashSet<Rating> data)
