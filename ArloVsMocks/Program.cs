@@ -53,8 +53,10 @@ namespace ArloVsMocks
 
 		private static string[] Summarize(DataTablePort<Critic> critics, Critique critique, DataTablePort<Movie> movies)
 		{
-			var newCriticRatingWeight = critics.ExistingData.Single(c => c.Id == critique.CriticId).RatingWeight;
-			var newMovieRating = movies.ExistingData.Single(m => m.Id == critique.MovieId).AverageRating.Value;
+			var reviewingCritic = critics.ExistingData.Single(c => c.Id == critique.CriticId);
+			var reviewedMovie = movies.ExistingData.Single(m => m.Id == critique.MovieId);
+			var newCriticRatingWeight = reviewingCritic.RatingWeight;
+			var newMovieRating = reviewedMovie.AverageRating.Value;
 			return new[] {$"New critic rating weight: {newCriticRatingWeight:N1}", $"New movie rating: {newMovieRating:N1}"};
 		}
 
