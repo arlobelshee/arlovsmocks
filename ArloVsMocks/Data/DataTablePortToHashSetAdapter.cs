@@ -4,30 +4,28 @@ namespace ArloVsMocks.Data
 {
 	public class DataTablePortToHashSetAdapter<T> where T : class
 	{
+		private readonly HashSet<T> _data;
+		private readonly HashSet<T> _nextState;
+		private readonly Validator<T> _validator;
+
 		public DataTablePortToHashSetAdapter(HashSet<T> data, Validator<T> validator)
 		{
-			Data = data;
-			Validator = validator;
-			NextState = new HashSet<T>();
+			_data = data;
+			_validator = validator;
+			_nextState = new HashSet<T>();
 		}
-
-		private HashSet<T> Data { get; }
-
-		private Validator<T> Validator { get; }
-
-		private HashSet<T> NextState { get; }
 
 		public void PersistAll()
 		{
-			Validator.ReportErrors();
-			Data.Clear();
-			Data.UnionWith(NextState);
+			_validator.ReportErrors();
+			_data.Clear();
+			_data.UnionWith(_nextState);
 		}
 
 		public void SaveItem(T d)
 		{
-			Validator.Validate(d);
-			NextState.Add(d);
+			_validator.Validate(d);
+			_nextState.Add(d);
 		}
 	}
 }
