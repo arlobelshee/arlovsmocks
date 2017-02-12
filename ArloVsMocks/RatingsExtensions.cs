@@ -30,12 +30,12 @@ namespace ArloVsMocks
 
 		private static void MakeReportFn(out Action reportErrors, ValidateRatingByRequiringPositiveIDs hasErrors)
 		{
-			reportErrors = hasErrors.ReporterImpl();
+			reportErrors = hasErrors.ReporterImpl;
 		}
 
 		private static void MakeValidateFn(out Action<Rating> validate, ValidateRatingByRequiringPositiveIDs hasErrors)
 		{
-			validate = hasErrors.ValidationImpl();
+			validate = hasErrors.ValidationImpl;
 		}
 
 		public static DataTablePort<T> AsDataTablePort<T>(this HashSet<T> data) where T : class
@@ -87,29 +87,26 @@ namespace ArloVsMocks
 
 			public bool HasErrors { get; set; }
 
-			public Action ReporterImpl()
+			public void ReporterImpl()
 			{
-				return () =>
+				if (HasErrors)
 				{
-					if (HasErrors)
+					HasErrors = false;
+					try
 					{
-						HasErrors = false;
-						try
-						{
-							throw new Exception("Foreign key violation.");
-						}
-						catch (Exception innerException)
-						{
-							throw new Exception("An error occurred while updating the entries. See the inner exception for details.",
-								innerException);
-						}
+						throw new Exception("Foreign key violation.");
 					}
-				};
+					catch (Exception innerException)
+					{
+						throw new Exception("An error occurred while updating the entries. See the inner exception for details.",
+							innerException);
+					}
+				}
 			}
 
-			public Action<Rating> ValidationImpl()
+			public void ValidationImpl(Rating rating)
 			{
-				return rating => HasErrors = HasErrors || (rating.CriticId < 1) || (rating.MovieId < 1);
+				HasErrors = HasErrors || (rating.CriticId < 1) || (rating.MovieId < 1);
 			}
 		}
 	}
