@@ -6,27 +6,28 @@ namespace ArloVsMocks.CritiqueMovies
 {
 	public class Critique
 	{
+		private readonly int _criticId;
+		private readonly int _movieId;
+		private readonly int _stars;
+
 		public Critique(int movieId, int criticId, int stars)
 		{
-			MovieId = movieId;
-			CriticId = criticId;
-			Stars = stars;
+			_movieId = movieId;
+			_criticId = criticId;
+			_stars = stars;
 			IsValid = true;
 			ErrorMessage = string.Empty;
 		}
 
 		public Critique(string errorMessage)
 		{
-			MovieId = 0;
-			CriticId = 0;
-			Stars = 0;
+			_movieId = 0;
+			_criticId = 0;
+			_stars = 0;
 			IsValid = false;
 			ErrorMessage = errorMessage;
 		}
 
-		private int MovieId { get; }
-		private int CriticId { get; }
-		private int Stars { get; }
 		public bool IsValid { get; }
 		public string ErrorMessage { get; }
 
@@ -49,9 +50,9 @@ namespace ArloVsMocks.CritiqueMovies
 		{
 			var createdRating = new Rating
 			{
-				CriticId = CriticId,
-				MovieId = MovieId,
-				Stars = Stars
+				CriticId = _criticId,
+				MovieId = _movieId,
+				Stars = _stars
 			};
 			return createdRating;
 		}
@@ -69,14 +70,14 @@ namespace ArloVsMocks.CritiqueMovies
 
 		private ReviewImpact CalculateImpactOfThisReview(DataTablePort<Critic> critics, DataTablePort<Movie> movies)
 		{
-			var reviewingCritic = critics.ExistingData.Single(c => c.Id == CriticId);
-			var reviewedMovie = movies.ExistingData.Single(m => m.Id == MovieId);
+			var reviewingCritic = critics.ExistingData.Single(c => c.Id == _criticId);
+			var reviewedMovie = movies.ExistingData.Single(m => m.Id == _movieId);
 			return new ReviewImpact(reviewingCritic, reviewedMovie);
 		}
 
 		public void UpsertRating(DataTablePort<Rating> dataTablePort)
 		{
-			MovieRatings.UpsertRating(dataTablePort, MovieId, CriticId, Stars);
+			MovieRatings.UpsertRating(dataTablePort, _movieId, _criticId, _stars);
 		}
 	}
 }
