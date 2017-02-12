@@ -51,13 +51,19 @@ namespace ArloVsMocks
 
 		private static void OutputSummary(DataTablePort<Critic> critics, Critique critique, DataTablePort<Movie> movies)
 		{
+			var messages = Summarize(critics, critique, movies);
+			foreach (var message in messages)
+				Console.WriteLine(message);
+		}
+
+		private static string[] Summarize(DataTablePort<Critic> critics, Critique critique, DataTablePort<Movie> movies)
+		{
 			var newCriticRatingWeight = critics.ExistingData.Single(c => c.Id == critique.CriticId).RatingWeight;
 			var newMovieRating = movies.ExistingData.Single(m => m.Id == critique.MovieId).AverageRating.Value;
 			var message1 = $"New critic rating weight: {newCriticRatingWeight:N1}";
 			var message2 = $"New movie rating: {newMovieRating:N1}";
 			var messages = new[] {message1, message2};
-			foreach (var message in messages)
-				Console.WriteLine(message);
+			return messages;
 		}
 
 		public static void RecalcWeightedAveragesOfAllMovieRatings(DataTablePort<Movie> movies)
