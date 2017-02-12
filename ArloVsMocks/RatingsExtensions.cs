@@ -14,7 +14,12 @@ namespace ArloVsMocks
 
 		public static DataTablePort<T> AsDataTablePort<T>(this HashSet<T> data) where T : class
 		{
-			return new DataTablePort<T>(data.AsQueryable(), d => data.Add(d), () => { });
+			var nextState = new HashSet<T>(data);
+			return new DataTablePort<T>(data.AsQueryable(), d => nextState.Add(d), () =>
+			{
+				data.Clear();
+				data.UnionWith(nextState);
+			});
 		}
 
 		public static Rating ToRating(this Critique critique)

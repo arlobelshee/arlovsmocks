@@ -14,13 +14,28 @@ namespace ArloVsMocks.Tests
 		{
 			var testSubject = CreateTestSubject();
 			testSubject.ExistingData.Should().BeEmpty();
-			var newItem = new Critic()
+			var newItem = new Critic
 			{
-				Id = 4, RatingWeight = 2.717
+				Id = 4,
+				RatingWeight = 2.717
 			};
 			testSubject.Save(newItem);
 			testSubject.PersistAll();
 			testSubject.ExistingData.Should().BeEquivalentTo(newItem);
+		}
+
+		[Test]
+		public void SavingItemShouldHaveNoEffectBeforePersistAll()
+		{
+			var testSubject = CreateTestSubject();
+			testSubject.ExistingData.Should().BeEmpty();
+			var newItem = new Critic
+			{
+				Id = 4,
+				RatingWeight = 2.717
+			};
+			testSubject.Save(newItem);
+			testSubject.ExistingData.Should().BeEmpty();
 		}
 
 		[Test]
@@ -29,7 +44,8 @@ namespace ArloVsMocks.Tests
 			var testSubject = CreateTestSubject();
 			var newItem = new Critic
 			{
-				Id = 4, RatingWeight = 2.171
+				Id = 4,
+				RatingWeight = 2.171
 			};
 			testSubject.Save(newItem);
 			testSubject.PersistAll();

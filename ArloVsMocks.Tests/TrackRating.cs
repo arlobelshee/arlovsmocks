@@ -20,8 +20,10 @@ namespace ArloVsMocks.Tests
 				MovieId = critique.MovieId,
 				Stars = 1
 			});
+			port.PersistAll();
 
 			Program.UpsertRating(port, critique);
+			port.PersistAll();
 			data.Should()
 				.BeEquivalentTo(critique.ToRating());
 		}
@@ -39,8 +41,10 @@ namespace ArloVsMocks.Tests
 				Stars = 1
 			};
 			port.Save(existingRating);
+			port.PersistAll();
 
 			Program.UpsertRating(port, critique);
+			port.PersistAll();
 			data.Should()
 				.BeEquivalentTo(critique.ToRating(), existingRating);
 		}
@@ -53,6 +57,7 @@ namespace ArloVsMocks.Tests
 			var critique = new Critique(1, 2, 3);
 
 			Program.UpsertRating(port, critique);
+			port.PersistAll();
 			data.Should()
 				.BeEquivalentTo(critique.ToRating());
 		}
