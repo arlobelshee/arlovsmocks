@@ -21,20 +21,7 @@ namespace ArloVsMocks
 
 			try
 			{
-				using (var db = new MovieReviewEntities())
-				{
-					var ratings = db.Ratings.ToDataTablePort(db);
-					var movies = db.Movies.ToDataTablePort(db);
-					var critics = db.Critics.ToDataTablePort(db);
-
-					UpsertRating(ratings, critique);
-					UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
-					RecalcWeightedAveragesOfAllMovieRatings(movies);
-
-					ratings.PersistAll();
-
-					OutputSummary(critics, critique, movies);
-				}
+				ProcessNewCritique(critique);
 			}
 			catch (Exception ex)
 			{
@@ -42,6 +29,24 @@ namespace ArloVsMocks
 			}
 
 			Console.ReadKey();
+		}
+
+		private static void ProcessNewCritique(Critique critique)
+		{
+			using (var db = new MovieReviewEntities())
+			{
+				var ratings = db.Ratings.ToDataTablePort(db);
+				var movies = db.Movies.ToDataTablePort(db);
+				var critics = db.Critics.ToDataTablePort(db);
+
+				UpsertRating(ratings, critique);
+				UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
+				RecalcWeightedAveragesOfAllMovieRatings(movies);
+
+				ratings.PersistAll();
+
+				OutputSummary(critics, critique, movies);
+			}
 		}
 
 		private static void OutputSummary(DataTablePort<Critic> critics, Critique critique, DataTablePort<Movie> movies)
