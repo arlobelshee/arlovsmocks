@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="DataTablePortSpec.cs" />
     <Compile Include="DbAdapterMeetsDataTablePortSpec.cs" />
+    <Compile Include="zzTestHelpers\TestExtensions.cs" />
     <Compile Include="zzTestHelpers\Empty.cs" />
     <Compile Include="HashSetAdapterMeetsDataTablePortSpec.cs" />
     <Compile Include="InteractWithCritic.cs" />

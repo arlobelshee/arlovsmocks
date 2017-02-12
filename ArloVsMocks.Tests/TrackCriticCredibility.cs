@@ -27,12 +27,7 @@ namespace ArloVsMocks.Tests
 			var target = Critic.Create(5);
 			critics.Save(target);
 			critics.PersistAll();
-			target.Ratings.Add(new Rating
-			{
-				Critic = target,
-				Movie = ThreeStarMovie,
-				Stars = 1
-			});
+			TestExtensions.RateMovie(target, ThreeStarMovie, 1);
 			target.Ratings.Add(new Rating
 			{
 				Critic = target,
