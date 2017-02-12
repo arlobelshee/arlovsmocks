@@ -5,6 +5,35 @@ using System.Linq;
 
 namespace ArloVsMocks.Data
 {
+	public class DataTablePortToHashSetAdapter<TT> where TT : class
+	{
+		private HashSet<TT> _data;
+		private Validator<TT> _validator;
+		private HashSet<TT> _nextState;
+
+		public DataTablePortToHashSetAdapter(HashSet<TT> data, Validator<TT> validator, HashSet<TT> nextState)
+		{
+			_data = data;
+			_validator = validator;
+			_nextState = nextState;
+		}
+
+		public HashSet<TT> Data
+		{
+			get { return _data; }
+		}
+
+		public Validator<TT> Validator
+		{
+			get { return _validator; }
+		}
+
+		public HashSet<TT> NextState
+		{
+			get { return _nextState; }
+		}
+	}
+
 	public static class RatingsExtensions
 	{
 		public static DataTablePort<T> ToDataTablePort<T>(this DbSet<T> table, MovieReviewEntities db) where T : class
@@ -26,16 +55,17 @@ namespace ArloVsMocks.Data
 		private static DataTablePort<T> MakeDataPort<T>(HashSet<T> data, Validator<T> validator) where T : class
 		{
 			var nextState = new HashSet<T>(data);
-			return new DataTablePort<T>(data.AsQueryable(), SaveItem(validator, nextState), PersistAll(data, validator, nextState));
+			return new DataTablePort<T>(data.AsQueryable(), SaveItem(validator, nextState),
+				PersistAll(new DataTablePortToHashSetAdapter<T>(data, validator, nextState)));
 		}
 
-		private static Action PersistAll<T>(HashSet<T> data, Validator<T> validator, HashSet<T> nextState) where T : class
+		private static Action PersistAll<T>(DataTablePortToHashSetAdapter<T> dataTablePortToHashSetAdapter) where T : class
 		{
 			return () =>
 			{
-				validator.ReportErrors();
-				data.Clear();
-				data.UnionWith(nextState);
+				dataTablePortToHashSetAdapter.Validator.ReportErrors();
+				dataTablePortToHashSetAdapter.Data.Clear();
+				dataTablePortToHashSetAdapter.Data.UnionWith(dataTablePortToHashSetAdapter.NextState);
 			};
 		}
 
