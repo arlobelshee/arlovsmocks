@@ -37,7 +37,7 @@ namespace ArloVsMocks
 			summary.Output(Console.WriteLine);
 		}
 
-		private static Summary ProcessNewCritiqueAndGenerateSummary(Critique critique)
+		private static InfoForUser ProcessNewCritiqueAndGenerateSummary(Critique critique)
 		{
 			string[] messages;
 			using (var db = new MovieReviewEntities())
@@ -56,7 +56,7 @@ namespace ArloVsMocks
 				var reviewingCritic = GetEntitiesRelatedToThisReview(critique, critics, movies, out reviewedMovie);
 				messages = Summarize(reviewingCritic, reviewedMovie);
 			}
-			return new Summary(messages);
+			return new InfoForUser(messages);
 		}
 
 		private static Critic GetEntitiesRelatedToThisReview(Critique critique, DataTablePort<Critic> critics, DataTablePort<Movie> movies,
@@ -120,11 +120,11 @@ namespace ArloVsMocks
 		}
 	}
 
-	internal class Summary
+	internal class InfoForUser
 	{
 		private readonly string[] _messages;
 
-		public Summary(string[] messages)
+		public InfoForUser(string[] messages)
 		{
 			_messages = messages;
 		}
