@@ -24,9 +24,9 @@ namespace ArloVsMocks.CritiqueMovies
 			ErrorMessage = errorMessage;
 		}
 
-		public int MovieId { get; }
-		public int CriticId { get; }
-		public int Stars { get; }
+		private int MovieId { get; }
+		private int CriticId { get; }
+		private int Stars { get; }
 		public bool IsValid { get; }
 		public string ErrorMessage { get; }
 
