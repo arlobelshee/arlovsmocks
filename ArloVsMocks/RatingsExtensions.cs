@@ -22,7 +22,7 @@ namespace ArloVsMocks
 		public static DataTablePort<T> AsDataTablePort<T>(this HashSet<T> data) where T : class
 		{
 			var validator = new ValidateByAllowingAnything<T>();
-			return MakeDataPort(data, validator.Validate(), validator.ReportErrors());
+			return MakeDataPort(data, validator.Validate, validator.ReportErrors);
 		}
 
 		private static DataTablePort<T> MakeDataPort<T>(HashSet<T> data, Action<T> validate, Action reportErrors)
@@ -54,14 +54,12 @@ namespace ArloVsMocks
 
 		private class ValidateByAllowingAnything<T>
 		{
-			public Action<T> Validate()
+			public void Validate(T data)
 			{
-				return data => { };
 			}
 
-			public Action ReportErrors()
+			public void ReportErrors()
 			{
-				return () => { };
 			}
 		}
 
