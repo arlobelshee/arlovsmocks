@@ -21,21 +21,8 @@ namespace ArloVsMocks
 
 		public static DataTablePort<T> AsDataTablePort<T>(this HashSet<T> data) where T : class
 		{
-			var validator = new ValidateByAllowingAnything();
-			return MakeDataPort(data, validator.Validate<T>(), validator.ReportErrors());
-		}
-
-		private class ValidateByAllowingAnything
-		{
-			public Action<T> Validate<T>()
-			{
-				return data => { };
-			}
-
-			public Action ReportErrors()
-			{
-				return () => { };
-			}
+			var validator = new ValidateByAllowingAnything<T>();
+			return MakeDataPort(data, validator.Validate(), validator.ReportErrors());
 		}
 
 		private static DataTablePort<T> MakeDataPort<T>(HashSet<T> data, Action<T> validate, Action reportErrors)
@@ -63,6 +50,19 @@ namespace ArloVsMocks
 				Stars = critique.Stars
 			};
 			return createdRating;
+		}
+
+		private class ValidateByAllowingAnything<T>
+		{
+			public Action<T> Validate()
+			{
+				return data => { };
+			}
+
+			public Action ReportErrors()
+			{
+				return () => { };
+			}
 		}
 
 		private class ValidateRatingByRequiringPositiveIDs
