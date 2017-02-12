@@ -11,11 +11,11 @@ namespace ArloVsMocks.Data
 			NextState = new HashSet<T>();
 		}
 
-		public HashSet<T> Data { get; }
+		private HashSet<T> Data { get; }
 
-		public Validator<T> Validator { get; }
+		private Validator<T> Validator { get; }
 
-		public HashSet<T> NextState { get; }
+		private HashSet<T> NextState { get; }
 
 		public void PersistAll()
 		{
