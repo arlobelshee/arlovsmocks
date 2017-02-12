@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ArloVsMocks
+namespace ArloVsMocks.Ui
 {
 	public class InfoForUser
 	{
