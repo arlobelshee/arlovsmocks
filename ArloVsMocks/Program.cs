@@ -25,15 +25,7 @@ namespace ArloVsMocks
 				UpsertRating(ratings, critique);
 
 				//update critic rating weight according to how closely their ratings match the average rating
-				var criticsHavingRated = db.Critics.Where(c => c.Ratings.Count > 0);
-				foreach (var critic in criticsHavingRated)
-				{
-					var ratingsWithAverages = critic.Ratings.Where(r => r.Movie.AverageRating.HasValue).ToList();
-					var totalDisparity = ratingsWithAverages.Sum(r => Math.Abs(r.Stars - r.Movie.AverageRating.Value));
-					var relativeDisparity = totalDisparity/ratingsWithAverages.Count;
-
-					critic.RatingWeight = relativeDisparity > 2 ? 0.15 : relativeDisparity > 1 ? 0.33 : 1.0;
-				}
+				UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(db);
 
 				//re-calculate weighted average of all movie ratings
 				foreach (var movie in db.Movies)
@@ -62,6 +54,19 @@ namespace ArloVsMocks
 			}
 
 			Console.ReadKey();
+		}
+
+		private static void UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(MovieReviewEntities db)
+		{
+			var criticsHavingRated = db.Critics.Where(c => c.Ratings.Count > 0);
+			foreach (var critic in criticsHavingRated)
+			{
+				var ratingsWithAverages = critic.Ratings.Where(r => r.Movie.AverageRating.HasValue).ToList();
+				var totalDisparity = ratingsWithAverages.Sum(r => Math.Abs(r.Stars - r.Movie.AverageRating.Value));
+				var relativeDisparity = totalDisparity/ratingsWithAverages.Count;
+
+				critic.RatingWeight = relativeDisparity > 2 ? 0.15 : relativeDisparity > 1 ? 0.33 : 1.0;
+			}
 		}
 
 		public static void UpsertRating(DataTablePort<Rating> dataTablePort, Critique critique)
