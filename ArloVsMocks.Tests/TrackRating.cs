@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ArloVsMocks.Data;
 using FluentAssertions;
 using NUnit.Framework;
@@ -60,6 +61,18 @@ namespace ArloVsMocks.Tests
 			port.PersistAll();
 			data.Should()
 				.BeEquivalentTo(critique.ToRating());
+		}
+
+		[Test]
+		public void RatingThatDoesntMatchKnownMovieOrCriticShouldSetUpBombWithWillEventuallyExplodeAtUserWithPoorUx()
+		{
+			var data = new HashSet<Rating>();
+			var port = data.AsDataTablePort();
+			var critique = new Critique(-1, -2, 3);
+
+			Program.UpsertRating(port, critique);
+			Action persist = port.PersistAll;
+			persist.ShouldThrow<Exception>();
 		}
 	}
 }
