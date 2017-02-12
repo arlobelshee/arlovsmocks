@@ -13,8 +13,8 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 		{
 			Critic target;
 			var critics = DbWithOneCritic(out target);
-			target.RateMovie(ThreeStarMovie, 1);
-			target.RateMovie(TwoStarMovie, 5);
+			target.RateMovie(Opinion(ThreeStarMovie, 1));
+			target.RateMovie(Opinion(TwoStarMovie, 5));
 
 			Program.UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
 			target.RatingWeight.Should().BeApproximately(Program.UntrustworthyCriticWeight, 0.0001);
@@ -25,7 +25,7 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 		{
 			Critic target;
 			var critics = DbWithOneCritic(out target);
-			target.RateMovie(TwoStarMovie, 5);
+			target.RateMovie(Opinion(TwoStarMovie, 5));
 
 			Program.UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
 			target.RatingWeight.Should().BeApproximately(Program.UntrustworthyCriticWeight, 0.0001);
@@ -36,25 +36,33 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 		{
 			Critic target;
 			var critics = DbWithOneCritic(out target);
-			target.RateMovie(TwoStarMovie, 5);
-			target.RateMovie(ThreeStarMovie, 3);
-			target.RateMovie(FourStarMovie, 4);
+			target.RateMovie(Opinion(TwoStarMovie, 5));
+			target.RateMovie(Opinion(ThreeStarMovie, 3));
+			target.RateMovie(Opinion(FourStarMovie, 4));
 
 			Program.UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
 			target.RatingWeight.Should().BeApproximately(Program.TrustworthyCriticWeight, 0.0001);
 		}
 
 		[Test]
-		public void CriticGenerallyCLoseButNotOnShouldBeTypical()
+		public void CriticGenerallyCloseButNotOnShouldBeTypical()
 		{
 			Critic target;
 			var critics = DbWithOneCritic(out target);
-			target.RateMovie(TwoStarMovie, 3);
-			target.RateMovie(ThreeStarMovie, 4);
-			target.RateMovie(FourStarMovie, 2);
+			var opinion = Opinion(TwoStarMovie, 3);
+			var opinion1 = Opinion(ThreeStarMovie, 4);
+			var opinion2 = Opinion(FourStarMovie, 2);
+			target.RateMovie(opinion);
+			target.RateMovie(opinion1);
+			target.RateMovie(opinion2);
 
 			Program.UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
 			target.RatingWeight.Should().BeApproximately(Program.TypicalCriticWeight, 0.0001);
+		}
+
+		private static Opinion Opinion(Movie movie, int stars)
+		{
+			return new Opinion(movie, stars);
 		}
 
 		[Test]
