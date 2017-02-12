@@ -2,6 +2,7 @@
 using System.Data.SqlServerCe;
 using System.IO;
 using ArloVsMocks.Data;
+using ArloVsMocks.Data.StoredInEntityFrameworkRepository;
 using NUnit.Framework;
 
 namespace ArloVsMocks.Tests.ConnectToInfrastructure

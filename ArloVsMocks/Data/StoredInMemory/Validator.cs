@@ -1,4 +1,4 @@
-namespace ArloVsMocks.Data
+namespace ArloVsMocks.Data.StoredInMemory
 {
 	public interface Validator<T>
 	{

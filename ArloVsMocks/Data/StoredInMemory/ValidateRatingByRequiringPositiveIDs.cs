@@ -1,6 +1,6 @@
 using System;
 
-namespace ArloVsMocks.Data
+namespace ArloVsMocks.Data.StoredInMemory
 {
 	internal class ValidateRatingByRequiringPositiveIDs : Validator<Rating>
 	{

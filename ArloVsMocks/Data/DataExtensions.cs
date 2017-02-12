@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using ArloVsMocks.Data.StoredInEntityFrameworkRepository;
+using ArloVsMocks.Data.StoredInMemory;
 
 namespace ArloVsMocks.Data
 {
-	public static class RatingsExtensions
+	public static class DataExtensions
 	{
 		public static DataTablePort<T> ToDataTablePort<T>(this DbSet<T> table, MovieReviewEntities db) where T : class
 		{
@@ -26,17 +28,6 @@ namespace ArloVsMocks.Data
 		{
 			var adapter = new DataTablePortToHashSetAdapter<T>(data, validator);
 			return new DataTablePort<T>(data.AsQueryable(), adapter);
-		}
-
-		public static Rating ToRating(this Critique critique)
-		{
-			var createdRating = new Rating
-			{
-				CriticId = critique.CriticId,
-				MovieId = critique.MovieId,
-				Stars = critique.Stars
-			};
-			return createdRating;
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using ArloVsMocks.CritiqueMovies;
 using ArloVsMocks.Data;
 using ArloVsMocks.Tests.zzTestHelpers;
 using FluentAssertions;
@@ -17,15 +18,16 @@ namespace ArloVsMocks.Tests.MaintainRatings
 			AddRating(movie, 1.0, 5);
 			AddRating(movie, 0.15, 2);
 			AddRating(movie, 0.15, 2);
-			Program.UpdateAverageRatingForMovie(movie);
+			MovieRatings.UpdateAverageRatingForMovie(movie);
 			movie.AverageRating.Should().BeApproximately(4.0429447852, 0.0000001);
 		}
 
 		[Test]
-		public void MovieWithNoRatingsShouldHaveRatingSetToNaNWhichIsProbablyABug()
+		[Category("probably a bug")]
+		public void MovieWithNoRatingsShouldHaveRatingSetToNaNInsteadOfNullEvenThoughOtherCodeExpectsNullToMeanUnrated()
 		{
 			var movie = Movie.Create(4);
-			Program.UpdateAverageRatingForMovie(movie);
+			MovieRatings.UpdateAverageRatingForMovie(movie);
 			movie.AverageRating.Should().Be(double.NaN);
 		}
 
@@ -34,7 +36,7 @@ namespace ArloVsMocks.Tests.MaintainRatings
 		{
 			var movie = Movie.Create(4);
 			AddRating(movie, 0.33, 3);
-			Program.UpdateAverageRatingForMovie(movie);
+			MovieRatings.UpdateAverageRatingForMovie(movie);
 			movie.AverageRating.Should().BeApproximately(3.0, 0.0000001);
 		}
 
@@ -45,7 +47,7 @@ namespace ArloVsMocks.Tests.MaintainRatings
 			AddMovieWithOneRating(movies, 0.33, 3);
 			AddMovieWithOneRating(movies, 1.0, 3);
 			movies.PersistAll();
-			Program.RecalcWeightedAveragesOfAllMovieRatings(movies);
+			MovieRatings.RecalcWeightedAveragesOfAllMovieRatings(movies);
 			movies.ExistingData.All(m => m.AverageRating == 3.0);
 			movies.ExistingData.Should().HaveCount(2);
 		}

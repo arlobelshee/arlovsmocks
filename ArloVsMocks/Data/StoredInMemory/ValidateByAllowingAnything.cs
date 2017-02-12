@@ -1,4 +1,4 @@
-namespace ArloVsMocks.Data
+namespace ArloVsMocks.Data.StoredInMemory
 {
 	internal class ValidateByAllowingAnything<T> : Validator<T>
 	{

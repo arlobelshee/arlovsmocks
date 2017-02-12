@@ -1,7 +1,9 @@
-﻿using System;
+using System;
+using ArloVsMocks.CritiqueMovies;
 using ArloVsMocks.Data;
 using ArloVsMocks.Tests.zzTestHelpers;
 using FluentAssertions;
+using JetBrains.Annotations;
 using NUnit.Framework;
 
 namespace ArloVsMocks.Tests.MaintainRatings
@@ -12,9 +14,9 @@ namespace ArloVsMocks.Tests.MaintainRatings
 		[Test]
 		public void ExistingMatchingRatingShouldBeUpdated()
 		{
-			var port = TableWithOneRating(RatingMatchingNewCritiqueButWithDifferentStars());
+			var port = TableWithOneRating(PriorCritiqueForSameMovieAndCritic.ToRating());
 
-			Program.UpsertRating(port, NewCritique);
+			NewCritique.UpsertRating(port);
 			port.PersistAll();
 			port.ExistingData.Should().BeEquivalentTo(NewCritique.ToRating());
 		}
@@ -24,7 +26,7 @@ namespace ArloVsMocks.Tests.MaintainRatings
 		{
 			var port = Empty.Table<Rating>();
 
-			Program.UpsertRating(port, NewCritique);
+			NewCritique.UpsertRating(port);
 			port.PersistAll();
 			port.ExistingData.Should().BeEquivalentTo(NewCritique.ToRating());
 		}
@@ -32,43 +34,24 @@ namespace ArloVsMocks.Tests.MaintainRatings
 		[Test]
 		public void NonmatchingRatingShouldBeCreatedNextToExistingOne()
 		{
-			var existingRating = RatingForDifferentMovieThanNewCritique();
+			var existingRating = CritiqueForDifferentMovie.ToRating();
 			var port = TableWithOneRating(existingRating);
 
-			Program.UpsertRating(port, NewCritique);
+			NewCritique.UpsertRating(port);
 			port.PersistAll();
 			port.ExistingData.Should().BeEquivalentTo(NewCritique.ToRating(), existingRating);
 		}
 
 		[Test]
+		[Category("probably a bug")]
 		public void RatingThatDoesntMatchKnownMovieOrCriticShouldSetUpBombThatWillEventuallyExplodeAtUserWithPoorUx()
 		{
 			var port = Empty.TableThatMonitorsForeignKeys();
 			var critique = new Critique(-1, -2, 3);
 
-			Program.UpsertRating(port, critique);
+			critique.UpsertRating(port);
 			Action persist = port.PersistAll;
 			persist.ShouldThrow<Exception>();
-		}
-
-		private static Rating RatingMatchingNewCritiqueButWithDifferentStars()
-		{
-			return _MakeRating(1, NewCritique.MovieId);
-		}
-
-		private static Rating RatingForDifferentMovieThanNewCritique()
-		{
-			return _MakeRating(NewCritique.Stars, NewCritique.MovieId + 5);
-		}
-
-		private static Rating _MakeRating(int stars, int movieId)
-		{
-			return new Rating
-			{
-				CriticId = NewCritique.CriticId,
-				MovieId = movieId,
-				Stars = stars
-			};
 		}
 
 		private static DataTablePort<Rating> TableWithOneRating(Rating existingRating)
@@ -79,6 +62,11 @@ namespace ArloVsMocks.Tests.MaintainRatings
 			return port;
 		}
 
+		[NotNull]
 		private static readonly Critique NewCritique = new Critique(1, 2, 3);
+		[NotNull]
+		private static readonly Critique CritiqueForDifferentMovie = new Critique(6, 2, 3);
+		[NotNull]
+		private static readonly Critique PriorCritiqueForSameMovieAndCritic = new Critique(1, 2, 5);
 	}
 }
