@@ -32,7 +32,7 @@ namespace ArloVsMocks.Data
 		public static DataTablePort<T> ToDataTablePort<T>(this DbSet<T> table, MovieReviewEntities db) where T : class
 		{
 			var adapter = new DataTablePortToEntityFrameworkAdapter<T>(db, table);
-			return new DataTablePort<T>(table, SaveItem(adapter), PersistAll(db, table, adapter));
+			return new DataTablePort<T>(table, SaveItem(adapter), PersistAll(adapter));
 		}
 
 		private static Action<T> SaveItem<T>(DataTablePortToEntityFrameworkAdapter<T> dataTablePortToEntityFrameworkAdapter) where T : class
@@ -40,7 +40,7 @@ namespace ArloVsMocks.Data
 			return rating => dataTablePortToEntityFrameworkAdapter.Table.Add(rating);
 		}
 
-		private static Action PersistAll<T>(MovieReviewEntities db, DbSet<T> table, DataTablePortToEntityFrameworkAdapter<T> adapter) where T : class
+		private static Action PersistAll<T>(DataTablePortToEntityFrameworkAdapter<T> adapter) where T : class
 		{
 			return () => adapter.Db.SaveChanges();
 		}
