@@ -30,7 +30,7 @@ namespace ArloVsMocks
 				UpsertRating(ratings, critique);
 				UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(db.Critics.ToDataTablePort(db));
 
-				RecalcWeightedAveragesOfAllMovieRatings(db.Movies);
+				RecalcWeightedAveragesOfAllMovieRatings(db.Movies.ToDataTablePort(db));
 
 				ratings.PersistAll();
 
@@ -52,9 +52,9 @@ namespace ArloVsMocks
 			Console.ReadKey();
 		}
 
-		private static void RecalcWeightedAveragesOfAllMovieRatings(DbSet<Movie> movies)
+		private static void RecalcWeightedAveragesOfAllMovieRatings(DataTablePort<Movie> movies)
 		{
-			foreach (var movie in movies)
+			foreach (var movie in movies.ExistingData)
 			{
 				var weightTotal = movie.Ratings.Select(r => r.Critic.RatingWeight).Sum();
 				var ratingTotal = movie.Ratings.Select(r => r.Stars*r.Critic.RatingWeight).Sum();
