@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using ArloVsMocks.Data;
 
@@ -19,32 +20,21 @@ namespace ArloVsMocks
 				return;
 			}
 
-			//process rating
 			MovieReviewEntities db = null;
 			try
 			{
 				db = new MovieReviewEntities();
 				var ratings = db.Ratings.ToDataTablePort(db);
+				var movies = db.Movies.ToDataTablePort(db);
+				var critics = db.Critics.ToDataTablePort(db);
 
 				UpsertRating(ratings, critique);
-				UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(db.Critics.ToDataTablePort(db));
-
-				//re-calculate weighted average of all movie ratings
-				foreach (var movie in db.Movies)
-				{
-					var weightTotal = movie.Ratings.Select(r => r.Critic.RatingWeight).Sum();
-					var ratingTotal = movie.Ratings.Select(r => r.Stars*r.Critic.RatingWeight).Sum();
-
-					movie.AverageRating = ratingTotal/weightTotal;
-				}
+				UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
+				RecalcWeightedAveragesOfAllMovieRatings(movies);
 
 				ratings.PersistAll();
 
-				//output summary
-				var newCriticRatingWeight = db.Critics.Single(c => c.Id == critique.CriticId).RatingWeight;
-				var newMovieRating = db.Movies.Single(m => m.Id == critique.MovieId).AverageRating.Value;
-				Console.WriteLine("New critic rating weight: {0:N1}", newCriticRatingWeight);
-				Console.WriteLine("New movie rating: {0:N1}", newMovieRating);
+				OutputSummary(critics, critique, movies);
 			}
 			catch (Exception ex)
 			{
@@ -56,6 +46,30 @@ namespace ArloVsMocks
 			}
 
 			Console.ReadKey();
+		}
+
+		private static void OutputSummary(DataTablePort<Critic> critics, Critique critique, DataTablePort<Movie> movies)
+		{
+			var newCriticRatingWeight = critics.ExistingData.Single(c => c.Id == critique.CriticId).RatingWeight;
+			var newMovieRating = movies.ExistingData.Single(m => m.Id == critique.MovieId).AverageRating.Value;
+			Console.WriteLine("New critic rating weight: {0:N1}", newCriticRatingWeight);
+			Console.WriteLine("New movie rating: {0:N1}", newMovieRating);
+		}
+
+		public static void RecalcWeightedAveragesOfAllMovieRatings(DataTablePort<Movie> movies)
+		{
+			foreach (var movie in movies.ExistingData)
+			{
+				UpdateAverageRatingForMovie(movie);
+			}
+		}
+
+		public static void UpdateAverageRatingForMovie(Movie movie)
+		{
+			var weightTotal = movie.Ratings.Select(r => r.Critic.RatingWeight).Sum();
+			var ratingTotal = movie.Ratings.Select(r => r.Stars*r.Critic.RatingWeight).Sum();
+
+			movie.AverageRating = ratingTotal/weightTotal;
 		}
 
 		public static void UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(DataTablePort<Critic> critics)
