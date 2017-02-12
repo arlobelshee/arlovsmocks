@@ -63,7 +63,7 @@ namespace ArloVsMocks
 			}
 		}
 
-		private class ValidateRatingByRequiringPositiveIDs
+		private class ValidateRatingByRequiringPositiveIDs : Validator<Rating>
 		{
 			public ValidateRatingByRequiringPositiveIDs(bool hasErrors)
 			{
