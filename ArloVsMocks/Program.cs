@@ -45,12 +45,20 @@ namespace ArloVsMocks
 
 				ratings.PersistAll();
 
-				var reviewingCritic = critics.ExistingData.Single(c => c.Id == critique.CriticId);
-				var reviewedMovie = movies.ExistingData.Single(m => m.Id == critique.MovieId);
+				Movie reviewedMovie;
+				var reviewingCritic = GetEntitiesRelatedToThisReview(critique, critics, movies, out reviewedMovie);
 				var messages = Summarize(reviewingCritic, reviewedMovie);
 				foreach (var message in messages)
 					Console.WriteLine(message);
 			}
+		}
+
+		private static Critic GetEntitiesRelatedToThisReview(Critique critique, DataTablePort<Critic> critics, DataTablePort<Movie> movies,
+			out Movie reviewedMovie)
+		{
+			var reviewingCritic = critics.ExistingData.Single(c => c.Id == critique.CriticId);
+			reviewedMovie = movies.ExistingData.Single(m => m.Id == critique.MovieId);
+			return reviewingCritic;
 		}
 
 		private static string[] Summarize(Critic reviewingCritic, Movie reviewedMovie)
