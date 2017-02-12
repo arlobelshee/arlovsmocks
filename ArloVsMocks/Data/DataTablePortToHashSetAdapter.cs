@@ -22,10 +22,10 @@ namespace ArloVsMocks.Data
 			_data.UnionWith(_nextState);
 		}
 
-		public void SaveItem(T d)
+		public void SaveItem(T item)
 		{
-			_validator.Validate(d);
-			_nextState.Add(d);
+			_validator.Validate(item);
+			_nextState.Add(item);
 		}
 	}
 }

@@ -18,9 +18,9 @@ namespace ArloVsMocks.Data
 			_db.SaveChanges();
 		}
 
-		public void SaveItem(T rating)
+		public void SaveItem(T item)
 		{
-			_table.Add(rating);
+			_table.Add(item);
 		}
 	}
 }
