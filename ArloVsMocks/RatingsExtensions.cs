@@ -30,48 +30,12 @@ namespace ArloVsMocks
 
 		private static void MakeReportFn(out Action reportErrors, ValidateRatingByRequiringPositiveIDs hasErrors)
 		{
-			reportErrors = ReporterImpl(hasErrors);
-		}
-
-		private static Action ReporterImpl(ValidateRatingByRequiringPositiveIDs hasErrors)
-		{
-			return () =>
-			{
-				if (hasErrors.HasErrors)
-				{
-					hasErrors.HasErrors = false;
-					try
-					{
-						throw new Exception("Foreign key violation.");
-					}
-					catch (Exception innerException)
-					{
-						throw new Exception("An error occurred while updating the entries. See the inner exception for details.",
-							innerException);
-					}
-				}
-			};
+			reportErrors = hasErrors.ReporterImpl();
 		}
 
 		private static void MakeValidateFn(out Action<Rating> validate, ValidateRatingByRequiringPositiveIDs hasErrors)
 		{
-			validate =
-				ValidationImpl(hasErrors);
-		}
-
-		private static Action<Rating> ValidationImpl(ValidateRatingByRequiringPositiveIDs hasErrors)
-		{
-			return rating => hasErrors.HasErrors = hasErrors.HasErrors || (rating.CriticId < 1) || (rating.MovieId < 1);
-		}
-
-		private class ValidateRatingByRequiringPositiveIDs
-		{
-			public bool HasErrors { get; set; }
-
-			public ValidateRatingByRequiringPositiveIDs(bool hasErrors)
-			{
-				HasErrors = hasErrors;
-			}
+			validate = hasErrors.ValidationImpl();
 		}
 
 		public static DataTablePort<T> AsDataTablePort<T>(this HashSet<T> data) where T : class
@@ -112,6 +76,41 @@ namespace ArloVsMocks
 				Stars = critique.Stars
 			};
 			return createdRating;
+		}
+
+		private class ValidateRatingByRequiringPositiveIDs
+		{
+			public ValidateRatingByRequiringPositiveIDs(bool hasErrors)
+			{
+				HasErrors = hasErrors;
+			}
+
+			public bool HasErrors { get; set; }
+
+			public Action ReporterImpl()
+			{
+				return () =>
+				{
+					if (HasErrors)
+					{
+						HasErrors = false;
+						try
+						{
+							throw new Exception("Foreign key violation.");
+						}
+						catch (Exception innerException)
+						{
+							throw new Exception("An error occurred while updating the entries. See the inner exception for details.",
+								innerException);
+						}
+					}
+				};
+			}
+
+			public Action<Rating> ValidationImpl()
+			{
+				return rating => HasErrors = HasErrors || (rating.CriticId < 1) || (rating.MovieId < 1);
+			}
 		}
 	}
 }
