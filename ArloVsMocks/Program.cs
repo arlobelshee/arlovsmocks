@@ -55,12 +55,12 @@ namespace ArloVsMocks
 				Movie reviewedMovie;
 				var reviewingCritic = GetEntitiesRelatedToThisReview(critique, critics, movies, out reviewedMovie);
 				messages = Summarize(reviewingCritic, reviewedMovie);
+				return messages;
 			}
-			return messages;
 		}
 
-		private static Critic GetEntitiesRelatedToThisReview(Critique critique, DataTablePort<Critic> critics, DataTablePort<Movie> movies,
-			out Movie reviewedMovie)
+		private static Critic GetEntitiesRelatedToThisReview(Critique critique, DataTablePort<Critic> critics,
+			DataTablePort<Movie> movies, out Movie reviewedMovie)
 		{
 			var reviewingCritic = critics.ExistingData.Single(c => c.Id == critique.CriticId);
 			reviewedMovie = movies.ExistingData.Single(m => m.Id == critique.MovieId);
@@ -71,7 +71,9 @@ namespace ArloVsMocks
 		{
 			var newCriticRatingWeight = reviewingCritic.RatingWeight;
 			var newMovieRating = reviewedMovie.AverageRating.Value;
-			return new InfoForUser(new[] {$"New critic rating weight: {newCriticRatingWeight:N1}", $"New movie rating: {newMovieRating:N1}"});
+			return
+				new InfoForUser(new[]
+					{$"New critic rating weight: {newCriticRatingWeight:N1}", $"New movie rating: {newMovieRating:N1}"});
 		}
 
 		public static void RecalcWeightedAveragesOfAllMovieRatings(DataTablePort<Movie> movies)
