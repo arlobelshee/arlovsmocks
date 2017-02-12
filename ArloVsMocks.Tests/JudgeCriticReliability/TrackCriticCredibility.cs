@@ -34,14 +34,9 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 		[Test]
 		public void CriticWithOneCrazyReviewAndSeveralSpotOnReviewsShouldBeTrusted()
 		{
-			Critic target;
-			var critics = DbWithOneCritic(out target);
-			target.RateMovie(Opinion(TwoStarMovie, 5));
-			target.RateMovie(Opinion(ThreeStarMovie, 3));
-			target.RateMovie(Opinion(FourStarMovie, 4));
-
-			Program.UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
-			target.RatingWeight.Should().BeApproximately(Program.TrustworthyCriticWeight, 0.0001);
+			var ratingHistory = History(Opinion(TwoStarMovie, 5), Opinion(ThreeStarMovie, 3), Opinion(FourStarMovie, 4));
+			var criticTrustworthiness = Program.TrustworthyCriticWeight;
+			CriticShouldBeTrustedToCorrectDegree(ratingHistory, criticTrustworthiness);
 		}
 
 		[Test]
