@@ -16,24 +16,14 @@ namespace ArloVsMocks.Data
 			_table = table;
 		}
 
-		private MovieReviewEntities Db
-		{
-			get { return _db; }
-		}
-
-		private DbSet<T> Table
-		{
-			get { return _table; }
-		}
-
 		public void PersistAll()
 		{
-			Db.SaveChanges();
+			_db.SaveChanges();
 		}
 
 		public void SaveItem(T rating)
 		{
-			Table.Add(rating);
+			_table.Add(rating);
 		}
 	}
 
