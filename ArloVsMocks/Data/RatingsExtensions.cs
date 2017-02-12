@@ -5,22 +5,22 @@ using System.Linq;
 
 namespace ArloVsMocks.Data
 {
-	public class DataTablePortToHashSetAdapter<TT> where TT : class
+	public class DataTablePortToHashSetAdapter<T> where T : class
 	{
-		public DataTablePortToHashSetAdapter(HashSet<TT> data, Validator<TT> validator)
+		public DataTablePortToHashSetAdapter(HashSet<T> data, Validator<T> validator)
 		{
 			Data = data;
 			Validator = validator;
-			NextState = new HashSet<TT>();
+			NextState = new HashSet<T>();
 		}
 
-		public HashSet<TT> Data { get; }
+		public HashSet<T> Data { get; }
 
-		public Validator<TT> Validator { get; }
+		public Validator<T> Validator { get; }
 
-		public HashSet<TT> NextState { get; }
+		public HashSet<T> NextState { get; }
 
-		public static Action PersistAll<T>(DataTablePortToHashSetAdapter<T> dataTablePortToHashSetAdapter) where T : class
+		public static Action PersistAll(DataTablePortToHashSetAdapter<T> dataTablePortToHashSetAdapter)
 		{
 			return () =>
 			{
@@ -30,7 +30,7 @@ namespace ArloVsMocks.Data
 			};
 		}
 
-		public static Action<T> SaveItem<T>(DataTablePortToHashSetAdapter<T> adapter) where T : class
+		public static Action<T> SaveItem(DataTablePortToHashSetAdapter<T> adapter)
 		{
 			return d =>
 			{
