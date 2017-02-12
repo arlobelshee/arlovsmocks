@@ -19,9 +19,7 @@ namespace ArloVsMocks
 				var totalDisparity = ratingsWithAverages.Sum(r => Math.Abs(r.Stars - r.Movie.AverageRating.Value));
 				var relativeDisparity = totalDisparity/ratingsWithAverages.Count;
 
-				critic.RatingWeight = relativeDisparity > 2
-					? Untrustworthy
-					: relativeDisparity > 1 ? Typical : Trustworthy;
+				critic.RatingWeight = relativeDisparity > 2 ? Untrustworthy : relativeDisparity > 1 ? Typical : Trustworthy;
 			}
 		}
 	}

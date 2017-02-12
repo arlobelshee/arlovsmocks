@@ -15,7 +15,7 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 				History(Opinion(TwoStarMovie, 3), Opinion(ThreeStarMovie, 4), Opinion(FourStarMovie, 2)));
 		}
 
-		[Test]
+		[Test, Category("probably a bug")]
 		public void CriticWhoOnlyReviewedUnknownMoviesShouldBeFullyTrusted()
 		{
 			CriticShouldBeTrustedToCorrectDegree(CriticTrustworthiness.Trustworthy, History(Opinion(UnknownStarMovie, 5)));
