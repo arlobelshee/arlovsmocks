@@ -5,6 +5,28 @@ using ArloVsMocks.Ui;
 
 namespace ArloVsMocks.CritiqueMovies
 {
+	public class ReviewImpact
+	{
+		private Critic _reviewingCritic;
+		private Movie _reviewedMovie;
+
+		public ReviewImpact(Critic reviewingCritic, Movie reviewedMovie)
+		{
+			_reviewingCritic = reviewingCritic;
+			_reviewedMovie = reviewedMovie;
+		}
+
+		public Critic ReviewingCritic
+		{
+			get { return _reviewingCritic; }
+		}
+
+		public Movie ReviewedMovie
+		{
+			get { return _reviewedMovie; }
+		}
+	}
+
 	public class Critique
 	{
 		private ReviewImpact _impact;
@@ -69,7 +91,7 @@ namespace ArloVsMocks.CritiqueMovies
 
 			Movie reviewedMovie;
 			var reviewingCritic = GetEntitiesRelatedToThisReview(critics, movies, out reviewedMovie);
-			return Summarize(reviewingCritic, reviewedMovie);
+			return Summarize(new ReviewImpact(reviewingCritic, reviewedMovie));
 		}
 
 		private Critic GetEntitiesRelatedToThisReview(DataTablePort<Critic> critics,
@@ -81,10 +103,10 @@ namespace ArloVsMocks.CritiqueMovies
 			return reviewingCritic;
 		}
 
-		public static InfoForUser Summarize(Critic reviewingCritic, Movie reviewedMovie)
+		public static InfoForUser Summarize(ReviewImpact reviewImpact)
 		{
-			var newCriticRatingWeight = reviewingCritic.RatingWeight;
-			var newMovieRating = reviewedMovie.AverageRating.Value;
+			var newCriticRatingWeight = reviewImpact.ReviewingCritic.RatingWeight;
+			var newMovieRating = reviewImpact.ReviewedMovie.AverageRating.Value;
 			return
 				new InfoForUser(new[]
 					{$"New critic rating weight: {newCriticRatingWeight:N1}", $"New movie rating: {newMovieRating:N1}"});
@@ -93,18 +115,6 @@ namespace ArloVsMocks.CritiqueMovies
 		public void UpsertRating(DataTablePort<Rating> dataTablePort)
 		{
 			MovieRatings.UpsertRating(dataTablePort, MovieId, CriticId, Stars);
-		}
-	}
-
-	internal class ReviewImpact
-	{
-		public Critic ReviewingCritic { get; }
-		public Movie ReviewedMovie { get; }
-
-		public ReviewImpact(Critic reviewingCritic, Movie reviewedMovie)
-		{
-			ReviewingCritic = reviewingCritic;
-			ReviewedMovie = reviewedMovie;
 		}
 	}
 }
