@@ -45,7 +45,9 @@ namespace ArloVsMocks
 
 				ratings.PersistAll();
 
-				var messages = Summarize(critics.ExistingData.Single(c => c.Id == critique.CriticId), movies.ExistingData.Single(m => m.Id == critique.MovieId));
+				var reviewingCritic = critics.ExistingData.Single(c => c.Id == critique.CriticId);
+				var reviewedMovie = movies.ExistingData.Single(m => m.Id == critique.MovieId);
+				var messages = Summarize(reviewingCritic, reviewedMovie);
 				foreach (var message in messages)
 					Console.WriteLine(message);
 			}
