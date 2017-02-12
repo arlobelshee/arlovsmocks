@@ -53,9 +53,9 @@ namespace ArloVsMocks
 		{
 			var newCriticRatingWeight = critics.ExistingData.Single(c => c.Id == critique.CriticId).RatingWeight;
 			var newMovieRating = movies.ExistingData.Single(m => m.Id == critique.MovieId).AverageRating.Value;
-			var message1 = String.Format("New critic rating weight: {0:N1}", newCriticRatingWeight);
+			var message1 = $"New critic rating weight: {newCriticRatingWeight:N1}";
+			var message2 = $"New movie rating: {newMovieRating:N1}";
 			Console.WriteLine(message1);
-			var message2 = String.Format("New movie rating: {0:N1}", newMovieRating);
 			Console.WriteLine(message2);
 		}
 
