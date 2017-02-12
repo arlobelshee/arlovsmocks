@@ -39,7 +39,6 @@ namespace ArloVsMocks
 
 		private static InfoForUser ProcessNewCritiqueAndGenerateSummary(Critique critique)
 		{
-			InfoForUser messages;
 			using (var db = new MovieReviewEntities())
 			{
 				var ratings = db.Ratings.ToDataTablePort(db);
@@ -54,8 +53,7 @@ namespace ArloVsMocks
 
 				Movie reviewedMovie;
 				var reviewingCritic = GetEntitiesRelatedToThisReview(critique, critics, movies, out reviewedMovie);
-				messages = Summarize(reviewingCritic, reviewedMovie);
-				return messages;
+				return Summarize(reviewingCritic, reviewedMovie);
 			}
 		}
 
