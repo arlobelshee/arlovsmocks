@@ -56,7 +56,8 @@ namespace ArloVsMocks
 
 		private static void UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(MovieReviewEntities db)
 		{
-			var criticsHavingRated = db.Critics.Where(c => c.Ratings.Count > 0);
+			var critics = db.Critics;
+			var criticsHavingRated = critics.Where(c => c.Ratings.Count > 0);
 			foreach (var critic in criticsHavingRated)
 			{
 				var ratingsWithAverages = critic.Ratings.Where(r => r.Movie.AverageRating.HasValue).ToList();
