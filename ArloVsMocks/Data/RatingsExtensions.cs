@@ -9,7 +9,7 @@ namespace ArloVsMocks.Data
 		public static DataTablePort<T> ToDataTablePort<T>(this DbSet<T> table, MovieReviewEntities db) where T : class
 		{
 			var adapter = new DataTablePortToEntityFrameworkAdapter<T>(db, table);
-			return new DataTablePort<T>(table, adapter.SaveItem, adapter.PersistAll, adapter);
+			return new DataTablePort<T>(table, adapter);
 		}
 
 		public static DataTablePort<Rating> AsDataTablePort(this HashSet<Rating> data)
@@ -25,7 +25,7 @@ namespace ArloVsMocks.Data
 		private static DataTablePort<T> MakeDataPort<T>(HashSet<T> data, Validator<T> validator) where T : class
 		{
 			var adapter = new DataTablePortToHashSetAdapter<T>(data, validator);
-			return new DataTablePort<T>(data.AsQueryable(), adapter.SaveItem, adapter.PersistAll, adapter);
+			return new DataTablePort<T>(data.AsQueryable(), adapter);
 		}
 
 		public static Rating ToRating(this Critique critique)
