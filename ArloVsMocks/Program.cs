@@ -44,7 +44,7 @@ namespace ArloVsMocks
 					movie.AverageRating = ratingTotal/weightTotal;
 				}
 
-				db.SaveChanges();
+				ratings.PersistAll();
 
 				//output summary
 				var newCriticRatingWeight = db.Critics.Single(c => c.Id == critique.CriticId).RatingWeight;
