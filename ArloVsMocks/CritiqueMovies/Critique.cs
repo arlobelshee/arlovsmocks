@@ -1,4 +1,5 @@
 ﻿using System;
+using ArloVsMocks.Data;
 
 namespace ArloVsMocks.CritiqueMovies
 {
@@ -41,6 +42,17 @@ namespace ArloVsMocks.CritiqueMovies
 			{
 				return new Critique(ex.Message);
 			}
+		}
+
+		public Rating ToRating()
+		{
+			var createdRating = new Rating
+			{
+				CriticId = CriticId,
+				MovieId = MovieId,
+				Stars = Stars
+			};
+			return createdRating;
 		}
 	}
 }
