@@ -122,7 +122,7 @@ namespace ArloVsMocks
 
 	internal class Summary
 	{
-		public string[] Messages { get; }
+		private string[] Messages { get; }
 
 		public Summary(string[] messages)
 		{
