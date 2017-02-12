@@ -26,11 +26,12 @@ namespace ArloVsMocks
 			{
 				db = new MovieReviewEntities();
 				var ratings = db.Ratings.ToDataTablePort(db);
+				var movies = db.Movies.ToDataTablePort(db);
+				var critics = db.Critics.ToDataTablePort(db);
 
 				UpsertRating(ratings, critique);
-				UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(db.Critics.ToDataTablePort(db));
-
-				RecalcWeightedAveragesOfAllMovieRatings(db.Movies.ToDataTablePort(db));
+				UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
+				RecalcWeightedAveragesOfAllMovieRatings(movies);
 
 				ratings.PersistAll();
 
