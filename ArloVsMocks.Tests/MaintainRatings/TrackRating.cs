@@ -14,7 +14,7 @@ namespace ArloVsMocks.Tests.MaintainRatings
 		[Test]
 		public void ExistingMatchingRatingShouldBeUpdated()
 		{
-			var port = TableWithOneRating(RatingMatchingNewCritiqueButWithDifferentStars());
+			var port = TableWithOneRating(PriorCritiqueForSameMovieAndCritic.ToRating());
 
 			NewCritique.UpsertRating(port);
 			port.PersistAll();
@@ -34,7 +34,7 @@ namespace ArloVsMocks.Tests.MaintainRatings
 		[Test]
 		public void NonmatchingRatingShouldBeCreatedNextToExistingOne()
 		{
-			var existingRating = RatingForDifferentMovieThanNewCritique();
+			var existingRating = CritiqueForDifferentMovie.ToRating();
 			var port = TableWithOneRating(existingRating);
 
 			NewCritique.UpsertRating(port);
@@ -54,26 +54,6 @@ namespace ArloVsMocks.Tests.MaintainRatings
 			persist.ShouldThrow<Exception>();
 		}
 
-		private static Rating RatingMatchingNewCritiqueButWithDifferentStars()
-		{
-			return _MakeRating(1, NewCritique.MovieId);
-		}
-
-		private static Rating RatingForDifferentMovieThanNewCritique()
-		{
-			return _MakeRating(NewCritique.Stars, NewCritique.MovieId + 5);
-		}
-
-		private static Rating _MakeRating(int stars, int movieId)
-		{
-			return new Rating
-			{
-				CriticId = NewCritique.CriticId,
-				MovieId = movieId,
-				Stars = stars
-			};
-		}
-
 		private static DataTablePort<Rating> TableWithOneRating(Rating existingRating)
 		{
 			var port = Empty.Table<Rating>();
@@ -84,5 +64,9 @@ namespace ArloVsMocks.Tests.MaintainRatings
 
 		[NotNull]
 		private static readonly Critique NewCritique = new Critique(1, 2, 3);
+		[NotNull]
+		private static readonly Critique CritiqueForDifferentMovie = new Critique(6, 2, 3);
+		[NotNull]
+		private static readonly Critique PriorCritiqueForSameMovieAndCritic = new Critique(1, 2, 5);
 	}
 }
