@@ -7,31 +7,18 @@ namespace ArloVsMocks.Data
 {
 	public class DataTablePortToHashSetAdapter<TT> where TT : class
 	{
-		private HashSet<TT> _data;
-		private Validator<TT> _validator;
-		private HashSet<TT> _nextState;
-
 		public DataTablePortToHashSetAdapter(HashSet<TT> data, Validator<TT> validator, HashSet<TT> nextState)
 		{
-			_data = data;
-			_validator = validator;
-			_nextState = nextState;
+			Data = data;
+			Validator = validator;
+			NextState = nextState;
 		}
 
-		public HashSet<TT> Data
-		{
-			get { return _data; }
-		}
+		public HashSet<TT> Data { get; }
 
-		public Validator<TT> Validator
-		{
-			get { return _validator; }
-		}
+		public Validator<TT> Validator { get; }
 
-		public HashSet<TT> NextState
-		{
-			get { return _nextState; }
-		}
+		public HashSet<TT> NextState { get; }
 	}
 
 	public static class RatingsExtensions
@@ -56,8 +43,7 @@ namespace ArloVsMocks.Data
 		{
 			var nextState = new HashSet<T>(data);
 			var adapter = new DataTablePortToHashSetAdapter<T>(data, validator, nextState);
-			return new DataTablePort<T>(data.AsQueryable(), SaveItem(validator, nextState, adapter),
-				PersistAll(adapter));
+			return new DataTablePort<T>(data.AsQueryable(), SaveItem(adapter), PersistAll(adapter));
 		}
 
 		private static Action PersistAll<T>(DataTablePortToHashSetAdapter<T> dataTablePortToHashSetAdapter) where T : class
@@ -70,7 +56,7 @@ namespace ArloVsMocks.Data
 			};
 		}
 
-		private static Action<T> SaveItem<T>(Validator<T> validator, HashSet<T> nextState, DataTablePortToHashSetAdapter<T> adapter) where T : class
+		private static Action<T> SaveItem<T>(DataTablePortToHashSetAdapter<T> adapter) where T : class
 		{
 			return d =>
 			{
