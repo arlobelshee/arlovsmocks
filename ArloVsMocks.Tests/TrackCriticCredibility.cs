@@ -27,8 +27,8 @@ namespace ArloVsMocks.Tests
 			var target = Critic.Create(5);
 			critics.Save(target);
 			critics.PersistAll();
-			TestExtensions.RateMovie(target, ThreeStarMovie, 1);
-			TestExtensions.RateMovie(target, TwoStarMovie, 5);
+			target.RateMovie(ThreeStarMovie, 1);
+			target.RateMovie(TwoStarMovie, 5);
 
 			Program.UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
 			target.RatingWeight.Should().BeApproximately(Program.UntrustworthyCriticWeight, 0.0001);
