@@ -122,16 +122,16 @@ namespace ArloVsMocks
 
 	internal class Summary
 	{
-		private string[] Messages { get; }
+		private readonly string[] _messages;
 
 		public Summary(string[] messages)
 		{
-			Messages = messages;
+			_messages = messages;
 		}
 
 		public void Output()
 		{
-			foreach (var message in Messages)
+			foreach (var message in _messages)
 				Console.WriteLine(message);
 		}
 	}
