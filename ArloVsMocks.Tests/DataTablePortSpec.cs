@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using ArloVsMocks.Data;
 using FluentAssertions;
 using NUnit.Framework;
@@ -8,6 +9,7 @@ namespace ArloVsMocks.Tests
 	public abstract class DataTablePortSpec
 	{
 		protected abstract DataTablePort<Critic> CreateTestSubject();
+		protected abstract DataTablePort<Rating> CreateTestSubjectWithFk();
 
 		[Test]
 		public void SavingItemShouldAddItToExistingDataAfterPersistAll()
@@ -36,6 +38,21 @@ namespace ArloVsMocks.Tests
 			};
 			testSubject.Save(newItem);
 			testSubject.ExistingData.Should().BeEmpty();
+		}
+
+		[Test]
+		public void CreatingItemWithFKViolationShouldFailWithUnspecifiedException()
+		{
+			var testSubject = CreateTestSubjectWithFk();
+			var newItem = new Rating
+			{
+				CriticId = -3,
+				MovieId = -4,
+				Stars = 3
+			};
+			testSubject.Save(newItem);
+			Action persist = testSubject.PersistAll;
+			persist.ShouldThrow<Exception>().WithMessage("An error occurred while updating the entries. See the inner exception for details.");
 		}
 
 		[Test]

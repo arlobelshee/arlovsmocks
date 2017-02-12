@@ -35,5 +35,10 @@ namespace ArloVsMocks.Tests
 		{
 			return _db.Critics.ToDataTablePort(_db);
 		}
+
+		protected override DataTablePort<Rating> CreateTestSubjectWithFk()
+		{
+			return _db.Ratings.ToDataTablePort(_db);
+		}
 	}
 }

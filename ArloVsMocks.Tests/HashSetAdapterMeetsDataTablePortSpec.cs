@@ -11,5 +11,10 @@ namespace ArloVsMocks.Tests
 		{
 			return new HashSet<Critic>().AsDataTablePort();
 		}
+
+		protected override DataTablePort<Rating> CreateTestSubjectWithFk()
+		{
+			return new HashSet<Rating>().AsDataTablePort();
+		}
 	}
 }
