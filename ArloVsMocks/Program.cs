@@ -33,12 +33,12 @@ namespace ArloVsMocks
 
 		private static void ProcessNewCritique(Critique critique)
 		{
-			var messages = ProcessNewCritiqueAndGenerateSummary(critique);
-			foreach (var message in messages)
+			var summary = ProcessNewCritiqueAndGenerateSummary(critique);
+			foreach (var message in summary.Messages)
 				Console.WriteLine(message);
 		}
 
-		private static string[] ProcessNewCritiqueAndGenerateSummary(Critique critique)
+		private static Summary ProcessNewCritiqueAndGenerateSummary(Critique critique)
 		{
 			string[] messages;
 			using (var db = new MovieReviewEntities())
@@ -57,7 +57,7 @@ namespace ArloVsMocks
 				var reviewingCritic = GetEntitiesRelatedToThisReview(critique, critics, movies, out reviewedMovie);
 				messages = Summarize(reviewingCritic, reviewedMovie);
 			}
-			return messages;
+			return new Summary(messages);
 		}
 
 		private static Critic GetEntitiesRelatedToThisReview(Critique critique, DataTablePort<Critic> critics, DataTablePort<Movie> movies,
@@ -118,6 +118,16 @@ namespace ArloVsMocks
 				dataTablePort.Save(existingRating);
 			}
 			existingRating.Stars = critique.Stars;
+		}
+	}
+
+	internal class Summary
+	{
+		public string[] Messages { get; }
+
+		public Summary(string[] messages)
+		{
+			Messages = messages;
 		}
 	}
 }
