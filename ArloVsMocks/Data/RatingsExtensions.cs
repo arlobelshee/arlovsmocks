@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -20,23 +19,17 @@ namespace ArloVsMocks.Data
 
 		public HashSet<T> NextState { get; }
 
-		public Action PersistAll()
+		public void PersistAll()
 		{
-			return () =>
-			{
-				Validator.ReportErrors();
-				Data.Clear();
-				Data.UnionWith(NextState);
-			};
+			Validator.ReportErrors();
+			Data.Clear();
+			Data.UnionWith(NextState);
 		}
 
-		public Action<T> SaveItem()
+		public void SaveItem(T d)
 		{
-			return d =>
-			{
-				Validator.Validate(d);
-				NextState.Add(d);
-			};
+			Validator.Validate(d);
+			NextState.Add(d);
 		}
 	}
 
@@ -61,8 +54,7 @@ namespace ArloVsMocks.Data
 		private static DataTablePort<T> MakeDataPort<T>(HashSet<T> data, Validator<T> validator) where T : class
 		{
 			var adapter = new DataTablePortToHashSetAdapter<T>(data, validator);
-			return new DataTablePort<T>(data.AsQueryable(), adapter.SaveItem(),
-				adapter.PersistAll());
+			return new DataTablePort<T>(data.AsQueryable(), adapter.SaveItem, adapter.PersistAll);
 		}
 
 		public static Rating ToRating(this Critique critique)
