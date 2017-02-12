@@ -45,15 +45,10 @@ namespace ArloVsMocks
 
 				ratings.PersistAll();
 
-				OutputSummary(critics, critique, movies);
+				var messages = Summarize(critics, critique, movies);
+				foreach (var message in messages)
+					Console.WriteLine(message);
 			}
-		}
-
-		private static void OutputSummary(DataTablePort<Critic> critics, Critique critique, DataTablePort<Movie> movies)
-		{
-			var messages = Summarize(critics, critique, movies);
-			foreach (var message in messages)
-				Console.WriteLine(message);
 		}
 
 		private static string[] Summarize(DataTablePort<Critic> critics, Critique critique, DataTablePort<Movie> movies)
