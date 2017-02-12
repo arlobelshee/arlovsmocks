@@ -9,13 +9,15 @@ namespace ArloVsMocks.Tests.MaintainRatings
 	public class InteractWithCritic
 	{
 		[Test]
-		public void InsufficientInputsShouldMakeAnInvalidCritique()
+		[Category("probably a bug")]
+		public void InsufficientInputsShouldMakeAnInvalidCritiqueWithAnUninformativeUserMessage()
 		{
 			Critique.FromArgs(new[] {"2", "3"}).ShouldBeEquivalentTo(new Critique("Index was outside the bounds of the array."));
 		}
 
 		[Test]
-		public void InvalidInputsShouldMakeAnInvalidCritique()
+		[Category("probably a bug")]
+		public void InvalidInputsShouldMakeAnInvalidCritiqueWithAnUninformativeUserMessage()
 		{
 			Critique.FromArgs(new[] {"2", "3", "awesome"})
 				.ShouldBeEquivalentTo(new Critique("Input string was not in a correct format."));
