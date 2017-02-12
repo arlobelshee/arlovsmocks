@@ -9,26 +9,27 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 	public class TrackCriticCredibility
 	{
 		[Test]
-		public void CriticWithAbnormalReviewsShouldBeMostlyIgnored()
+		public void CriticGenerallyCloseButNotOnShouldBeTypical()
 		{
-			Critic target;
-			var critics = DbWithOneCritic(out target);
-			target.RateMovie(Opinion(ThreeStarMovie, 1));
-			target.RateMovie(Opinion(TwoStarMovie, 5));
-
-			Program.UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
-			target.RatingWeight.Should().BeApproximately(Program.UntrustworthyCriticWeight, 0.0001);
+			var ratingHistory = History(Opinion(TwoStarMovie, 3), Opinion(ThreeStarMovie, 4), Opinion(FourStarMovie, 2));
+			var criticTrustworthiness = Program.TypicalCriticWeight;
+			CriticShouldBeTrustedToCorrectDegree(ratingHistory, criticTrustworthiness);
 		}
 
 		[Test]
-		public void CriticWithOneCrazyReviewShouldBeUntrusted()
+		public void CriticWithAbnormalReviewsShouldBeMostlyIgnored()
 		{
-			Critic target;
-			var critics = DbWithOneCritic(out target);
-			target.RateMovie(Opinion(TwoStarMovie, 5));
+			var ratingHistory = History(Opinion(ThreeStarMovie, 1), Opinion(TwoStarMovie, 5));
+			var criticTrustworthiness = Program.UntrustworthyCriticWeight;
+			CriticShouldBeTrustedToCorrectDegree(ratingHistory, criticTrustworthiness);
+		}
 
-			Program.UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
-			target.RatingWeight.Should().BeApproximately(Program.UntrustworthyCriticWeight, 0.0001);
+		[Test]
+		public void CriticWithNoRatingsShouldBeTotallyIgnored()
+		{
+			var ratingHistory = History();
+			var criticTrustworthiness = 0.0;
+			CriticShouldBeTrustedToCorrectDegree(ratingHistory, criticTrustworthiness);
 		}
 
 		[Test]
@@ -40,10 +41,18 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 		}
 
 		[Test]
-		public void CriticGenerallyCloseButNotOnShouldBeTypical()
+		public void CriticWithOneCrazyReviewShouldBeUntrusted()
 		{
-			var ratingHistory = History(Opinion(TwoStarMovie, 3), Opinion(ThreeStarMovie, 4), Opinion(FourStarMovie, 2));
-			var criticTrustworthiness = Program.TypicalCriticWeight;
+			var ratingHistory = History(Opinion(TwoStarMovie, 5));
+			var criticTrustworthiness = Program.UntrustworthyCriticWeight;
+			CriticShouldBeTrustedToCorrectDegree(ratingHistory, criticTrustworthiness);
+		}
+
+		[Test]
+		public void CriticWhoOnlyReviewedUnknownMoviesShouldBeFullyTrusted()
+		{
+			var ratingHistory = History(Opinion(UnknownStarMovie, 5));
+			var criticTrustworthiness = Program.TrustworthyCriticWeight;
 			CriticShouldBeTrustedToCorrectDegree(ratingHistory, criticTrustworthiness);
 		}
 
@@ -65,16 +74,6 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 		private static Opinion Opinion(Movie movie, int stars)
 		{
 			return new Opinion(movie, stars);
-		}
-
-		[Test]
-		public void CriticWithNoRatingsShouldBeTotallyIgnored()
-		{
-			Critic target;
-			var critics = DbWithOneCritic(out target);
-
-			Program.UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
-			target.RatingWeight.Should().BeApproximately(0.0, 0.0001);
 		}
 
 		private static DataTablePort<Critic> DbWithOneCritic(out Critic target)
