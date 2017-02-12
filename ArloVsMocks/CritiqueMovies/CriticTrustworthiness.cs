@@ -10,10 +10,9 @@ namespace ArloVsMocks.CritiqueMovies
 		public const double Trustworthy = 1.0;
 		public const double Typical = 0.33;
 
-		public static void DecideHowmuchToTrustEachCritic(DataTablePort<Critic> critics)
+		public static void DecideHowMuchToTrustEachCritic(DataTablePort<Critic> critics)
 		{
-			var criticsHavingRated = critics.ExistingData.Where(c => c.Ratings.Count > 0);
-			foreach (var critic in criticsHavingRated)
+			foreach (var critic in critics.ExistingData.Where(c => c.Ratings.Count > 0))
 			{
 				critic.SetTrustworthiness();
 			}

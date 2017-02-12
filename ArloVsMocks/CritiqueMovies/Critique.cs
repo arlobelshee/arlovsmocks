@@ -61,7 +61,7 @@ namespace ArloVsMocks.CritiqueMovies
 		public ReviewImpact Process(DataTablePort<Rating> ratings, DataTablePort<Critic> critics, DataTablePort<Movie> movies)
 		{
 			UpsertRating(ratings);
-			CriticTrustworthiness.DecideHowmuchToTrustEachCritic(critics);
+			CriticTrustworthiness.DecideHowMuchToTrustEachCritic(critics);
 			MovieRatings.RecalcWeightedAveragesOfAllMovieRatings(movies);
 
 			ratings.PersistAll();

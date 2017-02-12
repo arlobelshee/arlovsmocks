@@ -55,7 +55,7 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 			var critics = DbWithOneCritic(out target);
 			target.RateAllMovies(ratingHistory);
 
-			CriticTrustworthiness.DecideHowmuchToTrustEachCritic(critics);
+			CriticTrustworthiness.DecideHowMuchToTrustEachCritic(critics);
 			target.RatingWeight.Should().BeApproximately(criticTrustworthiness, 0.0001);
 		}
 
