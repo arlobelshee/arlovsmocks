@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using ArloVsMocks.Data;
 
 namespace ArloVsMocks
 {
@@ -8,7 +9,7 @@ namespace ArloVsMocks
 		private readonly Action _saveChanges;
 		private readonly Action<T> _saveImpl;
 
-		public DataTablePort(IQueryable<T> existingData, Action<T> saveImpl, Action saveChanges)
+		public DataTablePort(IQueryable<T> existingData, Action<T> saveImpl, Action saveChanges, DataTablePortAdapter<T> adapter)
 		{
 			ExistingData = existingData;
 			_saveImpl = saveImpl;
