@@ -1,25 +1,12 @@
 ﻿using System.Linq;
 using ArloVsMocks.Data;
-using ArloVsMocks.Data.StoredInEntityFrameworkRepository;
 using ArloVsMocks.Ui;
 
 namespace ArloVsMocks.CritiqueMovies
 {
 	public class CritiqueProcessor
 	{
-		public static InfoForUser ProcessNewCritiqueAndGenerateSummary(Critique critique)
-		{
-			using (var db = new MovieReviewEntities())
-			{
-				var ratings = db.Ratings.ToDataTablePort(db);
-				var movies = db.Movies.ToDataTablePort(db);
-				var critics = db.Critics.ToDataTablePort(db);
-
-				return DoIt(critique, ratings, critics, movies);
-			}
-		}
-
-		public static InfoForUser DoIt(Critique critique, DataTablePort<Rating> ratings, DataTablePort<Critic> critics, DataTablePort<Movie> movies)
+		public static InfoForUser ProcessNewCritiqueAndGenerateSummary(Critique critique, DataTablePort<Rating> ratings, DataTablePort<Critic> critics, DataTablePort<Movie> movies)
 		{
 			MovieRatings.UpsertRating(ratings, critique);
 			CriticTrustworthiness.DecideHowmuchToTrustEachCritic(critics);

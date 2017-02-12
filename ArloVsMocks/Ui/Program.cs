@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using ArloVsMocks.CritiqueMovies;
+using ArloVsMocks.Data;
 
 namespace ArloVsMocks.Ui
 {
@@ -16,7 +17,7 @@ namespace ArloVsMocks.Ui
 
 			try
 			{
-				var summary = CritiqueProcessor.ProcessNewCritiqueAndGenerateSummary(critique);
+				var summary = CritiqueRepository.ProcessNewCritiqueAndGenerateSummary(critique);
 				summary.Output(Console.WriteLine);
 			}
 			catch (Exception ex)
