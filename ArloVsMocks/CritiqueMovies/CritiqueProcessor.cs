@@ -15,16 +15,21 @@ namespace ArloVsMocks.CritiqueMovies
 				var movies = db.Movies.ToDataTablePort(db);
 				var critics = db.Critics.ToDataTablePort(db);
 
-				MovieRatings.UpsertRating(ratings, critique);
-				CriticTrustworthiness.DecideHowmuchToTrustEachCritic(critics);
-				MovieRatings.RecalcWeightedAveragesOfAllMovieRatings(movies);
-
-				ratings.PersistAll();
-
-				Movie reviewedMovie;
-				var reviewingCritic = GetEntitiesRelatedToThisReview(critique, critics, movies, out reviewedMovie);
-				return Summarize(reviewingCritic, reviewedMovie);
+				return DoIt(critique, ratings, critics, movies);
 			}
+		}
+
+		public static InfoForUser DoIt(Critique critique, DataTablePort<Rating> ratings, DataTablePort<Critic> critics, DataTablePort<Movie> movies)
+		{
+			MovieRatings.UpsertRating(ratings, critique);
+			CriticTrustworthiness.DecideHowmuchToTrustEachCritic(critics);
+			MovieRatings.RecalcWeightedAveragesOfAllMovieRatings(movies);
+
+			ratings.PersistAll();
+
+			Movie reviewedMovie;
+			var reviewingCritic = GetEntitiesRelatedToThisReview(critique, critics, movies, out reviewedMovie);
+			return Summarize(reviewingCritic, reviewedMovie);
 		}
 
 		private static Critic GetEntitiesRelatedToThisReview(Critique critique, DataTablePort<Critic> critics,
