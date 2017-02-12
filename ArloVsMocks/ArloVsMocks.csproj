@@ -93,6 +93,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CriticTrustworthiness.cs" />
     <Compile Include="Critique.cs" />
     <Compile Include="Data\DataTablePortAdapter.cs" />
     <Compile Include="Data\DataTablePortToEntityFrameworkAdapter.cs" />

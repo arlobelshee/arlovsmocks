@@ -6,10 +6,6 @@ namespace ArloVsMocks
 {
 	public class Program
 	{
-		public const double UntrustworthyCriticWeight = 0.15;
-		public const double TrustworthyCriticWeight = 1.0;
-		public const double TypicalCriticWeight = 0.33;
-
 		private static void Main(string[] args)
 		{
 			var critique = Critique.FromArgs(args);
@@ -41,7 +37,7 @@ namespace ArloVsMocks
 				var critics = db.Critics.ToDataTablePort(db);
 
 				UpsertRating(ratings, critique);
-				UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
+				CriticTrustworthiness.UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(critics);
 				RecalcWeightedAveragesOfAllMovieRatings(movies);
 
 				ratings.PersistAll();
@@ -81,21 +77,6 @@ namespace ArloVsMocks
 			var ratingTotal = movie.Ratings.Select(r => r.Stars*r.Critic.RatingWeight).Sum();
 
 			movie.AverageRating = ratingTotal/weightTotal;
-		}
-
-		public static void UpdateCriticRatingWeightAccordingToHowSimilarTheyAreToAverage(DataTablePort<Critic> critics)
-		{
-			var criticsHavingRated = critics.ExistingData.Where(c => c.Ratings.Count > 0);
-			foreach (var critic in criticsHavingRated)
-			{
-				var ratingsWithAverages = critic.Ratings.Where(r => r.Movie.AverageRating.HasValue).ToList();
-				var totalDisparity = ratingsWithAverages.Sum(r => Math.Abs(r.Stars - r.Movie.AverageRating.Value));
-				var relativeDisparity = totalDisparity/ratingsWithAverages.Count;
-
-				critic.RatingWeight = relativeDisparity > 2
-					? UntrustworthyCriticWeight
-					: relativeDisparity > 1 ? TypicalCriticWeight : TrustworthyCriticWeight;
-			}
 		}
 
 		public static void UpsertRating(DataTablePort<Rating> dataTablePort, Critique critique)
