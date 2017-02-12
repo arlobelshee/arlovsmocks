@@ -15,17 +15,8 @@ namespace ArloVsMocks.CritiqueMovies
 			var criticsHavingRated = critics.ExistingData.Where(c => c.Ratings.Count > 0);
 			foreach (var critic in criticsHavingRated)
 			{
-				SetTrustworthiness(critic);
+				critic.SetTrustworthiness();
 			}
-		}
-
-		private static void SetTrustworthiness(Critic critic)
-		{
-			var ratingsWithAverages = critic.Ratings.Where(r => r.Movie.AverageRating.HasValue).ToList();
-			var totalDisparity = ratingsWithAverages.Sum(r => Math.Abs(r.Stars - r.Movie.AverageRating.Value));
-			var relativeDisparity = totalDisparity/ratingsWithAverages.Count;
-
-			critic.RatingWeight = relativeDisparity > 2 ? Untrustworthy : relativeDisparity > 1 ? Typical : Trustworthy;
 		}
 	}
 }
