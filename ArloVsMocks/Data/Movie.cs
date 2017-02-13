@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace ArloVsMocks.Data
 {
@@ -22,6 +23,14 @@ namespace ArloVsMocks.Data
 				Ratings = new List<Rating>(),
 				AverageRating = null
 			};
+		}
+
+		public void UpdateAverageRating()
+		{
+			var weightTotal = Ratings.Select(r => r.Critic.RatingWeight).Sum();
+			var ratingTotal = Ratings.Select(r => r.Stars*r.Critic.RatingWeight).Sum();
+
+			AverageRating = ratingTotal/weightTotal;
 		}
 	}
 }
