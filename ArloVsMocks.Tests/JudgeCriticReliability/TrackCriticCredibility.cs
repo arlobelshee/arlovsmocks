@@ -33,7 +33,7 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 		[Test]
 		public void CriticWithNoRatingsShouldBeTotallyIgnored()
 		{
-			CriticShouldBeTrustedToCorrectDegree(0.0, History());
+			CriticInDataStoreShouldBeTrustedToCorrectDegree(0.0, History());
 		}
 
 		[Test]
@@ -50,6 +50,15 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 		}
 
 		private static void CriticShouldBeTrustedToCorrectDegree(double criticTrustworthiness, params Opinion[] ratingHistory)
+		{
+			var target = Critic.Create(5);
+			target.RateAllMovies(ratingHistory);
+
+			target.SetTrustworthiness();
+			target.RatingWeight.Should().BeApproximately(criticTrustworthiness, 0.0001);
+		}
+
+		private static void CriticInDataStoreShouldBeTrustedToCorrectDegree(double criticTrustworthiness, params Opinion[] ratingHistory)
 		{
 			Critic target;
 			var critics = DbWithOneCritic(out target);
