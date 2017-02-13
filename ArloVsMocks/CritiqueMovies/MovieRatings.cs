@@ -11,10 +11,10 @@ namespace ArloVsMocks.CritiqueMovies
 				movie.UpdateAverageRating();
 		}
 
-		public static void UpsertRating(DataTablePort<Rating> dataTablePort, int movie, int critic, int stars)
+		public static void UpsertRating(DataTablePort<Rating> ratings, int movie, int critic, int stars)
 		{
 			var existingRating =
-				dataTablePort.ExistingData.SingleOrDefault(r => (r.MovieId == movie) && (r.CriticId == critic));
+				ratings.ExistingData.SingleOrDefault(r => (r.MovieId == movie) && (r.CriticId == critic));
 			if (existingRating == null)
 			{
 				existingRating = new Rating
@@ -22,7 +22,7 @@ namespace ArloVsMocks.CritiqueMovies
 					MovieId = movie,
 					CriticId = critic
 				};
-				dataTablePort.Save(existingRating);
+				ratings.Save(existingRating);
 			}
 			existingRating.Stars = stars;
 		}
