@@ -13,35 +13,35 @@ namespace ArloVsMocks.Tests.MaintainRatings
 		[Test]
 		public void MovieWithMultipleRatingsShouldHaveAWeightedMean()
 		{
-			var movie = Movie.Create(4);
-			AddRating(movie, 0.33, 3);
-			AddRating(movie, 1.0, 5);
-			AddRating(movie, 0.15, 2);
-			AddRating(movie, 0.15, 2);
-			MovieRatings.UpdateAverageRatingForMovie(movie);
-			movie.AverageRating.Should().BeApproximately(4.0429447852, 0.0000001);
+			var testSubject = Movie.Create(4);
+			AddRating(testSubject, 0.33, 3);
+			AddRating(testSubject, 1.0, 5);
+			AddRating(testSubject, 0.15, 2);
+			AddRating(testSubject, 0.15, 2);
+			testSubject.UpdateAverageRating();
+			testSubject.AverageRating.Should().BeApproximately(4.0429447852, 0.0000001);
 		}
 
 		[Test]
 		[Category("probably a bug")]
 		public void MovieWithNoRatingsShouldHaveRatingSetToNaNInsteadOfNullEvenThoughOtherCodeExpectsNullToMeanUnrated()
 		{
-			var movie = Movie.Create(4);
-			MovieRatings.UpdateAverageRatingForMovie(movie);
-			movie.AverageRating.Should().Be(double.NaN);
+			var testSubject = Movie.Create(4);
+			testSubject.UpdateAverageRating();
+			testSubject.AverageRating.Should().Be(double.NaN);
 		}
 
 		[Test]
 		public void MovieWithOneRatingShouldHaveThatAsItsAverage()
 		{
-			var movie = Movie.Create(4);
-			AddRating(movie, 0.33, 3);
-			MovieRatings.UpdateAverageRatingForMovie(movie);
-			movie.AverageRating.Should().BeApproximately(3.0, 0.0000001);
+			var testSubject = Movie.Create(4);
+			AddRating(testSubject, 0.33, 3);
+			testSubject.UpdateAverageRating();
+			testSubject.AverageRating.Should().BeApproximately(3.0, 0.0000001);
 		}
 
 		[Test]
-		public void ShouldUpdateAllMovieRatingsInTheDatabase()
+		public void ShouldUpdateAllMovieRatingsInTheDatabaseEvenThoseWithoutRatings()
 		{
 			var movies = Empty.Table<Movie>();
 			AddMovieWithOneRating(movies, 0.33, 3);

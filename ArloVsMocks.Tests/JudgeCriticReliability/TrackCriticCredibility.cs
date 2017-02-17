@@ -33,7 +33,11 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 		[Test]
 		public void CriticWithNoRatingsShouldBeTotallyIgnored()
 		{
-			CriticShouldBeTrustedToCorrectDegree(0.0, History());
+			Critic target;
+			var critics = DbWithOneCritic(History(), out target);
+
+			CriticTrustworthiness.DecideHowMuchToTrustEachCritic(critics);
+			target.RatingWeight.Should().BeApproximately(UninitializedTrustLevel, 0.0001);
 		}
 
 		[Test]
@@ -49,14 +53,24 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 			CriticShouldBeTrustedToCorrectDegree(CriticTrustworthiness.Untrustworthy, History(Opinion(TwoStarMovie, 5)));
 		}
 
+		private static DataTablePort<Critic> DbWithOneCritic(Opinion[] ratingHistory, out Critic target)
+		{
+			var critics = Empty.Table<Critic>();
+			target = Critic.Create(5);
+			target.RatingWeight = UninitializedTrustLevel;
+			critics.Save(target);
+			critics.PersistAll();
+			target.RateAllMovies(ratingHistory);
+			return critics;
+		}
+
 		private static void CriticShouldBeTrustedToCorrectDegree(double criticTrustworthiness, params Opinion[] ratingHistory)
 		{
-			Critic target;
-			var critics = DbWithOneCritic(out target);
-			target.RateAllMovies(ratingHistory);
+			var testSubject = Critic.Create(5);
+			testSubject.RateAllMovies(ratingHistory);
 
-			CriticTrustworthiness.DecideHowmuchToTrustEachCritic(critics);
-			target.RatingWeight.Should().BeApproximately(criticTrustworthiness, 0.0001);
+			testSubject.SetTrustworthiness();
+			testSubject.RatingWeight.Should().BeApproximately(criticTrustworthiness, 0.0001);
 		}
 
 		private static Opinion[] History(params Opinion[] opinions)
@@ -69,14 +83,7 @@ namespace ArloVsMocks.Tests.JudgeCriticReliability
 			return new Opinion(movie, stars);
 		}
 
-		private static DataTablePort<Critic> DbWithOneCritic(out Critic target)
-		{
-			var critics = Empty.Table<Critic>();
-			target = Critic.Create(5);
-			critics.Save(target);
-			critics.PersistAll();
-			return critics;
-		}
+		private const double UninitializedTrustLevel = 3.14159;
 
 		private static readonly Movie ThreeStarMovie = new Movie
 		{
